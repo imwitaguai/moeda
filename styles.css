@@ -1,0 +1,766 @@
+:root{--ink:#17142f;--purple:#8956df;--shadow:0 4px 11px #6d53632b}*{box-sizing:border-box}body{margin:0;background:#fffcf8;color:var(--ink);font:800 18px Nunito,sans-serif}.app-shell{display:grid;grid-template-columns:256px 1fr;min-height:100vh}.sidebar{background:linear-gradient(145deg,#eee5ff,#ded0fa);border-radius:0 38px 38px 0;padding:38px 18px 34px;box-shadow:3px 0 12px #8d65b32b;display:flex;flex-direction:column;z-index:2}.club-card{text-align:center}.avatar{width:196px;height:196px;margin:auto;background:#fff url('logo.png') no-repeat center/contain;border-radius:50%;border:4px solid #ffffff;box-shadow:0 8px 20px rgba(101,68,118,0.22);filter:drop-shadow(0 6px 8px rgba(74,36,110,0.18));transition:transform .25s ease,box-shadow .25s ease}.avatar:hover{transform:scale(1.04);box-shadow:0 12px 26px rgba(101,68,118,0.32)}.club-card h2{font:800 27px 'Baloo 2';color:#4a246e;margin:4px 0 30px}.menu{display:grid;gap:12px}.menu button{border:0;background:transparent;color:#594873;font:800 23px Nunito;text-align:left;padding:12px 18px;border-radius:17px;display:flex;align-items:center;gap:19px;cursor:pointer}.menu button span{font-size:34px;filter:drop-shadow(0 3px 2px #4a326155)}.menu button.active{background:linear-gradient(135deg,#a975f3,#7952db);color:#fff;box-shadow:inset 0 1px #ffffff73,0 4px 5px #65429450}.globe{width:205px;height:220px;margin:auto auto 10px;background:url('iciio.png') no-repeat -27px -758px/1536px 1024px;border-radius:29px;filter:drop-shadow(0 4px 5px #765a9040)}main{padding:28px 24px 10px;max-width:1280px;width:100%;margin:auto}.page{display:none}.page.active{display:block}header{display:flex;justify-content:space-between;align-items:flex-start;margin:0 18px 12px}h1,h2{font-family:'Baloo 2',cursive;margin:0;line-height:1}h1{font-size:58px;letter-spacing:-1px}h1 span{font-size:64px}header p,.page-heading p{font-size:28px;margin:2px 8px;color:#302a5a}.top-actions{display:flex;gap:25px}.top-actions button{border:0;background:#fff;color:#776556;font-size:32px;width:72px;height:72px;border-radius:50%;box-shadow:var(--shadow)}.content-grid{display:grid;grid-template-columns:minmax(500px,1fr) 360px;gap:18px}.converter-card{background:linear-gradient(135deg,#fff0f4,#ffe2eb);border-radius:27px;padding:22px 28px;box-shadow:var(--shadow)}.card-title,.practice-title{display:flex;justify-content:space-between;align-items:center;gap:10px}.card-title h2{font-size:47px}.card-title span,.practice-title span{font-size:15px;color:#d81763;background:#ffd7e7;padding:12px;border-radius:12px;white-space:nowrap}.converter-card label{display:block;font-size:18px;margin:7px 2px 3px}.amount-input{height:80px;background:#fffdfa;border:1px solid #eadbdd;border-radius:16px;display:flex;align-items:center;padding:0 24px;box-shadow:0 3px 5px #855c6840}.amount-input b{font-size:29px;color:#68616a}.amount-input input{border:0;background:transparent;color:var(--ink);font:900 52px 'Baloo 2';width:100%;outline:0;padding:0 16px}.currency-row{display:grid;grid-template-columns:1fr 96px 1fr;align-items:end;gap:18px;margin-top:8px}.currency-box label{white-space:nowrap}.currency-box select{width:100%;height:72px;border:1px solid #ebdce1;border-radius:15px;background:#fffdfa;padding:0 14px;font:800 21px Nunito;color:var(--ink);box-shadow:0 3px 5px #855c6840}.swap{height:82px;border-radius:22px;border:1px solid #d9caef;background:linear-gradient(145deg,#eee8ff,#c9b7f6);color:#7952d5;font-size:49px;box-shadow:var(--shadow);cursor:pointer}.convert-button,.country-card button,.cta button{border:0;border-radius:20px;background:linear-gradient(#a875f4,#7445d5);color:#fff;font:800 30px 'Baloo 2';text-shadow:0 2px #6541ae;box-shadow:inset 0 1px #ffffff80,0 4px 5px #7351a85c;cursor:pointer}.convert-button{width:100%;margin-top:18px;height:67px}.result{margin-top:12px;min-height:152px;border-radius:24px;background:linear-gradient(110deg,#ebfff0,#ddf9e6);display:flex;align-items:center;padding:10px 30px;gap:28px;box-shadow:inset 0 1px #fff,var(--shadow)}.coin-pile{font-size:80px;position:relative;width:170px}.coin-pile i,.coin-pile em{font-style:normal;position:absolute;font-size:54px}.coin-pile i{left:5px;top:48px}.coin-pile em{left:78px;top:45px}.divider{height:118px;border-left:2px solid #a3d7b1}.result strong{font:900 75px 'Baloo 2';color:#005434;white-space:nowrap}.result small{font-size:48px}.result p{font-size:24px;margin:0}.info-column{display:grid;gap:18px}.info-card{border-radius:28px;padding:31px 29px;box-shadow:var(--shadow);min-height:204px}.info-card h2{font-size:42px}.info-card h2 span{float:right;font-size:65px}.info-card>div{border-top:1px solid #a9b9c9;margin:21px 0 13px}.info-card p{font-size:22px;line-height:1.28;margin:0}.how{background:#d9edff}.fact{background:#fff2ca}.mini-countries{margin-top:18px;background:#fffdf9;border:1px solid #f0e5d9;border-radius:25px;padding:12px;box-shadow:var(--shadow)}.mini-countries h2{font-size:37px;margin:0 10px}.mini-countries p{margin:0 10px 9px}.mini-countries>div{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.mini{padding:10px;border-radius:14px;background:var(--card);font-size:13px}.mini h3{font-size:15px;text-align:center;margin:0}.mini span{font-size:31px}.mini strong{display:block;font-size:20px;text-align:center}.page-heading{margin-top:4px}.hero-orb{font-size:76px;letter-spacing:-30px;padding-right:36px;background:#f9dfff;border-radius:50%;min-width:160px;text-align:center}.filters{display:flex;gap:18px;margin:18px 6px 14px}.filters button{border:1px solid #e5dada;background:#fffdfa;color:#46236b;border-radius:17px;padding:12px 35px;font:800 20px Nunito;box-shadow:var(--shadow)}.filters .selected{background:linear-gradient(#a875f4,#7a4bda);color:#fff}.country-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.country-card{background:var(--card);padding:15px 26px 17px;border-radius:22px;box-shadow:var(--shadow)}.card-flag{font-size:82px;line-height:.9}.country-card h2{font-size:38px;margin-top:8px}.country-card .region{margin:0 0 10px;font-size:20px}.country-card p{margin:7px 0}.country-card code{float:right;background:#ffffff75;padding:4px 13px;border-radius:12px;font:900 23px Nunito}.country-card button{height:45px;width:100%;font-size:24px;margin-top:7px}.did-you-know{margin-top:17px;border-radius:22px;background:#dff0ff;padding:14px 28px;display:flex;align-items:center;gap:20px;font-size:55px;box-shadow:var(--shadow)}.did-you-know h2{font-size:33px}.did-you-know p{font-size:18px;margin:3px 0}.concepts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:25px}.concepts article{position:relative;min-height:198px;padding:20px 24px;border-radius:22px;background:#dff1ff;box-shadow:var(--shadow)}.concepts article:nth-child(2){background:#ffe3f4}.concepts article:nth-child(3){background:#fff3d4}.concepts b,.steps b{display:inline-grid;place-items:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(#a876f4,#7041d3);color:#fff;font:800 30px 'Baloo 2';box-shadow:var(--shadow)}.concepts h2{font-size:29px;margin-top:8px}.concepts p{max-width:70%;margin:2px 0;font-size:20px;line-height:1.15}.concepts span{position:absolute;right:22px;bottom:24px;font-size:68px}.learn-layout{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-top:17px}.practice{background:linear-gradient(135deg,#e4fff1,#d1fae5);padding:23px;border-radius:25px;box-shadow:var(--shadow)}.practice-title h2{font-size:43px}.practice>p{font-size:24px;margin:2px 15px}.flag-path{display:flex;justify-content:center;align-items:center;gap:55px;margin:10px}.flag-path div{font-size:80px;text-align:center}.flag-path b{display:block;font-size:20px}.flag-path i,.steps>i{font-style:normal;font-size:58px;color:#7952d5}.steps{display:flex;gap:10px;align-items:center}.steps article{background:#fffdfa;padding:7px 13px;border-radius:18px;flex:1;min-height:98px}.steps b{width:40px;height:40px;font-size:24px;margin-right:8px}.steps span{font-size:16px}.steps strong{display:block;text-align:center;background:#e9e2ff;border-radius:12px;padding:7px;font-size:20px}.lesson-result{background:#93eea9;border-radius:20px;padding:10px 30px;font-size:28px;text-align:center;margin:17px auto 5px;max-width:570px}.lesson-result strong{font:800 41px 'Baloo 2'}.lesson-note{text-align:center!important;font-size:17px!important}.idea{border-radius:25px;padding:27px 25px;background:#eee5ff;box-shadow:var(--shadow);text-align:center}.idea h2{font-size:34px}.idea>strong{display:block;background:#dcd0fb;border-radius:20px;padding:14px;margin-top:17px;font:800 29px 'Baloo 2'}.idea p{text-align:left;font-size:18px}.cta{display:flex;align-items:center;gap:15px;background:#dff1ff;margin-top:17px;border-radius:22px;padding:12px 25px;box-shadow:var(--shadow)}.cta>span{font-size:65px}.cta h2{font-size:33px}.cta p{margin:0}.cta button{margin-left:auto;padding:12px 28px;font-size:25px}footer{text-align:center;font-size:14px;margin:6px}@media(max-width:1050px){.app-shell{grid-template-columns:210px 1fr}.sidebar{padding:28px 12px}.avatar{width:156px;height:156px;background:#fff url('logo.png') no-repeat center/contain}.globe{width:170px;height:184px;background-size:1280px 853px;background-position:-23px -631px}.menu button{font-size:19px}.content-grid,.learn-layout{grid-template-columns:1fr}.info-column{grid-template-columns:1fr 1fr}.country-grid{grid-template-columns:repeat(2,1fr)}h1{font-size:45px}}@media(max-width:700px){.app-shell{display:block}.sidebar{display:none}main{padding:18px 12px}header{margin:0 2px 15px}h1{font-size:37px}.top-actions{gap:6px}.top-actions button{width:42px;height:42px;font-size:20px}.content-grid,.learn-layout{display:block}.info-column{margin-top:12px;grid-template-columns:1fr}.currency-row{grid-template-columns:1fr}.swap{width:70px;height:48px;margin:auto;transform:rotate(90deg)}.result{padding:12px}.coin-pile{display:none}.result strong{font-size:44px}.result small{font-size:28px}.mini-countries{overflow:auto}.mini-countries>div{min-width:800px}.page-heading p{font-size:19px}.hero-orb{display:none}.filters{overflow:auto;margin:12px 0}.filters button{white-space:nowrap;padding:10px 16px}.country-grid,.concepts{grid-template-columns:1fr}.concepts article{min-height:160px}.practice{padding:16px}.practice-title h2{font-size:32px}.flag-path{gap:20px}.flag-path div{font-size:60px}.steps{display:block}.steps>i{display:block;text-align:center;line-height:.55}.steps article{margin:9px 0}.idea{margin-top:13px}.cta{flex-wrap:wrap}.cta button{margin:0;width:100%}}
+/* Cartoes da pagina de paises */
+.country-card .card-flag{position:relative;height:170px;padding:0;font-size:0;line-height:1}
+.country-card .country-flag-image{display:block;width:100%;height:105px;object-fit:cover;border-radius:15px;box-shadow:0 3px 7px #38204935}
+.country-card .country-flag-image-emoji{display:flex;align-items:center;justify-content:center;width:100%;height:105px;border-radius:15px;background:#ffffff70;font-size:82px}
+.country-card .card-coin{position:absolute;left:14px;top:94px;font-size:72px;filter:drop-shadow(0 3px 2px #80522955)}
+/* Composicao compacta das bandeiras, como nos cartoes de referencia */
+.country-card .card-flag{height:68px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.country-card .country-flag-image{width:112px;height:64px;flex:0 0 112px;border-radius:12px}
+.country-card .country-flag-image-emoji{width:112px;height:64px;flex:0 0 112px;border-radius:12px;font-size:48px}
+.country-card .card-coin{position:static;font-size:55px;line-height:.9;filter:drop-shadow(0 3px 2px #80522955)}
+.country-card h2{font-size:31px;margin:7px 0 0}
+.country-card .region{font-size:16px;margin:0 0 8px}
+.country-card p{font-size:15px;margin:5px 0}
+.country-card code{padding:4px 11px;font-size:18px}
+.country-card button{height:37px;font-size:20px;margin-top:6px}
+.result .daily-rate{margin:4px 0 0;font-size:16px;color:#24704c;font-weight:800}
+.currency-box{position:relative}.currency-box::after{content:"";position:absolute;left:14px;bottom:20px;width:44px;height:30px;border-radius:8px;background-image:var(--selected-flag);background-size:cover;background-position:center;box-shadow:0 2px 4px #38204935;pointer-events:none}.currency-box select{padding-left:70px}
+.currency-box::after{display:none}.selected-currency-flag{position:absolute;left:14px;bottom:20px;width:44px;height:30px;z-index:2;object-fit:cover;border-radius:8px;box-shadow:0 2px 4px #38204935;pointer-events:none}.currency-box select{position:relative;padding-left:70px}
+.swap{transition:scale .18s ease,filter .18s ease,box-shadow .18s ease}.swap.is-swapping{animation:swap-pulse .48s ease}@keyframes swap-pulse{0%{scale:1;filter:none}35%{scale:.86;filter:hue-rotate(22deg) saturate(1.35)}70%{scale:1.08;filter:drop-shadow(0 7px 7px #7952d555)}100%{scale:1;filter:none}}@media(prefers-reduced-motion:reduce){.swap{transition:none}.swap.is-swapping{animation:none}}
+.quote-card{display:grid;grid-template-columns:82px 1fr auto;align-items:center;gap:18px;margin-top:16px;padding:14px 18px;border:1px solid #eadfff;border-radius:20px;background:linear-gradient(110deg,#f8f4ff,#eee5ff);box-shadow:inset 0 1px #fff,var(--shadow)}.quote-icon{display:grid;place-items:center;width:68px;height:68px;border-radius:17px;background:#e3d6ff;color:#7445d5;font-size:48px;line-height:1}.quote-card small{display:block;font-size:16px}.quote-card strong{display:block;font:900 28px 'Baloo 2';line-height:1.1}.quote-card p{margin:1px 0 0;font-size:17px;color:#5d5867}.quote-card> b{align-self:start;margin-top:2px;padding:8px 13px;border-radius:12px;background:#e8c8ff;color:#9b2cae;font-size:14px;white-space:nowrap}@media(max-width:700px){.quote-card{grid-template-columns:58px 1fr;padding:12px;gap:11px}.quote-icon{width:52px;height:52px;font-size:37px}.quote-card strong{font-size:21px}.quote-card> b{grid-column:2;margin-top:0;justify-self:start}.quote-card p{font-size:14px}}
+/* Pagina inicial */
+.start-hero{display:grid;grid-template-columns:1.25fr .75fr;min-height:228px;padding:23px 28px;border-radius:25px;background:linear-gradient(110deg,#ffe5f3,#f3dfff);box-shadow:var(--shadow);overflow:hidden}
+.start-hero h2{font-size:44px}.start-hero p{max-width:490px;margin:7px 0 15px;font-size:21px}.start-hero button,.start-learn button{border:0;border-radius:16px;padding:12px 23px;background:linear-gradient(#a875f4,#7445d5);color:#fff;font:800 23px 'Baloo 2';box-shadow:var(--shadow);cursor:pointer}.start-hero .start-outline{margin-left:9px;background:#fff;color:#32265b;text-shadow:none}.travel-art{position:relative;min-height:170px}.travel-art b{position:absolute;right:68px;top:4px;font-size:150px;filter:drop-shadow(0 4px 4px #66466345)}.travel-art span{position:absolute;left:0;top:42px;font-size:72px;z-index:1}.travel-art i{position:absolute;right:8px;top:15px;font-style:normal;font-size:54px}.start-content{display:grid;grid-template-columns:1fr 255px;gap:16px;margin-top:16px}.start-currencies h2{font-size:35px}.start-currencies>p{margin:0 0 8px;font-size:17px}.start-country-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.start-country-grid button{min-height:94px;border:0;border-radius:16px;padding:9px 12px;text-align:left;background:var(--start-card);box-shadow:var(--shadow);cursor:pointer;color:var(--ink)}.start-country-grid button:nth-child(1){--start-card:#e1f9e8}.start-country-grid button:nth-child(2),.start-country-grid button:nth-child(6){--start-card:#ffe3ed}.start-country-grid button:nth-child(3){--start-card:#e8e0ff}.start-country-grid button:nth-child(4){--start-card:#e0f0ff}.start-country-grid button:nth-child(5){--start-card:#fff1d4}.start-country-grid img{float:left;width:68px;height:38px;object-fit:cover;border-radius:8px;margin:0 8px 4px 0}.start-country-grid b,.start-country-grid span{display:block}.start-country-grid b{font-size:17px}.start-country-grid span{font-size:13px}.start-learn{border-radius:22px;padding:21px;background:#dceeff;box-shadow:var(--shadow)}.start-learn h2{font-size:32px}.start-learn div{border-top:1px solid #9cb5d0;margin:12px 0}.start-learn p{font-size:16px;line-height:1.2}.start-learn button{width:100%;font-size:17px;background:#fff;color:#6d43c9;text-shadow:none}.journey{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:15px;padding:13px 23px;border-radius:20px;background:#e3faec;box-shadow:var(--shadow)}.journey h2{font-size:28px}.journey p{margin:2px 0;font-size:14px}.journey ol{display:flex;gap:20px;padding:0;margin:0;list-style:none;font-size:14px}.journey li{max-width:105px}@media(max-width:700px){.start-hero,.start-content{display:block}.start-hero h2{font-size:35px}.travel-art{display:none}.start-hero .start-outline{margin:10px 0 0}.start-learn{margin-top:14px}.start-country-grid{grid-template-columns:repeat(2,1fr)}.journey{display:block}.journey ol{margin-top:10px;gap:8px}}
+
+/* ==========================================================
+   SESSÃO DE ALUNOS & EQUIPE DO PROJETO (UX/UI COM FORÇA TOTAL)
+   ========================================================== */
+
+/* Widget da Sidebar */
+.sidebar-team-pill {
+  margin: 16px 0 8px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  border: 2px solid rgba(137, 86, 223, 0.25);
+  border-radius: 20px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(101, 68, 118, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.sidebar-team-pill:hover {
+  transform: translateY(-2px);
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(101, 68, 118, 0.2);
+  border-color: #8956df;
+}
+.sidebar-team-avatars {
+  display: flex;
+  margin-right: -4px;
+}
+.mini-chip {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  font: 800 11px 'Baloo 2', cursive;
+  color: #fff;
+  border: 2px solid #fff;
+  margin-left: -8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease;
+}
+.mini-chip:first-child {
+  margin-left: 0;
+}
+.sidebar-team-pill:hover .mini-chip {
+  transform: scale(1.1);
+}
+.mini-chip.bm { background: linear-gradient(135deg, #10b981, #059669); }
+.mini-chip.ph { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.mini-chip.pl { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+
+.sidebar-team-text {
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-team-text strong {
+  font-size: 13px;
+  color: #3b205a;
+  line-height: 1.15;
+}
+.sidebar-team-text span {
+  font-size: 11px;
+  color: #7952db;
+  font-weight: 700;
+}
+
+/* Seção de Autores na Página Inicial (start-page) */
+.start-authors-section {
+  margin-top: 24px;
+  background: linear-gradient(135deg, #fefbfe, #f4edff);
+  border: 1px solid #ebdfff;
+  border-radius: 25px;
+  padding: 24px 28px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.start-authors-section::before {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(169, 117, 243, 0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.authors-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.badge-pill {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 800;
+  color: #7952db;
+  background: #ecdfff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+}
+.authors-title-wrap h2 {
+  font-size: 32px;
+  color: #2b1846;
+  margin: 0;
+}
+.authors-title-wrap p {
+  font-size: 16px;
+  color: #55446e;
+  margin: 4px 0 0;
+}
+.authors-see-all-btn {
+  border: 0;
+  border-radius: 16px;
+  padding: 11px 22px;
+  background: linear-gradient(135deg, #a875f4, #7445d5);
+  color: #fff;
+  font: 800 17px 'Baloo 2', cursive;
+  box-shadow: 0 4px 10px rgba(116, 69, 213, 0.3);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.authors-see-all-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(116, 69, 213, 0.4);
+}
+
+.authors-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.author-summary-card {
+  border-radius: 20px;
+  padding: 18px 20px;
+  background: #ffffff;
+  border: 1px solid #ebdfff;
+  box-shadow: 0 4px 10px rgba(74, 36, 110, 0.06);
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.author-summary-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(74, 36, 110, 0.14);
+}
+.author-summary-card.bm-theme:hover { border-color: #10b981; }
+.author-summary-card.ph-theme:hover { border-color: #f59e0b; }
+.author-summary-card.pl-theme:hover { border-color: #8b5cf6; }
+
+.author-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.author-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  font: 800 19px 'Baloo 2', cursive;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+}
+.bm-theme .author-avatar { background: linear-gradient(135deg, #10b981, #059669); }
+.ph-theme .author-avatar { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.pl-theme .author-avatar { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+
+.avatar-icon {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  font-size: 16px;
+  font-style: normal;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+}
+.author-tag {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+.bm-theme .author-tag { background: #d1fae5; color: #065f46; }
+.ph-theme .author-tag { background: #fef3c7; color: #92400e; }
+.pl-theme .author-tag { background: #ede9fe; color: #5b21b6; }
+
+.author-summary-card h3 {
+  font-size: 21px;
+  line-height: 1.15;
+  margin: 0 0 6px;
+  color: #1f1435;
+}
+.author-summary-card h3 small {
+  font-size: 15px;
+  font-weight: 700;
+  color: #63527b;
+  display: block;
+}
+.author-summary-card p {
+  font-size: 13px;
+  color: #554868;
+  line-height: 1.35;
+  margin: 0 0 12px;
+  flex: 1;
+}
+.author-fav {
+  background: #fbf9ff;
+  border: 1px solid #f0e6ff;
+  border-radius: 12px;
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+.author-fav span { color: #76648e; }
+.author-fav b { color: #281745; font-size: 13px; }
+
+/* Página de Alunos (team-page) */
+.team-hero-pill {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 800;
+  color: #6d28d9;
+  background: #ede9fe;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+}
+.team-banner {
+  background: linear-gradient(135deg, #f5efff, #ffe8f2);
+  border-radius: 26px;
+  padding: 26px 32px;
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.team-banner-info h2 {
+  font-size: 30px;
+  color: #3b1762;
+  margin: 0 0 8px;
+}
+.team-banner-info p {
+  font-size: 18px;
+  color: #4a365f;
+  margin: 0 0 18px;
+  max-width: 680px;
+  line-height: 1.35;
+}
+.team-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+.stat-item b {
+  font: 900 32px 'Baloo 2', cursive;
+  color: #7445d5;
+  line-height: 1;
+}
+.stat-item span {
+  font-size: 13px;
+  color: #67557d;
+  font-weight: 700;
+}
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: #d6c6e8;
+}
+.team-banner-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.floating-badge {
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 800;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.06);
+  white-space: nowrap;
+  animation: floatBadge 3.5s ease-in-out infinite alternate;
+}
+.badge-1 { background: #dcfce7; color: #166534; animation-delay: 0s; }
+.badge-2 { background: #fef3c7; color: #92400e; animation-delay: 1.2s; }
+.badge-3 { background: #ede9fe; color: #6b21a8; animation-delay: 2.4s; }
+
+@keyframes floatBadge {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-6px); }
+}
+
+/* Grid Principal de Alunos */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.team-card {
+  border-radius: 26px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #ebdfff;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.team-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 28px rgba(74, 36, 110, 0.14);
+}
+.bm-card { border-top: 6px solid #10b981; }
+.ph-card { border-top: 6px solid #f59e0b; }
+.pl-card { border-top: 6px solid #8b5cf6; }
+
+.team-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.avatar-wrapper {
+  position: relative;
+  flex: 0 0 68px;
+}
+.avatar-large {
+  width: 68px;
+  height: 68px;
+  border-radius: 22px;
+  display: grid;
+  place-items: center;
+  font: 900 28px 'Baloo 2', cursive;
+  color: #fff;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.14);
+}
+.bm-avatar { background: linear-gradient(135deg, #10b981, #047857); }
+.ph-avatar { background: linear-gradient(135deg, #f59e0b, #b45309); }
+.pl-avatar { background: linear-gradient(135deg, #8b5cf6, #5b21b6); }
+
+.avatar-badge {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  font-size: 20px;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+}
+.student-id {
+  flex: 1;
+}
+.role-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  margin-bottom: 6px;
+}
+.bm-card .role-badge { background: #d1fae5; color: #065f46; }
+.ph-card .role-badge { background: #fef3c7; color: #92400e; }
+.pl-card .role-badge { background: #ede9fe; color: #5b21b6; }
+
+.student-id h2 {
+  font-size: 23px;
+  line-height: 1.15;
+  color: #1d1233;
+  margin: 0 0 4px;
+  word-break: break-word;
+}
+.student-title {
+  font-size: 13px;
+  color: #796694;
+  font-weight: 700;
+  display: block;
+}
+
+.team-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.student-bio {
+  font-size: 15px;
+  line-height: 1.4;
+  color: #4b3d61;
+  margin: 0 0 16px;
+  flex: 1;
+}
+.student-highlights {
+  background: #fbf9ff;
+  border: 1px solid #ebdfff;
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hl-icon {
+  font-size: 20px;
+}
+.highlight-item div strong {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #83729e;
+}
+.highlight-item div span {
+  font-size: 14px;
+  font-weight: 800;
+  color: #291844;
+}
+
+.student-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+.btn-fav-currency {
+  border: 0;
+  border-radius: 14px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #a875f4, #7445d5);
+  color: #fff;
+  font: 800 14px 'Baloo 2', cursive;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(116, 69, 213, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: transform 0.16s ease, filter 0.16s ease;
+}
+.btn-fav-currency:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+.btn-applause {
+  border: 1px solid #ebdcf5;
+  border-radius: 14px;
+  padding: 8px 14px;
+  background: #fdf8ff;
+  color: #632ea6;
+  font: 800 13px Nunito, sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: transform 0.15s ease, background 0.15s ease;
+  position: relative;
+}
+.btn-applause:hover {
+  transform: scale(1.05);
+  background: #f5e9ff;
+}
+.btn-applause.is-applauding {
+  animation: applausePulse 0.35s ease;
+}
+@keyframes applausePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2) rotate(-3deg); }
+  100% { transform: scale(1); }
+}
+.applause-icon { font-size: 17px; }
+.applause-count {
+  background: #ede0ff;
+  color: #652ea9;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-weight: 900;
+}
+.applause-label { font-size: 12px; }
+
+/* Partículas de Aplausos */
+.applause-particle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 24px;
+  z-index: 9999;
+  animation: floatUpAndFade 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+@keyframes floatUpAndFade {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, -65px) scale(1.3);
+  }
+}
+
+/* Manifesto dos Alunos */
+.team-manifesto {
+  background: linear-gradient(135deg, #eaf5ff, #f2efff);
+  border-radius: 22px;
+  padding: 20px 26px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.manifesto-icon {
+  font-size: 48px;
+}
+.manifesto-content h3 {
+  font-size: 24px;
+  margin: 0 0 6px;
+  color: #2b1c55;
+}
+.manifesto-content p {
+  font-size: 16px;
+  line-height: 1.35;
+  color: #433560;
+  margin: 0 0 10px;
+}
+.manifesto-signatures {
+  display: flex;
+  gap: 14px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #6c41b8;
+}
+
+/* Footer Aprimorado */
+.app-footer {
+  margin-top: 30px;
+  border-top: 1px solid #ebdfff;
+  padding: 20px 10px 10px;
+  text-align: center;
+}
+.footer-inner {
+  max-width: 900px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.footer-badge-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.school-pill {
+  background: #ede9fe;
+  color: #5b21b6;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+.edu-note {
+  font-size: 13px;
+  color: #796694;
+}
+.footer-credits {
+  font-size: 15px;
+  color: #3b2c55;
+  margin: 4px 0 0;
+  line-height: 1.4;
+}
+.footer-student-link {
+  background: transparent;
+  border: 0;
+  color: #6d28d9;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0 2px;
+  text-decoration: underline;
+  text-decoration-color: #c4b5fd;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+.footer-student-link:hover {
+  color: #4c1d95;
+  text-decoration-color: #6d28d9;
+}
+
+/* Responsividade para Alunos & Equipe */
+@media (max-width: 1050px) {
+  .authors-cards-grid,
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+  .team-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+@media (max-width: 700px) {
+  .authors-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .authors-see-all-btn {
+    width: 100%;
+  }
+  .team-stats-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .stat-divider {
+    display: none;
+  }
+  .student-actions {
+    grid-template-columns: 1fr;
+  }
+  .team-manifesto {
+    flex-direction: column;
+    text-align: center;
+  }
+  .manifesto-signatures {
+    justify-content: center;
+  }
+}
+
+/* Realce dos Mini Cards de Moedas Convertidas */
+.mini {
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  border: 2px solid transparent;
+  position: relative;
+}
+.mini:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(74, 36, 110, 0.16);
+}
+.mini.mini-active-target {
+  border-color: #8956df;
+  box-shadow: 0 0 14px rgba(137, 86, 223, 0.4);
+  transform: translateY(-2px) scale(1.02);
+}
+.mini-target-badge {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, #a875f4, #7445d5);
+  padding: 3px 8px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(116, 69, 213, 0.25);
+}
+
+/* Nomes das Moedas no Resultado e na Cotacao */
+.dest-currency-badge {
+  display: block;
+  font-size: 26px;
+  font-weight: 800;
+  font-family: Nunito, sans-serif;
+  color: #065f46;
+  background: #c3f5d5;
+  border: 1.5px solid #86efac;
+  padding: 2px 14px;
+  border-radius: 14px;
+  vertical-align: middle;
+  margin: 6px 0 0;
+  width: fit-content;
+  line-height: 1.25;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+}
+.quote-curr-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #58269e;
+  background: #eedfff;
+  padding: 2px 8px;
+  border-radius: 8px;
+  margin: 0 3px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 1.2;
+}
+#equation {
+  font-size: 22px;
+  font-weight: 700;
+  color: #174d39;
+  line-height: 1.35;
+}
+#equation b {
+  font-weight: 900;
+  color: #033c2a;
+}
+@media (max-width: 700px) {
+  .dest-currency-badge {
+    display: block;
+    margin: 8px 0 0 0;
+    font-size: 18px;
+    width: fit-content;
+  }
+}
