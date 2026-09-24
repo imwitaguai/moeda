@@ -1,36 +1,397 @@
-const currencies={
-BRL:{country:'Brasil',flag:'\u{1F1E7}\u{1F1F7}',image:'flag1.png',name:'Real',capital:'Bras\u00edlia',region:'Am\u00e9rica do Sul',symbol:'R$',perBRL:1,color:'#e0f9e8'},
-MXN:{country:'M\u00e9xico',flag:'\u{1F1F2}\u{1F1FD}',image:'flag2.png',name:'Peso mexicano',capital:'Cidade do M\u00e9xico',region:'Am\u00e9rica do Norte',symbol:'$',perBRL:3.5,color:'#ffe2ec'},
-ARS:{country:'Argentina',flag:'\u{1F1E6}\u{1F1F7}',image:'flag3.png',name:'Peso argentino',capital:'Buenos Aires',region:'Am\u00e9rica do Sul',symbol:'$',perBRL:200,color:'#e9dfff'},
-USD:{country:'Estados Unidos',flag:'\u{1F1FA}\u{1F1F8}',image:'flag4.png',name:'D\u00f3lar americano',capital:'Washington, D.C.',region:'Am\u00e9rica do Norte',symbol:'US$',perBRL:.2,color:'#dfefff'},
-CAD:{country:'Canad\u00e1',flag:'\u{1F1E8}\u{1F1E6}',image:'flag5.png',name:'D\u00f3lar canadense',capital:'Ottawa',region:'Am\u00e9rica do Norte',symbol:'C$',perBRL:.27,color:'#fff0d2'},
-CLP:{country:'Chile',flag:'\u{1F1E8}\u{1F1F1}',image:'flag6.png',name:'Peso chileno',capital:'Santiago',region:'Am\u00e9rica do Sul',symbol:'$',perBRL:180,color:'#ffe0e9'},
-EGP:{country:'Egito',flag:'\u{1F1EA}\u{1F1EC}',image:'egito.png',name:'Libra eg\u00edpcia',capital:'Cairo',region:'\u00c1frica',symbol:'E£',perBRL:9,color:'#fff0d2'},
-JPY:{country:'Jap\u00e3o',flag:'\u{1F1EF}\u{1F1F5}',image:'japan.png',name:'Iene japon\u00eas',capital:'T\u00f3quio',region:'\u00c1sia',symbol:'¥',perBRL:30,color:'#e9dfff'},
-EUR:{country:'Fran\u00e7a',flag:'\u{1F1EB}\u{1F1F7}',image:'france.png',name:'Euro',capital:'Paris',region:'Europa',symbol:'€',perBRL:.16,color:'#dfefff'},
-AUD:{country:'Austr\u00e1lia',flag:'\u{1F1E6}\u{1F1FA}',image:'australia.png',name:'D\u00f3lar australiano',capital:'Canberra',region:'Oceania',symbol:'A$',perBRL:.27,color:'#e0f9e8'},
-GBP:{country:'Reino Unido',flag:'\u{1F1EC}\u{1F1E7}',image:'reino.png',name:'Libra esterlina',capital:'Londres',region:'Europa',symbol:'£',perBRL:.14,color:'#e6e0ff'},
-ANT:{country:'Ant\u00e1rtida',flag:'\u{1F1E6}\u{1F1F6}',name:'N\u00e3o possui moeda oficial',capital:'N\u00e3o possui capital',region:'Ant\u00e1rtida',symbol:'—',color:'#e6f6ff',convertible:false}};
-const amount=document.querySelector('#amount'),from=document.querySelector('#from'),to=document.querySelector('#to'),coin='&#x1FA99;';let usingLiveRates=false;
-const fmt=n=>n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
-function options(select,chosen){select.innerHTML=Object.entries(currencies).filter(([,c])=>c.convertible!==false).map(([code,c])=>`<option value="${code}" ${code===chosen?'selected':''}>${c.country} &middot; ${code}</option>`).join('')}
-function updateSelectFlag(select){const currency=currencies[select.value],box=select.parentElement;let flag=box.querySelector('.selected-currency-flag');if(!flag){flag=document.createElement('img');flag.className='selected-currency-flag';box.insertBefore(flag,select)}flag.src=currency.image;flag.alt=`Bandeira do ${currency.country}`}
-function updateQuote(origin,dest,originCode,destCode,unitRate){let card=document.querySelector('#quote-card');if(!card){card=document.createElement('section');card.id='quote-card';card.className='quote-card';card.innerHTML='<span class="quote-icon">⇆</span><div><small>Cotação utilizada</small><strong id="quote-primary"></strong><p id="quote-secondary"></p></div><b id="quote-badge"></b>';document.querySelector('.convert-button').before(card)}document.querySelector('#quote-primary').innerHTML=`${dest.symbol} 1,00 <span class="quote-curr-name">${dest.name}</span> = ${origin.symbol} ${fmt(1/unitRate)} <span class="quote-curr-name">${origin.name}</span>`;document.querySelector('#quote-secondary').innerHTML=`${origin.symbol} 1,00 <span class="quote-curr-name">${origin.name}</span> = ${dest.symbol} ${fmt(unitRate)} <span class="quote-curr-name">${dest.name}</span>`;document.querySelector('#quote-badge').textContent=usingLiveRates?'Cotação do dia':'Taxa fictícia';card.setAttribute('aria-label',`Cotação: 1 ${dest.name} equivale a ${fmt(1/unitRate)} ${origin.name}`)}
-function convert(){const origin=currencies[from.value],dest=currencies[to.value],input=Math.max(0,Number(amount.value)||0),value=input/origin.perBRL*dest.perBRL,unitRate=dest.perBRL/origin.perBRL;updateSelectFlag(from);updateSelectFlag(to);updateQuote(origin,dest,from.value,to.value,unitRate);document.querySelector('#input-symbol').textContent=origin.symbol;document.querySelector('#converted').innerHTML=`${fmt(value)} <small>${to.value}</small> <span class="dest-currency-badge">${dest.name}</span>`;document.querySelector('#equation').innerHTML=`<b>${fmt(input)} ${origin.name} (${from.value})</b> = <b>${fmt(value)} ${dest.name} (${to.value})</b>`;let dailyRate=document.querySelector('#daily-rate');if(!dailyRate){dailyRate=document.createElement('p');dailyRate.id='daily-rate';dailyRate.className='daily-rate';document.querySelector('#equation').after(dailyRate)}dailyRate.textContent=usingLiveRates?'Conversão calculada com a cotação do dia.':'Valores ilustrativos para fins escolares.';miniCards();}
-function go(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelector(`#${page}-page`).classList.add('active');document.querySelectorAll('.menu button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));window.scrollTo({top:0,behavior:'smooth'})}
-function flagMarkup(c,className){return c.image?`<img class="${className}" src="${c.image}" alt="Bandeira do ${c.country}">`:`<span class="${className}-emoji">${c.flag}</span>`}
-function countryGrid(){document.querySelector('#country-grid').innerHTML=Object.entries(currencies).map(([code,c])=>`<article class="country-card" data-region="${c.region}" style="--card:${c.color}"><div class="card-flag">${flagMarkup(c,'country-flag-image')}<span class="card-coin">${c.convertible===false?'🧊':coin}</span></div><h2>${c.country}</h2><p class="region">${c.region}</p><p>${coin} &nbsp; Moeda: <b>${c.name}</b><code>${c.convertible===false?'—':code}</code></p><p>&#x1F4CD; &nbsp; Capital: <b>${c.capital}</b></p>${c.convertible===false?'<button type="button" disabled>Sem moeda oficial</button>':`<button data-convert="${code}">Converter &nbsp; &#10140;</button>`}</article>`).join('')}
-function miniCards(){const origin=currencies[from.value]||currencies['BRL'],destCode=to.value,input=Math.max(0,Number(amount.value)||0);const titleEl=document.querySelector('#mini-title'),descEl=document.querySelector('#mini-desc');if(titleEl)titleEl.innerHTML=`${origin.country} &times; outros pa&iacute;ses`;if(descEl)descEl.textContent=`Conversão automática de ${origin.symbol} ${fmt(input)} (${from.value}) para as demais moedas:`;const miniList=document.querySelector('#mini-list');if(!miniList)return;miniList.innerHTML=Object.entries(currencies).filter(([code,c])=>code!==from.value&&c.convertible!==false).map(([code,c])=>{const convertedVal=(input/origin.perBRL)*c.perBRL;const isSelected=code===destCode;return `<article class="mini ${isSelected?'mini-active-target':''}" style="--card:${c.color}" onclick="selectDestinationCurrency('${code}')" title="Clique para definir ${c.name} como moeda de destino">${isSelected?'<span class="mini-target-badge">🎯 Moeda Selecionada</span>':''}<h3>${origin.country} &times; ${c.country}</h3><div class="mini-info">${c.image?flagMarkup(c,'mini-flag-image'):`<span class="mini-flag-emoji">${c.flag}</span>`}<span class="mini-currency">${c.name} &middot; ${code}</span></div><strong>${coin} ${fmt(convertedVal)} ${code}</strong></article>`}).join('')}
-function selectDestinationCurrency(code){if(currencies[code]&&currencies[code].convertible!==false&&code!==from.value){to.value=code;convert();}}
-function swapCurrencies(){const button=document.querySelector('.swap');[from.value,to.value]=[to.value,from.value];button.classList.remove('is-swapping');void button.offsetWidth;button.classList.add('is-swapping');convert()}
-async function loadLiveRates(){try{const response=await fetch('/.netlify/functions/rates?base=BRL');if(!response.ok)throw new Error();const payload=await response.json();Object.entries(payload.rates).forEach(([code,rate])=>{if(currencies[code]&&currencies[code].convertible!==false&&typeof rate==='number')currencies[code].perBRL=rate});usingLiveRates=true;convert();miniCards();countryGrid();bindCountryButtons();}catch{ /* Mantem as taxas educativas quando a Function nao estiver configurada. */ }}
-function bindCountryButtons(){document.querySelectorAll('[data-convert]').forEach(button=>button.addEventListener('click',()=>{from.value='BRL';to.value=button.dataset.convert;convert();go('home')}))}
-options(from,'BRL');options(to,'BRL');countryGrid();miniCards();convert();bindCountryButtons();
-[amount,from,to].forEach(x=>{x.addEventListener('input',convert);x.addEventListener('change',convert)});document.querySelector('.convert-button').addEventListener('click',convert);document.querySelector('.swap').addEventListener('click',swapCurrencies);document.querySelector('.swap').addEventListener('animationend',event=>event.currentTarget.classList.remove('is-swapping'));document.querySelectorAll('.menu button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));document.querySelector('[data-go-converter]').addEventListener('click',()=>go('home'));document.querySelectorAll('.filters button').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('selected'));button.classList.add('selected');const region=button.dataset.region;document.querySelectorAll('.country-card').forEach(card=>{card.style.display=!region||card.dataset.region===region?'block':'none'})}));loadLiveRates();
+const currencies = {
+  BRL: { country: 'Brasil', flag: '🇧🇷', image: 'flag1.png', name: 'Real', capital: 'Brasília', region: 'América do Sul', symbol: 'R$', perBRL: 1, color: '#e0f9e8' },
+  MXN: { country: 'México', flag: '🇲🇽', image: 'flag2.png', name: 'Peso mexicano', capital: 'Cidade do México', region: 'América do Norte', symbol: '$', perBRL: 3.5, color: '#ffe2ec' },
+  ARS: { country: 'Argentina', flag: '🇦🇷', image: 'flag3.png', name: 'Peso argentino', capital: 'Buenos Aires', region: 'América do Sul', symbol: '$', perBRL: 200, color: '#e9dfff' },
+  USD: { country: 'Estados Unidos', flag: '🇺🇸', image: 'flag4.png', name: 'Dólar americano', capital: 'Washington, D.C.', region: 'América do Norte', symbol: 'US$', perBRL: 0.2, color: '#dfefff' },
+  CAD: { country: 'Canadá', flag: '🇨🇦', image: 'flag5.png', name: 'Dólar canadense', capital: 'Ottawa', region: 'América do Norte', symbol: 'C$', perBRL: 0.27, color: '#fff0d2' },
+  CLP: { country: 'Chile', flag: '🇨🇱', image: 'flag6.png', name: 'Peso chileno', capital: 'Santiago', region: 'América do Sul', symbol: '$', perBRL: 180, color: '#ffe0e9' },
+  EGP: { country: 'Egito', flag: '🇪🇬', image: 'egito.png', name: 'Libra egípcia', capital: 'Cairo', region: 'África', symbol: 'E£', perBRL: 9, color: '#fff0d2' },
+  JPY: { country: 'Japão', flag: '🇯🇵', image: 'japan.png', name: 'Iene japonês', capital: 'Tóquio', region: 'Ásia', symbol: '¥', perBRL: 30, color: '#e9dfff' },
+  EUR: { country: 'França', flag: '🇫🇷', image: 'france.png', name: 'Euro', capital: 'Paris', region: 'Europa', symbol: '€', perBRL: 0.16, color: '#dfefff' },
+  AUD: { country: 'Austrália', flag: '🇦🇺', image: 'australia.png', name: 'Dólar australiano', capital: 'Canberra', region: 'Oceania', symbol: 'A$', perBRL: 0.27, color: '#e0f9e8' },
+  GBP: { country: 'Reino Unido', flag: '🇬🇧', image: 'reino.png', name: 'Libra esterlina', capital: 'Londres', region: 'Europa', symbol: '£', perBRL: 0.14, color: '#e6e0ff' },
+  ANT: { country: 'Antártida', flag: '🇦🇶', name: 'Não possui moeda oficial', capital: 'Não possui capital', region: 'Antártida', symbol: '—', color: '#e6f6ff', convertible: false }
+};
 
-function testCurrency(code){if(currencies[code]&&currencies[code].convertible!==false){from.value='BRL';to.value=code;amount.value=100;convert();go('home');const resultBox=document.querySelector('.result');if(resultBox){resultBox.scrollIntoView({behavior:'smooth',block:'center'});resultBox.style.transition='transform 0.3s ease, box-shadow 0.3s ease';resultBox.style.transform='scale(1.03)';resultBox.style.boxShadow='0 0 25px rgba(116,69,213,0.4)';setTimeout(()=>{resultBox.style.transform='none';resultBox.style.boxShadow='';},800)}}}
+const convertibleCodes = Object.keys(currencies).filter(code => currencies[code].convertible !== false);
+const educationalRates = Object.freeze(Object.fromEntries(convertibleCodes.map(code => [code, currencies[code].perBRL])));
+const amount = document.querySelector('#amount');
+const from = document.querySelector('#from');
+const to = document.querySelector('#to');
+const coin = '&#x1FA99;';
+const rateState = { status: 'loading', liveCodes: new Set(), updatedAtByCode: {} };
+let ratesRequestId = 0;
+let ratesAbortController;
 
-function applaudStudent(id,button){const countEl=document.querySelector(`#count-${id}`);if(countEl){let current=parseInt(countEl.textContent,10)||0;countEl.textContent=current+1;}if(button){button.classList.add('is-applauding');setTimeout(()=>button.classList.remove('is-applauding'),350);const emojis=['👏','⭐','🪙','🎉','💖','✨'];for(let i=0;i<5;i++){const p=document.createElement('span');p.className='applause-particle';p.textContent=emojis[Math.floor(Math.random()*emojis.length)];const rect=button.getBoundingClientRect();const x=rect.left+rect.width/2+(Math.random()*50-25);const y=rect.top+window.scrollY+(Math.random()*20-10);p.style.left=`${x}px`;p.style.top=`${y}px`;document.body.appendChild(p);setTimeout(()=>p.remove(),950);}}}
+const fmt = value => value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const isValidRate = value => typeof value === 'number' && Number.isFinite(value) && value >= 1e-9 && value <= 1e12;
 
-window.go=go;window.testCurrency=testCurrency;window.applaudStudent=applaudStudent;
+function options(select, chosen) {
+  select.innerHTML = Object.entries(currencies)
+    .filter(([, currency]) => currency.convertible !== false)
+    .map(([code, currency]) => `<option value="${code}" ${code === chosen ? 'selected' : ''}>${currency.country} &middot; ${code}</option>`)
+    .join('');
+}
+
+function updateSelectFlag(select) {
+  const currency = currencies[select.value];
+  const box = select.parentElement;
+  let flag = box.querySelector('.selected-currency-flag');
+  if (!flag) {
+    flag = document.createElement('img');
+    flag.className = 'selected-currency-flag';
+    box.insertBefore(flag, select);
+  }
+  flag.src = currency.image;
+  flag.alt = `Bandeira do ${currency.country}`;
+}
+
+function getPairRateState(originCode, destinationCode) {
+  if (originCode === destinationCode) return { kind: 'neutral' };
+  if (rateState.status === 'loading') return { kind: 'loading' };
+
+  const foreignCodes = [...new Set([originCode, destinationCode].filter(code => code !== 'BRL'))];
+  const isLive = foreignCodes.length > 0 && foreignCodes.every(code => rateState.liveCodes.has(code));
+  if (isLive) {
+    const timestamps = foreignCodes.map(code => new Date(rateState.updatedAtByCode[code]).getTime());
+    return { kind: 'live', updatedAt: new Date(Math.min(...timestamps)) };
+  }
+  return { kind: rateState.status === 'error' ? 'error' : 'fallback' };
+}
+
+function rateCopy(pairState) {
+  if (pairState.kind === 'live') {
+    const updated = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(pairState.updatedAt);
+    return {
+      summary: '📈 Mercado · Cotação real',
+      badge: 'Cotação real',
+      detail: `AwesomeAPI · atualizada em ${updated}`,
+      daily: `Conversão calculada com cotação de mercado atualizada em ${updated}.`,
+      footer: 'Conversor usando cotação de mercado da AwesomeAPI'
+    };
+  }
+  if (pairState.kind === 'neutral') {
+    return {
+      summary: '↔️ Selecione moedas diferentes', badge: 'Mesma moeda', detail: 'Sem conversão de mercado',
+      daily: 'Escolha moedas diferentes para fazer uma conversão.', footer: 'Selecione moedas diferentes para consultar o mercado'
+    };
+  }
+  if (pairState.kind === 'loading') {
+    return {
+      summary: '⏳ Carregando cotação...', badge: 'Carregando...', detail: 'Consultando o mercado',
+      daily: 'Consultando a cotação atual...', footer: 'Aguardando fonte da cotação do conversor'
+    };
+  }
+  return {
+    summary: pairState.kind === 'error' ? '⚠️ Mercado indisponível' : '🎓 Modo educativo',
+    badge: 'Taxa educativa temporária',
+    detail: pairState.kind === 'error' ? 'Não foi possível atualizar agora' : 'Par sem cotação disponível',
+    daily: 'Taxa educativa temporária; tente atualizar para consultar o mercado.',
+    footer: 'Conversor em modo educativo temporário'
+  };
+}
+
+function updateRateSurfaces(pairState) {
+  const copy = rateCopy(pairState);
+  const summary = document.querySelector('#rate-status-summary');
+  const badge = document.querySelector('#quote-badge');
+  const updated = document.querySelector('#quote-updated');
+  const retry = document.querySelector('#rate-retry');
+  const footer = document.querySelector('.edu-note');
+  if (summary) summary.textContent = copy.summary;
+  if (badge) badge.textContent = copy.badge;
+  if (updated) updated.textContent = copy.detail;
+  if (retry) retry.hidden = pairState.kind !== 'error';
+  if (footer) footer.textContent = copy.footer;
+  document.querySelector('#quote-card')?.setAttribute('data-rate-state', pairState.kind);
+  return copy;
+}
+
+function updateQuote(origin, destination, originCode, destinationCode, unitRate) {
+  let card = document.querySelector('#quote-card');
+  if (!card) {
+    card = document.createElement('section');
+    card.id = 'quote-card';
+    card.className = 'quote-card';
+    card.innerHTML = '<span class="quote-icon">⇆</span><div class="quote-copy"><small>Cotação utilizada</small><strong id="quote-primary"></strong><p id="quote-secondary"></p><small id="quote-updated"></small></div><div class="quote-actions"><b id="quote-badge"></b><button id="rate-retry" type="button" hidden>Tentar novamente</button></div><svg class="quote-sombrero" viewBox="0 0 90 55" aria-hidden="true"><ellipse cx="45" cy="40" rx="42" ry="12" fill="#e0b979" stroke="#c9973f" stroke-width="2"/><path d="M20 40 Q22 14 45 12 Q68 14 70 40 Z" fill="#e6c68a"/><rect x="20" y="30" width="50" height="7" rx="3" fill="#ce1126"/><circle cx="45" cy="14" r="3" fill="#a3111f"/></svg>';
+    document.querySelector('.convert-button').before(card);
+    document.querySelector('#rate-retry').addEventListener('click', loadLiveRates);
+  }
+  document.querySelector('#quote-primary').innerHTML = `${destination.symbol} 1,00 <span class="quote-curr-name">${destination.name}</span> = ${origin.symbol} ${fmt(1 / unitRate)} <span class="quote-curr-name">${origin.name}</span>`;
+  document.querySelector('#quote-secondary').innerHTML = `${origin.symbol} 1,00 <span class="quote-curr-name">${origin.name}</span> = ${destination.symbol} ${fmt(unitRate)} <span class="quote-curr-name">${destination.name}</span>`;
+  const pairState = getPairRateState(originCode, destinationCode);
+  const copy = updateRateSurfaces(pairState);
+  card.setAttribute('aria-label', `Cotação: 1 ${origin.name} equivale a ${fmt(unitRate)} ${destination.name}. ${copy.badge}.`);
+  return copy;
+}
+
+function convert() {
+  const origin = currencies[from.value];
+  const destination = currencies[to.value];
+  const input = Math.max(0, Number(amount.value) || 0);
+  const value = (input / origin.perBRL) * destination.perBRL;
+  const unitRate = destination.perBRL / origin.perBRL;
+  updateSelectFlag(from);
+  updateSelectFlag(to);
+  const copy = updateQuote(origin, destination, from.value, to.value, unitRate);
+  document.querySelector('#input-symbol').textContent = origin.symbol;
+  document.querySelector('#converted').innerHTML = `${fmt(value)} <small>${to.value}</small> <span class="dest-currency-badge">${destination.name}</span>`;
+  document.querySelector('#equation').innerHTML = `<b>${fmt(input)} ${origin.name} (${from.value})</b> = <b>${fmt(value)} ${destination.name} (${to.value})</b>`;
+  let dailyRate = document.querySelector('#daily-rate');
+  if (!dailyRate) {
+    dailyRate = document.createElement('p');
+    dailyRate.id = 'daily-rate';
+    dailyRate.className = 'daily-rate';
+    document.querySelector('#equation').after(dailyRate);
+  }
+  dailyRate.textContent = copy.daily;
+  miniCards();
+}
+
+function go(page) {
+  document.querySelectorAll('.page').forEach(item => item.classList.remove('active'));
+  document.querySelector(`#${page}-page`).classList.add('active');
+  document.querySelectorAll('.menu button').forEach(button => button.classList.toggle('active', button.dataset.page === page));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function flagMarkup(currency, className) {
+  return currency.image
+    ? `<img class="${className}" src="${currency.image}" alt="Bandeira do ${currency.country}">`
+    : `<span class="${className}-emoji">${currency.flag}</span>`;
+}
+
+function countryGrid() {
+  document.querySelector('#country-grid').innerHTML = Object.entries(currencies).map(([code, currency]) => `<article class="country-card" data-region="${currency.region}" style="--card:${currency.color}"><div class="card-flag">${flagMarkup(currency, 'country-flag-image')}<span class="card-coin">${currency.convertible === false ? '🧊' : coin}</span></div><h2>${currency.country}</h2><p class="region">${currency.region}</p><p>${coin} &nbsp; Moeda: <b>${currency.name}</b><code>${currency.convertible === false ? '—' : code}</code></p><p>📍 &nbsp; Capital: <b>${currency.capital}</b></p>${currency.convertible === false ? '<button type="button" disabled>Sem moeda oficial</button>' : `<button data-convert="${code}">Converter &nbsp; ➜</button>`}</article>`).join('');
+}
+
+function miniCards() {
+  const origin = currencies[from.value] || currencies.BRL;
+  const destinationCode = to.value;
+  const input = Math.max(0, Number(amount.value) || 0);
+  document.querySelector('#mini-title').innerHTML = `${origin.country} &times; outros pa&iacute;ses`;
+  document.querySelector('#mini-desc').textContent = `Conversão automática de ${origin.symbol} ${fmt(input)} (${from.value}) para as demais moedas:`;
+  document.querySelector('#mini-list').innerHTML = Object.entries(currencies)
+    .filter(([code, currency]) => code !== from.value && currency.convertible !== false)
+    .map(([code, currency]) => {
+      const convertedValue = (input / origin.perBRL) * currency.perBRL;
+      const isSelected = code === destinationCode;
+      const state = getPairRateState(from.value, code).kind;
+      const source = state === 'live' ? 'Cotação real' : state === 'loading' ? 'Carregando...' : 'Taxa educativa';
+      return `<article class="mini ${isSelected ? 'mini-active-target' : ''}" style="--card:${currency.color}" onclick="selectDestinationCurrency('${code}')" title="Clique para definir ${currency.name} como moeda de destino">${isSelected ? '<span class="mini-target-badge">🎯 Moeda selecionada</span>' : ''}<span class="mini-rate-source" data-rate-state="${state}">${source}</span><h3>${origin.country} &times; ${currency.country}</h3><div class="mini-info">${currency.image ? flagMarkup(currency, 'mini-flag-image') : `<span class="mini-flag-emoji">${currency.flag}</span>`}<span class="mini-currency">${currency.name} &middot; ${code}</span></div><strong>${coin} ${fmt(convertedValue)} ${code}</strong></article>`;
+    }).join('');
+}
+
+function selectDestinationCurrency(code) {
+  if (currencies[code] && currencies[code].convertible !== false && code !== from.value) {
+    to.value = code;
+    convert();
+  }
+}
+
+function swapCurrencies() {
+  const button = document.querySelector('.swap');
+  [from.value, to.value] = [to.value, from.value];
+  button.classList.remove('is-swapping');
+  void button.offsetWidth;
+  button.classList.add('is-swapping');
+  convert();
+}
+
+function resetToEducationalSnapshot() {
+  for (const code of convertibleCodes) currencies[code].perBRL = educationalRates[code];
+  rateState.liveCodes = new Set();
+  rateState.updatedAtByCode = {};
+}
+
+function parseLiveSnapshot(payload) {
+  if (!payload || payload.base !== 'BRL' || payload.source !== 'AwesomeAPI') return null;
+  if (!payload.rates || payload.rates.BRL !== 1 || !Array.isArray(payload.liveCodes) || !payload.updatedAtByCode) return null;
+
+  const snapshot = { rates: {}, liveCodes: new Set(), updatedAtByCode: {} };
+  for (const code of new Set(payload.liveCodes)) {
+    if (code === 'BRL' || !convertibleCodes.includes(code)) continue;
+    const rate = payload.rates[code];
+    const timestamp = payload.updatedAtByCode[code];
+    const date = typeof timestamp === 'string' ? new Date(timestamp) : null;
+    if (!isValidRate(rate) || !date || Number.isNaN(date.getTime()) || date.toISOString() !== timestamp) continue;
+    snapshot.rates[code] = rate;
+    snapshot.liveCodes.add(code);
+    snapshot.updatedAtByCode[code] = timestamp;
+  }
+  return snapshot.liveCodes.size > 0 ? snapshot : null;
+}
+
+async function loadLiveRates() {
+  const requestId = ++ratesRequestId;
+  ratesAbortController?.abort();
+  ratesAbortController = new AbortController();
+  rateState.status = 'loading';
+  convert();
+
+  try {
+    const response = await fetch('/.netlify/functions/rates?base=BRL', { signal: ratesAbortController.signal });
+    if (!response.ok) throw new Error('rates unavailable');
+    const snapshot = parseLiveSnapshot(await response.json());
+    if (!snapshot) throw new Error('invalid rates');
+    if (requestId !== ratesRequestId) return;
+
+    resetToEducationalSnapshot();
+    for (const code of snapshot.liveCodes) currencies[code].perBRL = snapshot.rates[code];
+    rateState.liveCodes = snapshot.liveCodes;
+    rateState.updatedAtByCode = snapshot.updatedAtByCode;
+    rateState.status = 'ready';
+  } catch (error) {
+    if (error?.name === 'AbortError' || requestId !== ratesRequestId) return;
+    resetToEducationalSnapshot();
+    rateState.status = 'error';
+  }
+  convert();
+}
+
+function bindCountryButtons() {
+  document.querySelectorAll('[data-convert]').forEach(button => button.addEventListener('click', () => {
+    from.value = 'BRL';
+    to.value = button.dataset.convert;
+    convert();
+    go('home');
+  }));
+}
+
+function testCurrency(code) {
+  if (currencies[code] && currencies[code].convertible !== false) {
+    from.value = 'BRL';
+    to.value = code;
+    amount.value = 100;
+    convert();
+    go('home');
+    const resultBox = document.querySelector('.result');
+    if (resultBox) {
+      resultBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      resultBox.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+      resultBox.style.transform = 'scale(1.03)';
+      resultBox.style.boxShadow = '0 0 25px rgba(116,69,213,0.4)';
+      setTimeout(() => { resultBox.style.transform = 'none'; resultBox.style.boxShadow = ''; }, 800);
+    }
+  }
+}
+
+function applaudStudent(id, button) {
+  const countElement = document.querySelector(`#count-${id}`);
+  if (countElement) countElement.textContent = (parseInt(countElement.textContent, 10) || 0) + 1;
+  if (!button) return;
+  button.classList.add('is-applauding');
+  setTimeout(() => button.classList.remove('is-applauding'), 350);
+  const emojis = ['👏', '⭐', '🪙', '🎉', '💖', '✨'];
+  for (let index = 0; index < 5; index += 1) {
+    const particle = document.createElement('span');
+    particle.className = 'applause-particle';
+    particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    const rect = button.getBoundingClientRect();
+    particle.style.left = `${rect.left + rect.width / 2 + (Math.random() * 50 - 25)}px`;
+    particle.style.top = `${rect.top + window.scrollY + (Math.random() * 20 - 10)}px`;
+    document.body.appendChild(particle);
+    setTimeout(() => particle.remove(), 950);
+  }
+}
+
+function appendAssistantMessage(role, text) {
+  const message = document.createElement('div');
+  message.className = `assistant-message assistant-message-${role}`;
+  const icon = document.createElement('span');
+  icon.setAttribute('aria-hidden', 'true');
+  icon.textContent = role === 'bot' ? '🪙' : '🎓';
+  const content = document.createElement('p');
+  content.textContent = text;
+  message.append(icon, content);
+  document.querySelector('#assistant-messages').appendChild(message);
+  message.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function setupAssistant() {
+  const form = document.querySelector('#assistant-form');
+  const input = document.querySelector('#assistant-input');
+  const count = document.querySelector('#assistant-count');
+  const status = document.querySelector('#assistant-status');
+  const submit = form.querySelector('button[type="submit"]');
+  input.addEventListener('input', () => { count.textContent = input.value.length; });
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    const message = input.value.trim();
+    if (!message || message.length > 1000) return;
+
+    appendAssistantMessage('user', message);
+    input.value = '';
+    count.textContent = '0';
+    input.disabled = true;
+    submit.disabled = true;
+    status.textContent = 'O tutor está pensando...';
+    try {
+      const response = await fetch('/.netlify/functions/assistant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message,
+          context: { amount: Math.max(0, Number(amount.value) || 0), from: from.value, to: to.value }
+        })
+      });
+      const payload = await response.json().catch(() => null);
+      if (!response.ok || typeof payload?.reply !== 'string') {
+        if (response.status === 429) throw new Error('Espere um minuto antes de enviar outra pergunta.');
+        throw new Error('O tutor está temporariamente indisponível. Tente novamente.');
+      }
+      appendAssistantMessage('bot', payload.reply);
+      status.textContent = '';
+    } catch (error) {
+      status.textContent = error.message || 'Não foi possível falar com o tutor agora.';
+    } finally {
+      input.disabled = false;
+      submit.disabled = false;
+      input.focus();
+    }
+  });
+}
+
+options(from, 'BRL');
+options(to, 'MXN');
+countryGrid();
+convert();
+bindCountryButtons();
+setupAssistant();
+
+[amount, from, to].forEach(element => {
+  element.addEventListener('input', convert);
+  element.addEventListener('change', convert);
+});
+document.querySelector('.convert-button').addEventListener('click', convert);
+document.querySelector('.swap').addEventListener('click', swapCurrencies);
+document.querySelector('.swap').addEventListener('animationend', event => event.currentTarget.classList.remove('is-swapping'));
+document.querySelectorAll('.menu button').forEach(button => button.addEventListener('click', () => go(button.dataset.page)));
+document.querySelector('[data-go-converter]').addEventListener('click', () => go('home'));
+document.querySelectorAll('.filters button').forEach(button => button.addEventListener('click', () => {
+  document.querySelectorAll('.filters button').forEach(item => item.classList.remove('selected'));
+  button.classList.add('selected');
+  const region = button.dataset.region;
+  document.querySelectorAll('.country-card').forEach(card => { card.style.display = !region || card.dataset.region === region ? 'block' : 'none'; });
+}));
+
+function initThemeToggle() {
+  const toggle = document.querySelector('#theme-toggle');
+  const savedTheme = localStorage.getItem('moedas-theme');
+
+  if (savedTheme === 'mexico') document.body.classList.add('theme-mexico');
+
+  toggle.addEventListener('click', () => {
+    const isMexico = document.body.classList.toggle('theme-mexico');
+    localStorage.setItem('moedas-theme', isMexico ? 'mexico' : 'light');
+  });
+}
+
+window.go = go;
+window.testCurrency = testCurrency;
+window.applaudStudent = applaudStudent;
+window.selectDestinationCurrency = selectDestinationCurrency;
+
+initThemeToggle();
 go('start');
+loadLiveRates();

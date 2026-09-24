@@ -1,23 +1,63 @@
-const allowedBases = new Set(['BRL', 'MXN', 'ARS', 'USD', 'CAD', 'CLP', 'EGP', 'JPY', 'EUR', 'AUD']);
+import { FOREIGN_CODES } from '../../currency-config.mjs';
+import { normalizeAwesomePayload } from './rates-core.mjs';
 
-function normalizeRates(payload) {
-  const rates = payload.data || payload.rates || payload.conversion_rates;
-  if (!rates || typeof rates !== 'object') return null;
-  return Object.fromEntries(Object.entries(rates).filter(([, value]) => typeof value === 'number' && Number.isFinite(value)));
+const PROVIDER_URL = `https://economia.awesomeapi.com.br/json/last/${FOREIGN_CODES.map(code => `${code}-BRL`).join(',')}`;
+
+function json(body, status = 200, headers = {}) {
+  return Response.json(body, { status, headers });
 }
 
-export default async request => {
-  const base = new URL(request.url).searchParams.get('base') || 'BRL';
-  if (!allowedBases.has(base)) return Response.json({ error: 'Moeda base inv\u00e1lida.' }, { status: 400 });
-  const template = process.env.CURRENCY_API_URL_TEMPLATE;
-  const key = process.env.CURRENCY_API_KEY;
-  if (!template || !key) return Response.json({ error: 'Servi\u00e7o de cota\u00e7\u00e3o ainda n\u00e3o configurado.' }, { status: 503 });
-  const apiUrl = template.replaceAll('{base}', encodeURIComponent(base)).replaceAll('{key}', encodeURIComponent(key));
-  try {
-    const response = await fetch(apiUrl, { headers: { Accept: 'application/json' } });
-    if (!response.ok) return Response.json({ error: 'N\u00e3o foi poss\u00edvel consultar a cota\u00e7\u00e3o.' }, { status: 502 });
-    const rates = normalizeRates(await response.json());
-    if (!rates) return Response.json({ error: 'Formato de resposta da API n\u00e3o reconhecido.' }, { status: 502 });
-    return Response.json({ base, rates, updatedAt: new Date().toISOString() }, { headers: { 'Cache-Control': 'public, max-age=900' } });
-  } catch { return Response.json({ error: 'Falha de conex\u00e3o com o servi\u00e7o de cota\u00e7\u00e3o.' }, { status: 502 }); }
+function error(code, message, status) {
+  return json({ error: { code, message } }, status);
+}
+
+export function createRatesHandler(fetchImpl = fetch, timeoutMs = 5000) {
+  return async request => {
+    if (request.method !== 'GET') return error('METHOD_NOT_ALLOWED', 'Método não permitido.', 405);
+
+    const base = new URL(request.url).searchParams.get('base') || 'BRL';
+    if (base !== 'BRL') return error('INVALID_BASE', 'A moeda base deve ser BRL.', 400);
+
+    const key = process.env.AWESOMEAPI_KEY;
+    if (!key) return error('NOT_CONFIGURED', 'Serviço de cotação ainda não configurado.', 503);
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const response = await fetchImpl(PROVIDER_URL, {
+        headers: { Accept: 'application/json', 'x-api-key': key },
+        signal: controller.signal
+      });
+      if (!response.ok) return error('PROVIDER_ERROR', 'Não foi possível consultar a cotação.', 502);
+
+      let payload;
+      try {
+        payload = await response.json();
+      } catch {
+        return error('INVALID_PROVIDER_RESPONSE', 'Resposta inválida do serviço de cotação.', 502);
+      }
+
+      const normalized = normalizeAwesomePayload(payload);
+      if (normalized.liveCodes.length === 0) {
+        return error('NO_VALID_RATES', 'Nenhuma cotação válida foi recebida.', 502);
+      }
+
+      return json(
+        { base: 'BRL', ...normalized, source: 'AwesomeAPI' },
+        200,
+        { 'Cache-Control': 'public, max-age=300, stale-while-revalidate=60' }
+      );
+    } catch (cause) {
+      if (cause?.name === 'AbortError') return error('PROVIDER_TIMEOUT', 'O serviço de cotação demorou para responder.', 504);
+      return error('CONNECTION_ERROR', 'Falha de conexão com o serviço de cotação.', 502);
+    } finally {
+      clearTimeout(timeout);
+    }
+  };
+}
+
+export default createRatesHandler();
+
+export const config = {
+  path: '/.netlify/functions/rates'
 };
