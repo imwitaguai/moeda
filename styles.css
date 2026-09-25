@@ -3170,25 +3170,36 @@ body.theme-mexico .fact {
   position: relative;
   overflow: hidden;
 }
+
+body.theme-mexico .how > *,
+body.theme-mexico .fact > * {
+  position: relative;
+  z-index: 1;
+}
+
 body.theme-mexico .how::after {
-  content: url("images/mx7.png");
+  content: "";
   position: absolute;
-  right: -6px;
-  bottom: -14px;
-  width: 90px;
-  height: 135px;
-  opacity: 0.16;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 58%;
+  background: url("images/mx7.png") center bottom / 112% auto no-repeat;
+  opacity: 0.28;
   pointer-events: none;
+  z-index: 0;
 }
 body.theme-mexico .fact::after {
-  content: url("images/mx3.png");
+  content: "";
   position: absolute;
-  right: -6px;
+  right: -12px;
   bottom: 0;
-  width: 100px;
-  height: 67px;
-  opacity: 0.16;
+  width: 72%;
+  height: 48%;
+  background: url("images/mx3.png") right bottom / contain no-repeat;
+  opacity: 0.2;
   pointer-events: none;
+  z-index: 0;
 }
 
 /* Cartão "Moeda Selecionada" como faixa cheia (igual à referência) */
@@ -3358,12 +3369,12 @@ body.theme-mexico a:focus-visible {
     line-height: 1.25;
   }
   body.theme-mexico .how::after {
-    width: 64px;
-    height: 96px;
+    height: 50%;
+    background-size: 105% auto;
   }
   body.theme-mexico .fact::after {
-    width: 70px;
-    height: 47px;
+    width: 66%;
+    height: 40%;
   }
   .mini-countries-head {
     display: flex;
