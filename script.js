@@ -449,15 +449,15 @@ document.querySelectorAll('.filters button').forEach(button => button.addEventLi
 }));
 
 function initThemeToggle() {
-  const toggle = document.querySelector('#theme-toggle');
+  const toggles = document.querySelectorAll('.theme-toggle');
   const savedTheme = localStorage.getItem('moedas-theme');
 
   if (savedTheme === 'mexico') document.body.classList.add('theme-mexico');
 
-  toggle.addEventListener('click', () => {
+  toggles.forEach(toggle => toggle.addEventListener('click', () => {
     const isMexico = document.body.classList.toggle('theme-mexico');
     localStorage.setItem('moedas-theme', isMexico ? 'mexico' : 'light');
-  });
+  }));
 }
 
 window.go = go;
