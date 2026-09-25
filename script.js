@@ -149,6 +149,10 @@ const rateState = {
   liveCodes: new Set(),
   updatedAtByCode: {},
 };
+const PUBLIC_AWESOME_URL = `https://economia.awesomeapi.com.br/json/last/${convertibleCodes
+  .filter((code) => code !== "BRL")
+  .map((code) => `${code}-BRL`)
+  .join(",")}`;
 let ratesRequestId = 0;
 let ratesAbortController;
 
@@ -529,6 +533,43 @@ function parseLiveSnapshot(payload) {
   return snapshot.liveCodes.size > 0 ? snapshot : null;
 }
 
+function parsePublicAwesomePayload(payload) {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload))
+    return null;
+
+  const snapshot = { rates: {}, liveCodes: new Set(), updatedAtByCode: {} };
+  for (const code of convertibleCodes) {
+    if (code === "BRL") continue;
+    const quote = payload[`${code}BRL`];
+    if (!quote || quote.code !== code || quote.codein !== "BRL") continue;
+
+    const bid = Number(quote.bid);
+    const timestamp = Number(quote.timestamp);
+    const updatedAt = new Date(timestamp * 1000);
+    const rate = 1 / bid;
+    if (
+      !isValidRate(rate) ||
+      !Number.isFinite(timestamp) ||
+      timestamp <= 0 ||
+      Number.isNaN(updatedAt.getTime())
+    )
+      continue;
+
+    snapshot.rates[code] = rate;
+    snapshot.liveCodes.add(code);
+    snapshot.updatedAtByCode[code] = updatedAt.toISOString();
+  }
+  return snapshot.liveCodes.size > 0 ? snapshot : null;
+}
+
+async function fetchPublicAwesomeRates(signal) {
+  const response = await fetch(PUBLIC_AWESOME_URL, { signal });
+  if (!response.ok) throw new Error("public rates unavailable");
+  const snapshot = parsePublicAwesomePayload(await response.json());
+  if (!snapshot) throw new Error("invalid public rates");
+  return snapshot;
+}
+
 async function loadLiveRates() {
   const requestId = ++ratesRequestId;
   ratesAbortController?.abort();
@@ -537,12 +578,18 @@ async function loadLiveRates() {
   convert();
 
   try {
-    const response = await fetch("/.netlify/functions/rates?base=BRL", {
-      signal: ratesAbortController.signal,
-    });
-    if (!response.ok) throw new Error("rates unavailable");
-    const snapshot = parseLiveSnapshot(await response.json());
-    if (!snapshot) throw new Error("invalid rates");
+    let snapshot;
+    try {
+      const response = await fetch("/.netlify/functions/rates?base=BRL", {
+        signal: ratesAbortController.signal,
+      });
+      if (!response.ok) throw new Error("rates unavailable");
+      snapshot = parseLiveSnapshot(await response.json());
+      if (!snapshot) throw new Error("invalid rates");
+    } catch (error) {
+      if (error?.name === "AbortError") throw error;
+      snapshot = await fetchPublicAwesomeRates(ratesAbortController.signal);
+    }
     if (requestId !== ratesRequestId) return;
 
     resetToEducationalSnapshot();
