@@ -265,20 +265,21 @@ body.theme-mexico .amount-input {
   background: transparent;
   color: var(--ink);
   font: 900 52px "Baloo 2";
-  flex: 1 1 auto;
-  min-width: 0;
+  flex: 1 1 0;
+  width: 0;
+  min-width: 90px;
   outline: 0;
   padding: 0 16px;
 }
 
 .amount-in-words {
-  max-width: 48%;
-  overflow: hidden;
+  flex: 0 1 auto;
+  max-width: 62%;
+  overflow: visible;
   color: #075940;
-  font: 800 34px "Baloo 2";
+  font: 800 clamp(24px, 3vw, 34px) "Baloo 2";
   line-height: 1;
   text-align: right;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 .currency-row {
