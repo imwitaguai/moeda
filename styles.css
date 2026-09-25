@@ -5512,7 +5512,9 @@ body.theme-mexico .home-hero {
     color: #1E3A8A !important;
   }
 
-  /* ---- BARRA INFERIOR — NAVEGAÇÃO PRINCIPAL ---- */
+  /* ---- BARRA INFERIOR — NAVEGAÇÃO PRINCIPAL ----
+     Todos os itens têm o mesmo comportamento: o item ativo
+     ganha o círculo verde elevado; os demais ficam neutros. */
   html body .app-shell .bottom-nav {
     left: 12px !important;
     right: 12px !important;
@@ -5551,52 +5553,94 @@ body.theme-mexico .home-hero {
     color: #5F6673 !important;
     cursor: pointer !important;
     -webkit-tap-highlight-color: transparent !important;
-    transition: color 0.2s ease !important;
   }
 
-  /* Pílula indicadora atrás do ícone */
   html body .app-shell .bottom-nav button::before {
-    content: "" !important;
-    position: absolute !important;
-    top: 9px !important;
-    left: 50% !important;
-    width: 56px !important;
-    height: 30px !important;
-    border-radius: 999px !important;
-    background: #DCF1E3 !important;
-    opacity: 0 !important;
-    transform: translateX(-50%) scaleX(0.55) !important;
-    transition:
-      opacity 0.22s ease,
-      transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
-    pointer-events: none !important;
-  }
-
-  html body .app-shell .bottom-nav button.active::before {
-    opacity: 1 !important;
-    transform: translateX(-50%) scaleX(1) !important;
-  }
-
-  html body .app-shell .bottom-nav button[data-page="home"]::before {
     display: none !important;
   }
 
-  html body .app-shell .bottom-nav button .nav-icon {
+  /* Bolha do ícone — neutra quando inativa */
+  html body .app-shell .bottom-nav .nav-bubble {
     position: relative !important;
     z-index: 1 !important;
+    flex: 0 0 54px !important;
+    width: 54px !important;
+    height: 54px !important;
+    min-height: 54px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    border: 5px solid transparent !important;
+    background: transparent !important;
+    background-clip: padding-box !important;
+    color: #5F6673 !important;
+    box-shadow: none !important;
+    transform: translateY(6px) !important;
+    transition:
+      transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
+      background-color 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.3s ease,
+      color 0.2s ease !important;
+  }
+
+  html body .app-shell .bottom-nav .nav-bubble::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: -5px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(160deg, #22B566 0%, #0F8A4C 55%, #0B6E3D 100%) !important;
+    border: 5px solid #FBF7EE !important;
+    box-sizing: border-box !important;
+    opacity: 0 !important;
+    transition: opacity 0.25s ease !important;
+    z-index: -1 !important;
+  }
+
+  html body .app-shell .bottom-nav .nav-bubble::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: -10px !important;
+    border-radius: 50% !important;
+    border: 2px solid rgba(34, 181, 102, 0.28) !important;
+    opacity: 0 !important;
+    transform: scale(0.8) !important;
+    transition: opacity 0.3s ease, transform 0.35s ease !important;
+    pointer-events: none !important;
+  }
+
+  html body .app-shell .bottom-nav .nav-icon {
     width: 22px !important;
     height: 22px !important;
-    margin-bottom: 7px !important;
+    margin: 0 !important;
     color: currentColor !important;
+    stroke: currentColor !important;
     fill: none !important;
     transition: transform 0.2s ease !important;
   }
 
+  /* Item ativo — círculo verde elevado (mesmo efeito para todos) */
+  html body .app-shell .bottom-nav button.active .nav-bubble {
+    color: #FFFFFF !important;
+    transform: translateY(-20px) !important;
+    box-shadow:
+      0 10px 20px rgba(15, 138, 76, 0.38),
+      0 3px 6px rgba(15, 138, 76, 0.22) !important;
+  }
+
+  html body .app-shell .bottom-nav button.active .nav-bubble::before {
+    opacity: 1 !important;
+  }
+
+  html body .app-shell .bottom-nav button.active .nav-bubble::after {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+  }
+
   html body .app-shell .bottom-nav button.active .nav-icon {
-    color: #0F7A45 !important;
-    fill: currentColor !important;
-    fill-opacity: 0.16 !important;
-    stroke-width: 2.3 !important;
+    stroke-width: 2.5 !important;
   }
 
   html body .app-shell .bottom-nav button small {
@@ -5618,65 +5662,13 @@ body.theme-mexico .home-hero {
     font-weight: 800 !important;
   }
 
-  /* Botão central de destaque (Converter) */
-  html body .app-shell .bottom-nav button .nav-circle-icon {
-    position: relative !important;
-    z-index: 1 !important;
-    width: 56px !important;
-    height: 56px !important;
-    margin: -30px 0 5px !important;
-    border-radius: 50% !important;
-    background: linear-gradient(160deg, #22B566 0%, #0F8A4C 55%, #0B6E3D 100%) !important;
-    border: 5px solid #FBF7EE !important;
-    box-sizing: border-box !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow:
-      0 8px 18px rgba(15, 138, 76, 0.38),
-      0 2px 4px rgba(15, 138, 76, 0.25) !important;
-    transform: none !important;
-    transition:
-      transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-      box-shadow 0.25s ease !important;
-  }
-
-  html body .app-shell .bottom-nav button .nav-circle-icon::after {
-    content: "" !important;
-    position: absolute !important;
-    inset: -9px !important;
-    border-radius: 50% !important;
-    border: 2px solid rgba(34, 181, 102, 0.28) !important;
-    opacity: 0 !important;
-    transform: scale(0.85) !important;
-    transition: opacity 0.25s ease, transform 0.3s ease !important;
-    pointer-events: none !important;
-  }
-
-  html body .app-shell .bottom-nav button.active .nav-circle-icon {
-    transform: translateY(-2px) !important;
-    box-shadow:
-      0 12px 24px rgba(15, 138, 76, 0.42),
-      0 3px 6px rgba(15, 138, 76, 0.25) !important;
-  }
-
-  html body .app-shell .bottom-nav button.active .nav-circle-icon::after {
-    opacity: 1 !important;
-    transform: scale(1) !important;
-  }
-
-  html body .app-shell .bottom-nav button .nav-circle-icon svg {
-    width: 22px !important;
-    height: 22px !important;
-  }
-
   /* Feedback de toque */
-  html body .app-shell .bottom-nav button:active .nav-icon {
-    transform: scale(0.88) !important;
+  html body .app-shell .bottom-nav button:not(.active):active .nav-icon {
+    transform: scale(0.86) !important;
   }
 
-  html body .app-shell .bottom-nav button:active .nav-circle-icon {
-    transform: scale(0.92) !important;
+  html body .app-shell .bottom-nav button.active:active .nav-bubble {
+    transform: translateY(-20px) scale(0.93) !important;
   }
 
   /* Foco por teclado */
@@ -5691,11 +5683,11 @@ body.theme-mexico .home-hero {
 }
 
 @media (max-width: 768px) and (prefers-reduced-motion: reduce) {
-  html body .app-shell .bottom-nav button,
-  html body .app-shell .bottom-nav button::before,
-  html body .app-shell .bottom-nav button .nav-icon,
-  html body .app-shell .bottom-nav button .nav-circle-icon,
-  html body .app-shell .bottom-nav button .nav-circle-icon::after {
+  html body .app-shell .bottom-nav .nav-bubble,
+  html body .app-shell .bottom-nav .nav-bubble::before,
+  html body .app-shell .bottom-nav .nav-bubble::after,
+  html body .app-shell .bottom-nav .nav-icon,
+  html body .app-shell .bottom-nav button small {
     transition: none !important;
   }
 }
