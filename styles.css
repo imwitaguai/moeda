@@ -3619,3 +3619,193 @@ body:not(.theme-mexico) .theme-toggle span {
     height: 28px;
   }
 }
+
+/* Lista de países: composição específica para smartphone. */
+@media (max-width: 700px) {
+  #countries-page .page-heading {
+    margin: 0 4px 10px;
+  }
+
+  #countries-page .page-heading h1 {
+    font-size: 30px;
+    letter-spacing: -0.45px;
+  }
+
+  #countries-page .page-heading p {
+    margin: 4px 0 0;
+    font-size: 15px;
+    line-height: 1.28;
+  }
+
+  #countries-page .filters {
+    gap: 9px;
+    margin: 12px 0 15px;
+    padding: 2px 1px 8px;
+    scrollbar-width: none;
+  }
+
+  #countries-page .filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  #countries-page .filters button {
+    flex: 0 0 auto;
+    min-height: 48px;
+    padding: 8px 14px;
+    border-radius: 14px;
+    font-size: 14px;
+  }
+
+  #countries-page .country-grid {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  #countries-page .country-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 66px minmax(0, 1fr) 112px;
+    align-items: center;
+    min-height: 98px;
+    padding: 10px 9px;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(67, 49, 92, 0.14);
+  }
+
+  #countries-page .country-card .card-flag {
+    display: block;
+    width: 60px;
+    height: 52px;
+    margin: 0;
+  }
+
+  #countries-page .country-card .country-flag-image,
+  #countries-page .country-card .country-flag-image-emoji {
+    width: 58px;
+    height: 45px;
+    border-radius: 10px;
+  }
+
+  #countries-page .country-card .country-flag-image-emoji {
+    font-size: 30px;
+  }
+
+  #countries-page .country-card .card-coin {
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    left: auto;
+    font-size: 27px;
+    line-height: 1;
+    opacity: 0.88;
+  }
+
+  #countries-page .country-details {
+    min-width: 0;
+    padding-right: 4px;
+  }
+
+  #countries-page .country-card h2 {
+    margin: 0;
+    overflow: hidden;
+    font-size: 20px;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #countries-page .country-card .region {
+    margin: 2px 0 5px;
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  #countries-page .country-card .country-currency,
+  #countries-page .country-card .country-capital {
+    display: block;
+    overflow: hidden;
+    margin: 1px 0;
+    color: #302a5a;
+    font-size: 11px;
+    line-height: 1.18;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #countries-page .country-card .country-currency span,
+  #countries-page .country-card .country-capital span {
+    font-weight: 800;
+  }
+
+  #countries-page .country-actions {
+    display: grid;
+    align-self: stretch;
+    align-items: end;
+    justify-items: stretch;
+    gap: 7px;
+    padding-top: 24px;
+  }
+
+  #countries-page .country-card code {
+    justify-self: center;
+    float: none;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.76);
+    font-size: 14px;
+  }
+
+  #countries-page .country-card button {
+    width: 100%;
+    height: 34px;
+    margin: 0;
+    border-radius: 17px;
+    font-size: 14px;
+    text-shadow: 0 1px #6541ae;
+  }
+
+  #countries-page .country-card button span {
+    margin-left: 5px;
+    font-size: 17px;
+  }
+
+  #countries-page .country-card-unavailable {
+    filter: saturate(0.76);
+  }
+
+  #countries-page .country-card-unavailable button {
+    font-size: 11px;
+  }
+
+  #countries-page .did-you-know {
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 12px;
+    padding: 13px 15px;
+    border-radius: 18px;
+    font-size: 32px;
+  }
+
+  #countries-page .did-you-know h2 {
+    font-size: 19px;
+  }
+
+  #countries-page .did-you-know p {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 380px) {
+  #countries-page .country-card {
+    grid-template-columns: 59px minmax(0, 1fr) 98px;
+  }
+
+  #countries-page .country-card h2 {
+    font-size: 18px;
+  }
+
+  #countries-page .country-card button {
+    font-size: 12px;
+  }
+}

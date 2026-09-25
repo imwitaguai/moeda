@@ -440,10 +440,10 @@ function flagMarkup(currency, className) {
 
 function countryGrid() {
   document.querySelector("#country-grid").innerHTML = Object.entries(currencies)
-    .map(
-      ([code, currency]) =>
-        `<article class="country-card" data-region="${currency.region}" style="--card:${currency.color}"><div class="card-flag">${flagMarkup(currency, "country-flag-image")}<span class="card-coin">${currency.convertible === false ? "🧊" : coin}</span></div><h2>${currency.country}</h2><p class="region">${currency.region}</p><p>${coin} &nbsp; Moeda: <b>${currency.name}</b><code>${currency.convertible === false ? "—" : code}</code></p><p>📍 &nbsp; Capital: <b>${currency.capital}</b></p>${currency.convertible === false ? '<button type="button" disabled>Sem moeda oficial</button>' : `<button data-convert="${code}">Converter &nbsp; ➜</button>`}</article>`,
-    )
+    .map(([code, currency]) => {
+      const isUnavailable = currency.convertible === false;
+      return `<article class="country-card${isUnavailable ? " country-card-unavailable" : ""}" data-region="${currency.region}" style="--card:${currency.color}"><div class="card-flag">${flagMarkup(currency, "country-flag-image")}<span class="card-coin">${isUnavailable ? "🧊" : coin}</span></div><div class="country-details"><h2>${currency.country}</h2><p class="region">${currency.region}</p><p class="country-currency">${coin} <span>Moeda:</span> <b>${currency.name}</b></p><p class="country-capital">📍 <span>Capital:</span> <b>${currency.capital}</b></p></div><div class="country-actions"><code>${isUnavailable ? "—" : code}</code>${isUnavailable ? '<button type="button" disabled>Sem moeda oficial</button>' : `<button data-convert="${code}">Converter <span aria-hidden="true">➜</span></button>`}</div></article>`;
+    })
     .join("");
 }
 
@@ -776,7 +776,7 @@ document.querySelectorAll(".filters button").forEach((button) =>
     const region = button.dataset.region;
     document.querySelectorAll(".country-card").forEach((card) => {
       card.style.display =
-        !region || card.dataset.region === region ? "block" : "none";
+        !region || card.dataset.region === region ? "" : "none";
     });
   }),
 );
