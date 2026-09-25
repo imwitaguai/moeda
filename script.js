@@ -161,6 +161,23 @@ const fmt = (value) =>
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+const currencyWords = {
+  BRL: ["real", "reais"],
+  MXN: ["peso mexicano", "pesos mexicanos"],
+  ARS: ["peso argentino", "pesos argentinos"],
+  USD: ["dólar americano", "dólares americanos"],
+  CAD: ["dólar canadense", "dólares canadenses"],
+  CLP: ["peso chileno", "pesos chilenos"],
+  EGP: ["libra egípcia", "libras egípcias"],
+  JPY: ["iene japonês", "ienes japoneses"],
+  EUR: ["euro", "euros"],
+  AUD: ["dólar australiano", "dólares australianos"],
+  GBP: ["libra esterlina", "libras esterlinas"],
+};
+
+function numberToWords(value) {
+  return String(value);
+}
 const isValidRate = (value) =>
   typeof value === "number" &&
   Number.isFinite(value) &&
@@ -403,6 +420,15 @@ function convert() {
   updateSelectFlag(to);
   const copy = updateQuote(origin, destination, from.value, to.value, unitRate);
   document.querySelector("#input-symbol").textContent = origin.symbol;
+  const amountInWords = document.querySelector("#amount-in-words");
+  const [singular, plural] = currencyWords[from.value] || [
+    origin.name,
+    origin.name,
+  ];
+  const writtenAmount = toWords(input);
+  if (amountInWords) {
+    amountInWords.textContent = `${writtenAmount.charAt(0).toUpperCase()}${writtenAmount.slice(1)} ${input === 1 ? singular : plural}`;
+  }
   document.querySelector("#converted").innerHTML =
     `${fmt(value)} <small>${to.value}</small> <span class="dest-currency-badge">${destination.name}</span>`;
   document.querySelector("#equation").innerHTML =
@@ -816,3 +842,63 @@ window.selectDestinationCurrency = selectDestinationCurrency;
 initThemeToggle();
 go("home");
 loadLiveRates();
+
+function toWords(value) {
+  const units = [
+    "zero",
+    "um",
+    "dois",
+    "três",
+    "quatro",
+    "cinco",
+    "seis",
+    "sete",
+    "oito",
+    "nove",
+  ];
+  const teens = [
+    "dez",
+    "onze",
+    "doze",
+    "treze",
+    "quatorze",
+    "quinze",
+    "dezesseis",
+    "dezessete",
+    "dezoito",
+    "dezenove",
+  ];
+  const tens = [
+    "",
+    "",
+    "vinte",
+    "trinta",
+    "quarenta",
+    "cinquenta",
+    "sessenta",
+    "setenta",
+    "oitenta",
+    "noventa",
+  ];
+  const hundreds = [
+    "",
+    "cento",
+    "duzentos",
+    "trezentos",
+    "quatrocentos",
+    "quinhentos",
+    "seiscentos",
+    "setecentos",
+    "oitocentos",
+    "novecentos",
+  ];
+  const n = Math.max(0, Math.min(999, Math.round(Number(value) || 0)));
+  if (n < 10) return units[n];
+  if (n < 20) return teens[n - 10];
+  if (n < 100)
+    return tens[Math.floor(n / 10)] + (n % 10 ? " e " + units[n % 10] : "");
+  if (n === 100) return "cem";
+  return (
+    hundreds[Math.floor(n / 100)] + (n % 100 ? " e " + toWords(n % 100) : "")
+  );
+}

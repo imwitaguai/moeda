@@ -265,9 +265,21 @@ body.theme-mexico .amount-input {
   background: transparent;
   color: var(--ink);
   font: 900 52px "Baloo 2";
-  width: 100%;
+  flex: 1 1 auto;
+  min-width: 0;
   outline: 0;
   padding: 0 16px;
+}
+
+.amount-in-words {
+  max-width: 48%;
+  overflow: hidden;
+  color: #075940;
+  font: 800 34px "Baloo 2";
+  line-height: 1;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .currency-row {
   display: grid;
@@ -3448,6 +3460,10 @@ body.theme-mexico a:focus-visible {
   .flag-select-btn,
   .convert-button {
     min-height: 56px;
+  }
+
+  .amount-in-words {
+    display: none;
   }
 }
 @media (max-width: 420px) {
