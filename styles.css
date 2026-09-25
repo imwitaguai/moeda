@@ -860,11 +860,8 @@ body.theme-mexico .sidebar-team-pill{border-color:rgba(14,122,66,0.3);background
 body.theme-mexico .sidebar-team-pill:hover{border-color:#0e7a42}
 
 /* Selo "Tema México" no cabeçalho do conversor */
-.theme-badge-mexico{display:none;align-items:center;gap:8px;padding:10px 20px;border-radius:20px;background:#fff;border:2px solid #0e7a42;box-shadow:0 3px 8px rgba(14,122,66,0.18);font:800 17px 'Baloo 2',cursive;color:var(--mx-green-dark);white-space:nowrap;height:fit-content}
-.theme-badge-mexico span{font-size:22px}
 .mx-flag-icon{width:24px;height:16px;border-radius:3px;box-shadow:0 1px 2px rgba(0,0,0,.25);display:inline-block;vertical-align:middle}
 .theme-toggle .mx-flag-icon{width:16px;height:11px}
-body.theme-mexico .theme-badge-mexico{display:inline-flex}
 .icon-mexico{display:none}
 .icon-mexico img{width:44px;height:44px;vertical-align:middle;object-fit:contain}
 body.theme-mexico .icon-default{display:none}
@@ -976,7 +973,6 @@ body.theme-mexico button:focus-visible,body.theme-mexico select:focus-visible,bo
   body.theme-mexico .swap{width:70px;height:48px}
   body.theme-mexico #home-page>header{flex-wrap:wrap;gap:8px;position:relative;overflow:hidden;padding:16px 14px 12px;border-radius:22px}
   body.theme-mexico .mx-header-art{display:block;position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:.55;z-index:-1}
-  body.theme-mexico .theme-badge-mexico{margin-left:auto}
   .info-column{grid-template-columns:repeat(2,1fr);gap:10px}
   body.theme-mexico .info-card{padding:16px;min-height:auto}
   body.theme-mexico .info-card h2{font-size:20px}
