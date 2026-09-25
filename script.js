@@ -892,13 +892,28 @@ function toWords(value) {
     "oitocentos",
     "novecentos",
   ];
-  const n = Math.max(0, Math.min(999, Math.round(Number(value) || 0)));
-  if (n < 10) return units[n];
-  if (n < 20) return teens[n - 10];
-  if (n < 100)
-    return tens[Math.floor(n / 10)] + (n % 10 ? " e " + units[n % 10] : "");
-  if (n === 100) return "cem";
-  return (
-    hundreds[Math.floor(n / 100)] + (n % 100 ? " e " + toWords(n % 100) : "")
-  );
+  const underOneThousand = (number) => {
+    if (number < 10) return units[number];
+    if (number < 20) return teens[number - 10];
+    if (number < 100) {
+      return (
+        tens[Math.floor(number / 10)] +
+        (number % 10 ? " e " + units[number % 10] : "")
+      );
+    }
+    if (number === 100) return "cem";
+    return (
+      hundreds[Math.floor(number / 100)] +
+      (number % 100 ? " e " + underOneThousand(number % 100) : "")
+    );
+  };
+
+  const n = Math.max(0, Math.min(999999, Math.round(Number(value) || 0)));
+  if (n < 1000) return underOneThousand(n);
+
+  const thousands = Math.floor(n / 1000);
+  const remainder = n % 1000;
+  const prefix = thousands === 1 ? "mil" : `${underOneThousand(thousands)} mil`;
+  if (!remainder) return prefix;
+  return `${prefix}${remainder < 100 ? " e " : " "}${underOneThousand(remainder)}`;
 }
