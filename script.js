@@ -145,7 +145,7 @@ const from = document.querySelector("#from");
 const to = document.querySelector("#to");
 const coin = "&#x1FA99;";
 const rateState = {
-  status: "educational",
+  status: "loading",
   liveCodes: new Set(),
   updatedAtByCode: {},
 };
@@ -274,25 +274,68 @@ function initFlagSelect(select) {
 
 function getPairRateState(originCode, destinationCode) {
   if (originCode === destinationCode) return { kind: "neutral" };
-  return { kind: "educational" };
+  if (rateState.status === "loading") return { kind: "loading" };
+
+  const foreignCodes = [
+    ...new Set([originCode, destinationCode].filter((code) => code !== "BRL")),
+  ];
+  const isLive =
+    foreignCodes.length > 0 &&
+    foreignCodes.every((code) => rateState.liveCodes.has(code));
+  if (isLive) {
+    const timestamps = foreignCodes.map((code) =>
+      new Date(rateState.updatedAtByCode[code]).getTime(),
+    );
+    return { kind: "live", updatedAt: new Date(Math.min(...timestamps)) };
+  }
+  return { kind: rateState.status === "error" ? "error" : "fallback" };
 }
 
 function rateCopy(pairState) {
+  if (pairState.kind === "live") {
+    const updated = new Intl.DateTimeFormat("pt-BR", {
+      dateStyle: "short",
+      timeStyle: "short",
+    }).format(pairState.updatedAt);
+    return {
+      summary: "📈 Mercado · Cotação real",
+      badge: "Cotação real",
+      detail: `AwesomeAPI · atualizada em ${updated}`,
+      daily: `Conversão calculada com cotação de mercado atualizada em ${updated}.`,
+      footer: "Conversor usando cotação de mercado da AwesomeAPI",
+    };
+  }
   if (pairState.kind === "neutral") {
     return {
       summary: "↔️ Selecione moedas diferentes",
       badge: "Mesma moeda",
-      detail: "Simulação educativa",
+      detail: "Sem conversão de mercado",
       daily: "Escolha moedas diferentes para fazer uma conversão.",
-      footer: "Valores e cotações fictícias para fins educativos",
+      footer: "Selecione moedas diferentes para consultar o mercado",
+    };
+  }
+  if (pairState.kind === "loading") {
+    return {
+      summary: "⏳ Carregando cotação...",
+      badge: "Carregando...",
+      detail: "Consultando o mercado",
+      daily: "Consultando a cotação atual...",
+      footer: "Aguardando fonte da cotação do conversor",
     };
   }
   return {
-    summary: "🎓 Simulação educativa - Taxa fictícia",
-    badge: "Taxa fictícia",
-    detail: "Valores ilustrativos para fins escolares",
-    daily: "Valores ilustrativos para fins escolares.",
-    footer: "Valores e cotações fictícias para fins educativos",
+    summary:
+      pairState.kind === "error"
+        ? "⚠️ Mercado indisponível"
+        : "🎓 Modo educativo",
+    badge: "Taxa educativa temporária",
+    detail:
+      pairState.kind === "error"
+        ? "Não foi possível atualizar agora"
+        : "Par sem cotação disponível",
+    daily:
+      "Taxa educativa temporária; tente atualizar para consultar o mercado.",
+    footer: "Conversor em modo educativo temporário",
   };
 }
 
@@ -306,7 +349,7 @@ function updateRateSurfaces(pairState) {
   if (summary) summary.textContent = copy.summary;
   if (badge) badge.textContent = copy.badge;
   if (updated) updated.textContent = copy.detail;
-  if (retry) retry.hidden = true;
+  if (retry) retry.hidden = pairState.kind !== "error";
   if (footer) footer.textContent = copy.footer;
   document
     .querySelector("#quote-card")
@@ -702,3 +745,4 @@ window.selectDestinationCurrency = selectDestinationCurrency;
 
 initThemeToggle();
 go("home");
+loadLiveRates();

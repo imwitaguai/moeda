@@ -1079,33 +1079,6 @@ body.theme-mexico .mx-header-art {
   opacity: 0.56;
 }
 
-.mexico-theme-badge {
-  display: none;
-}
-
-body.theme-mexico .mexico-theme-badge {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 13px;
-  margin-left: auto;
-  padding: 10px 18px;
-  border: 2px solid #a8ddc3;
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--mx-green-dark);
-  font-size: 18px;
-  white-space: nowrap;
-}
-
-body.theme-mexico .mexico-theme-badge img {
-  width: 40px;
-  height: 27px;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
 body.theme-mexico .sidebar {
   border-radius: 0 28px 28px 0;
 }
@@ -1209,12 +1182,6 @@ body.theme-mexico .result small {
 
   body.theme-mexico #home-page > header p {
     font-size: 17px;
-  }
-
-  body.theme-mexico .mexico-theme-badge {
-    margin-left: 0;
-    padding: 7px 11px;
-    font-size: 14px;
   }
 
   body.theme-mexico .avatar {
