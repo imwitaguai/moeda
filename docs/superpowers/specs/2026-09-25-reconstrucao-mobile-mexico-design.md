@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Adaptar a página principal do conversor para smartphone (até 700 px) com alta fidelidade à referência `images/smart swat.png`, mantendo desktop e páginas secundárias inalterados.
+Adaptar a página principal do conversor do tema México para smartphone (até 700 px) com alta fidelidade à referência `images/smart swat.png`, mantendo desktop e páginas secundárias inalterados. Os demais temas conservam sua responsividade atual.
 
 ## Estratégia
 
@@ -31,11 +31,14 @@ O formulário será um cartão único claro:
 
 O resultado terá cartão verde-claro arredondado, valor convertido em destaque, código e nome da moeda, equação e valor por extenso. As ilustrações existentes podem permanecer decorativas e reduzir em telas estreitas. A mensagem informativa permanece abaixo do resultado. A barra de navegação inferior continua fixa, com quatro itens e o conversor ativo.
 
+A ordem visual será, por CSS, cabeçalho, cotação, formulário, resultado, aviso e navegação. Quando os blocos estiverem no mesmo contêiner, serão reordenados por grid ou flex; não haverá alteração de HTML. Os cards educativos laterais e a lista comparativa de países não são exibidos na página inicial móvel do tema México, pois não aparecem na referência e competem com a conversão principal.
+
 ## Limites e responsividade
 
 - Todas as regras novas serão limitadas a `@media (max-width: 700px)` e ao contexto do tema México quando necessário.
 - Não haverá overflow horizontal nem elementos decorativos sobre controles ou texto.
 - Em telas muito estreitas (até 380 px), tipografia e espaçamento podem reduzir para preservar as duas moedas e o botão de troca.
+- O conteúdo principal receberá espaço inferior suficiente para a barra de navegação fixa não encobrir o aviso nem o resultado.
 - Desktop e páginas Países/Aprenda não receberão mudança visual intencional.
 
 ## Estados e acessibilidade
@@ -44,8 +47,8 @@ Estados de cotação real, educativa, carregamento ou erro mantêm os textos já
 
 ## Verificação
 
-1. Conferir a página inicial em 700 px, 430 px e 380 px, comparando hierarquia, cor, espaçamento e cartões com a referência.
+1. Conferir a página inicial do tema México em 700 px, 430 px e 380 px, comparando hierarquia, cor, espaçamento e cartões com a referência.
 2. Alterar valor, origem, destino e usar a inversão; confirmar atualização da cotação, valor por extenso e resultado.
 3. Verificar que o botão `Converter` não aparece no smartphone, mas permanece no desktop.
 4. Confirmar que a barra inferior navega e que Países/Aprenda não receberam alteração visual involuntária.
-5. Executar `npm test` e verificar a ausência de overflow horizontal.
+5. Executar `npm test` e verificar a ausência de overflow horizontal em todos os viewports, inclusive com nomes de moeda, valores por extenso e avisos longos, sem conteúdo sob a barra inferior.
