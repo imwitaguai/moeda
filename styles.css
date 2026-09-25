@@ -3289,93 +3289,16 @@ body.theme-mexico a:focus-visible {
 }
 
 /* ==========================================================
-   NAVEGAÇÃO INFERIOR (mobile) — substitui a sidebar oculta
+   NAVEGAÇÃO INFERIOR — base desktop
    ========================================================== */
 .bottom-nav {
   display: none;
 }
 @media (max-width: 700px) {
-  .bottom-nav {
-    display: flex;
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 50;
-    background: #fff;
-    border-top: 1px solid #ece3da;
-    padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
-    box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.08);
-  }
-  .bottom-nav button {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    border: 0;
-    background: transparent;
-    color: #594873;
-    font:
-      700 10px Nunito,
-      sans-serif;
-    padding: 6px 2px;
-    border-radius: 12px;
-    cursor: pointer;
-    min-height: 48px;
-  }
-  .bottom-nav button span {
-    font-size: 20px;
-    line-height: 1;
-  }
-  .bottom-nav button.active {
-    background: linear-gradient(135deg, #a975f3, #7952db);
-    color: #fff;
-  }
-  body.theme-mexico .bottom-nav button.active {
-    background: linear-gradient(135deg, var(--mx-green), var(--mx-green-dark));
-    color: #fff;
-  }
-  main {
-    padding-bottom: 82px;
-  }
-  .mini-countries {
-    overflow: visible;
-  }
-  .mini-countries > div {
-    min-width: 0;
-    grid-template-columns: repeat(2, 1fr);
-  }
   .country-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  body.theme-mexico .currency-row {
-    grid-template-columns: 1fr;
-  }
-  body.theme-mexico .swap {
-    width: 70px;
-    height: 48px;
-  }
-  body.theme-mexico #home-page > header {
-    flex-wrap: wrap;
-    gap: 8px;
-    position: relative;
-    overflow: hidden;
-    padding: 16px 14px 12px;
-    border-radius: 22px;
-  }
-  body.theme-mexico .mx-header-art {
-    display: block;
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    opacity: 0.55;
-    z-index: -1;
-  }
+
   .info-column {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
@@ -3844,426 +3767,923 @@ body:not(.theme-mexico) .theme-toggle span {
 }
 
 /* ==========================================================
-   CONVERSOR MÉXICO — composição de smartphone da referência
+   COMPONENTES REFORMULADOS: HERO, COTAÇÃO, CONVERSOR & RESULTADO
    ========================================================== */
-@media (max-width: 700px) {
-  body.theme-mexico {
-    background: #fff9ef;
+
+.home-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 24px 20px 20px;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 24px;
+  margin-bottom: 20px;
+}
+
+body.theme-mexico .home-hero {
+  background: transparent;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 65%;
+}
+
+.hero-title {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Baloo 2', 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: clamp(32px, 6vw, 48px);
+  line-height: 1.05;
+  color: #064E3B;
+  letter-spacing: -0.5px;
+}
+
+.hero-title-line {
+  display: block;
+}
+
+.hero-subtitle {
+  margin: 10px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #4B5563;
+  line-height: 1.3;
+}
+
+.mx-header-art {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 150px;
+  width: auto;
+  max-width: 55%;
+  object-fit: cover;
+  object-position: right bottom;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Cartão independente de cotação */
+.quote-card {
+  background: #FFFFFF;
+  border-radius: 22px;
+  padding: 16px 20px;
+  margin-bottom: 18px;
+  border: 1px solid #ECE7D8;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quote-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.quote-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quote-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.quote-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.quote-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quote-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3.5px 12px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 700;
+  background: #FEE2E2;
+  color: #DC2626;
+  letter-spacing: -0.1px;
+}
+
+.quote-card[data-rate-state="fallback"] .quote-badge,
+.quote-card[data-rate-state="error"] .quote-badge {
+  background: #FEF3C7;
+  color: #B45309;
+}
+
+.quote-card[data-rate-state="loading"] .quote-badge {
+  background: #E0F2FE;
+  color: #0369A1;
+}
+
+.rate-retry-btn {
+  font-size: 11.5px;
+  padding: 3px 9px;
+  border-radius: 6px;
+  border: 1px solid #CBD5E1;
+  background: #F8FAFC;
+  color: #475569;
+  cursor: pointer;
+}
+
+.quote-rates {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.quote-line-primary {
+  font-size: clamp(18px, 4.5vw, 22px);
+  font-weight: 900;
+  color: #0F172A;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.25;
+}
+
+.quote-line-primary b {
+  font-weight: 900;
+}
+
+.quote-line-secondary {
+  font-size: clamp(13px, 3.2vw, 15px);
+  font-weight: 700;
+  color: #64748B;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  line-height: 1.25;
+}
+
+.quote-curr-name {
+  display: inline-flex;
+  align-items: center;
+  background: #E8F8F0;
+  color: #065F46;
+  border-radius: 7px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  line-height: 1.3;
+}
+
+.quote-footer small {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748B;
+  margin-top: 2px;
+}
+
+/* Campo de valor */
+.amount-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.amount-label {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+}
+
+.amount-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.amount-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 8px 14px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.amount-box:focus-within {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+}
+
+.amount-symbol {
+  font-size: 18px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+#amount {
+  font-family: inherit;
+  font-size: 26px;
+  font-weight: 900;
+  color: #0F172A;
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 120px;
+  text-align: right;
+  padding: 0;
+}
+
+.amount-in-words {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748B;
+  margin-top: 4px;
+  text-align: right;
+  max-width: 220px;
+  word-break: break-word;
+}
+
+/* Linha de moedas e botão de troca */
+.currency-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 12px;
+  align-items: flex-end;
+  margin: 16px 0;
+}
+
+.currency-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.currency-box label {
+  font-size: 14px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+}
+
+.flag-select-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  background: #FFFFFF;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 9px 12px;
+  cursor: pointer;
+  min-height: 48px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.flag-select-btn:hover,
+.flag-select-btn:focus-visible {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+}
+
+.flag-select-btn-flag {
+  width: 28px;
+  height: 20px;
+  border-radius: 3px;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.flag-select-btn-label {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.flag-select-caret {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: #475569;
+}
+
+.flag-select-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 220px;
+  max-height: 260px;
+  overflow-y: auto;
+  background: #FFFFFF;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border: 1px solid #E2E8F0;
+  z-index: 100;
+  margin-top: 6px;
+  padding: 6px 0;
+  list-style: none;
+}
+
+.currency-box:last-child .flag-select-list {
+  right: 0;
+  left: auto;
+}
+
+.flag-select-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  color: #0F172A;
+  transition: background 0.15s ease;
+}
+
+.flag-select-list li:hover,
+.flag-select-list li:focus {
+  background: #E8F8F0;
+  color: #064E3B;
+}
+
+.flag-select-list li img {
+  width: 26px;
+  height: 18px;
+  border-radius: 3px;
+  object-fit: cover;
+}
+
+.swap {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  border-radius: 50%;
+  border: none;
+  background: #E8F8F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.15);
+  padding: 0;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease;
+  align-self: flex-end;
+  margin-bottom: 2px;
+}
+
+.swap:hover {
+  background: #D1FAE5;
+  transform: scale(1.06);
+}
+
+.swap:active {
+  transform: scale(0.92);
+}
+
+.swap.is-swapping svg {
+  animation: spinSwap 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes spinSwap {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(180deg); }
+}
+
+/* Painel de resultado */
+.result {
+  background: #E8F7EE;
+  border: 1.5px solid #C6EED4;
+  border-radius: 20px;
+  padding: 18px 18px 20px;
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.result-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.result-illustration {
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.result-coin-img {
+  width: 78px;
+  height: auto;
+  filter: drop-shadow(0 4px 8px rgba(234, 179, 8, 0.25));
+}
+
+.result-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.result-label {
+  font-size: 14px;
+  font-weight: 800;
+  color: #064E3B;
+}
+
+.result-amount-line {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+#converted-val {
+  font-size: clamp(28px, 6vw, 36px);
+  font-weight: 900;
+  color: #064E3B;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  word-break: break-word;
+}
+
+#converted-code {
+  font-size: clamp(18px, 4vw, 22px);
+  font-weight: 900;
+  color: #064E3B;
+}
+
+.dest-currency-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #C7F5D8;
+  color: #064E3B;
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 12.5px;
+  font-weight: 800;
+  margin-top: 4px;
+  align-self: flex-start;
+}
+
+.result-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid rgba(198, 238, 212, 0.7);
+  padding-top: 10px;
+}
+
+.result-equation {
+  font-size: 14px;
+  font-weight: 800;
+  color: #064E3B;
+  margin: 0;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.result-in-words {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+/* Aviso de cotação diária */
+.daily-rate-card {
+  background: #EBF5FF;
+  border-radius: 14px;
+  padding: 11px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.daily-rate-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.daily-rate-text {
+  margin: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #1E40AF;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+/* ==========================================================
+   REGRAS RESPONSIVAS SMARTPHONE (≤ 768px)
+   ========================================================== */
+@media (max-width: 768px) {
+  body {
+    background: #FAF6EC !important;
+    color: #0F172A !important;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
   }
 
-  body.theme-mexico main {
-    padding: 0 0 calc(116px + env(safe-area-inset-bottom));
-    max-width: none;
+  .app-shell {
+    display: block !important;
+    min-height: 100vh;
+    background: #FAF6EC !important;
+    overflow-x: clip;
   }
 
-  body.theme-mexico .mobile-topbar {
-    min-height: 62px;
-    padding: 10px 22px;
-    background: #fffdf8;
-    border: 0;
-    box-shadow: 0 3px 14px rgba(6, 78, 59, 0.06);
+  .sidebar {
+    display: none !important;
   }
 
-  body.theme-mexico .mobile-topbar-avatar {
-    width: 46px;
-    height: 46px;
-    flex-basis: 46px;
-    border-radius: 0;
-    background-image: url("logo.png");
-    box-shadow: none;
+  main {
+    padding: 0 14px calc(92px + env(safe-area-inset-bottom)) !important;
+    max-width: 520px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    display: block !important;
   }
 
-  body.theme-mexico .mobile-topbar-brand strong {
-    font-size: 23px;
-    letter-spacing: -0.5px;
-  }
-
-  body.theme-mexico .mobile-topbar .theme-toggle {
-    width: 48px;
-    height: 48px;
-    padding: 0;
-    border: 0;
-    background: #fff;
-    border-radius: 50%;
-    box-shadow: 0 4px 13px rgba(6, 78, 59, 0.14);
-  }
-
-  body.theme-mexico .mobile-topbar .theme-toggle span,
-  body.theme-mexico .mobile-topbar .theme-toggle::before {
-    display: none;
-  }
-
-  body.theme-mexico .mobile-topbar .theme-toggle::after {
-    content: "⚙";
-    display: grid;
-    width: 100%;
-    height: 100%;
-    place-items: center;
-    color: var(--mx-navy);
-    font-size: 28px;
-  }
-
-  body.theme-mexico #home-page > header {
-    min-height: 270px;
-    margin: 0;
-    padding: 30px 28px 22px;
-    border-radius: 0;
-    align-items: flex-start;
-    background: linear-gradient(105deg, #fffdf8 0%, #fff8e8 70%, #f9f0d8 100%);
-    overflow: hidden;
-  }
-
-  body.theme-mexico #home-page > header > div {
-    position: relative;
-    z-index: 1;
-    max-width: 58%;
-  }
-
-  body.theme-mexico #home-page > header h1 {
-    font-size: clamp(47px, 12.2vw, 72px);
-    line-height: 0.96;
-    letter-spacing: -1.2px;
-  }
-
-  body.theme-mexico #home-page > header h1 .icon-default,
-  body.theme-mexico #home-page > header h1 .icon-mexico,
-  body.theme-mexico .header-flower {
-    display: none;
-  }
-
-  body.theme-mexico #home-page > header p {
-    margin: 15px 0 0;
-    color: #637083;
-    font-size: clamp(16px, 4.1vw, 23px);
-    line-height: 1.15;
-  }
-
-  body.theme-mexico .mx-header-art {
-    inset: auto 0 0 auto;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: 65% bottom;
-    opacity: 0.86;
-  }
-
-  body.theme-mexico .content-grid {
-    display: block;
-    margin: 0;
-  }
-
-  body.theme-mexico .info-column,
-  body.theme-mexico .mini-countries {
-    display: none;
-  }
-
-  body.theme-mexico .converter-card {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-    margin: 0 18px;
-    padding: 22px 20px 20px;
-    border: 0;
-    border-radius: 28px;
-    background: #fffdf9;
-    box-shadow: 0 10px 28px rgba(85, 65, 30, 0.08);
-  }
-
-  body.theme-mexico .card-title {
-    display: none;
-  }
-
-  body.theme-mexico .converter-card > label[for="amount"] {
-    order: 2;
-    margin: 26px 0 7px;
-    color: var(--mx-navy);
-    font-size: clamp(20px, 5.5vw, 28px);
-    font-weight: 900;
-  }
-
-  body.theme-mexico .amount-input {
-    order: 3;
-    min-height: 70px;
-    height: auto;
-    padding: 10px 16px;
-    border: 2px solid #eee9e0;
-    border-radius: 16px;
-    box-shadow: 0 2px 5px rgba(15, 42, 55, 0.05);
-    flex-wrap: wrap;
-  }
-
-  body.theme-mexico .amount-input b {
-    font-size: clamp(24px, 6.2vw, 32px);
-  }
-
-  body.theme-mexico .amount-input input {
-    min-width: 0;
-    padding: 0 0 0 13px;
-    font-size: clamp(43px, 11vw, 61px);
-    text-align: right;
-  }
-
-  body.theme-mexico .amount-in-words {
-    margin: 2px 0 0;
-    color: #748095;
-    font-size: clamp(17px, 4.5vw, 23px);
-  }
-
-  body.theme-mexico .currency-row {
-    order: 4;
-    grid-template-columns: minmax(0, 1fr) 76px minmax(0, 1fr);
-    gap: 7px;
-    margin-top: 24px;
-    align-items: end;
-  }
-
-  body.theme-mexico .currency-box label {
-    margin: 0 0 7px;
-    color: var(--mx-navy);
-    font-size: clamp(19px, 5vw, 27px);
-    font-weight: 900;
-  }
-
-  body.theme-mexico .flag-select-btn {
-    height: 65px;
-    min-height: 65px;
-    padding: 8px 11px;
-    border: 1px solid #eee9e0;
-    border-radius: 15px;
-    background: #fff;
-    box-shadow: 0 3px 9px rgba(15, 42, 55, 0.08);
-    font-size: clamp(16px, 4.2vw, 22px);
-  }
-
-  body.theme-mexico .flag-select-btn-flag {
-    width: 43px;
-    height: 30px;
-  }
-
-  body.theme-mexico .swap {
-    width: 68px;
-    height: 68px;
-    margin: 0 auto 1px;
-    border: 0;
-    border-radius: 50%;
-    background: linear-gradient(140deg, #e7fff1, #fff0f0);
-    color: var(--mx-green);
-    box-shadow: 0 4px 13px rgba(6, 78, 59, 0.08);
-    font-size: 42px;
-  }
-
-  body.theme-mexico .convert-button {
-    display: none;
-  }
-
-  body.theme-mexico .quote-card {
-    order: 1;
-    grid-template-columns: 52px minmax(0, 1fr);
-    gap: 10px;
-    margin: 0;
-    padding: 10px 0 18px;
-    border: 0;
-    border-bottom: 1px solid #edf1eb;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  body.theme-mexico .quote-icon {
-    width: 46px;
-    height: 46px;
-    border-radius: 15px;
-    background: #e6fff0;
-    color: #0bac76;
-    font-size: 31px;
-  }
-
-  body.theme-mexico .quote-card small {
-    color: var(--mx-navy);
-    font-size: clamp(16px, 4.1vw, 21px);
-  }
-
-  body.theme-mexico .quote-card strong {
-    margin-top: 4px;
-    color: var(--mx-navy);
-    font-size: clamp(20px, 5.3vw, 28px);
-    line-height: 1.13;
-  }
-
-  body.theme-mexico .quote-card p {
-    color: #687487;
-    font-size: clamp(15px, 3.8vw, 20px);
-    line-height: 1.25;
-  }
-
-  body.theme-mexico .quote-actions {
-    grid-column: 1 / -1;
-    grid-row: 1;
-    justify-self: end;
-  }
-
-  body.theme-mexico .quote-card > .quote-actions b {
-    display: inline-block;
-    margin: 0;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background: #ffe4e8;
-    color: var(--mx-red);
-    font-size: clamp(12px, 3.2vw, 16px);
-  }
-
-  body.theme-mexico .quote-sombrero {
-    display: none;
-  }
-
-  body.theme-mexico .result {
-    order: 5;
-    min-height: 0;
-    margin-top: 26px;
-    padding: 22px 16px 20px;
-    gap: 13px;
+  .mobile-topbar {
+    display: flex !important;
     align-items: center;
-    border: 1px solid #c9f1d9;
-    border-radius: 24px;
-    background: linear-gradient(135deg, #edfff2, #ddf9e7);
+    justify-content: space-between;
+    padding: 12px 14px 6px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    min-height: 48px;
+    box-sizing: border-box;
   }
 
-  body.theme-mexico .mx-coin-pile {
-    display: block;
-    width: clamp(75px, 22vw, 120px);
-    height: auto;
-    flex: 0 0 auto;
+  .mobile-topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
   }
 
-  body.theme-mexico .divider {
-    height: 120px;
-    border-color: #9de1b8;
+  .mobile-topbar-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(234, 179, 8, 0.3));
   }
 
-  body.theme-mexico .result > div:last-child {
-    min-width: 0;
+  .mobile-topbar-title {
+    font-family: 'Baloo 2', 'Nunito', sans-serif;
+    font-size: 19px;
+    font-weight: 800;
+    color: #064E3B;
+    letter-spacing: -0.3px;
+  }
+
+  .settings-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 1px solid #ECE7D8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0F172A;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .settings-btn:active {
+    transform: scale(0.94);
+  }
+
+  .home-hero {
+    position: relative;
+    padding: 14px 6px 14px;
+    min-height: 148px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 62%;
+    padding-bottom: 4px;
+  }
+
+  .hero-title {
+    font-size: clamp(30px, 8.5vw, 38px);
+    line-height: 1.02;
+  }
+
+  .hero-subtitle {
+    margin: 8px 0 0;
+    font-size: 13.5px;
+  }
+
+  .mx-header-art {
+    position: absolute;
+    right: -10px;
+    bottom: -2px;
+    height: 140px;
+    width: auto;
+    max-width: 62%;
+    object-fit: cover;
+    object-position: right bottom;
+    z-index: 1;
+    pointer-events: none;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.05));
+  }
+
+  .content-grid {
+    display: block !important;
+  }
+
+  .quote-card {
+    background: #FFFFFF !important;
+    border-radius: 22px !important;
+    padding: 16px 18px !important;
+    margin: 0 0 16px !important;
+    border: 1px solid #ECE7D8;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .converter-card {
+    background: #FFFFFF !important;
+    border-radius: 24px !important;
+    padding: 20px 18px 22px !important;
+    margin: 0 0 20px !important;
+    border: 1px solid #ECE7D8;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .flag-select-country,
+  .flag-select-sep {
+    display: none;
+  }
+
+  .flag-select-btn {
+    padding: 8px 10px;
+    min-height: 48px;
+  }
+
+  .result-coin-img {
+    width: clamp(62px, 18vw, 82px);
+  }
+
+  /* Barra inferior fixa (4 itens) */
+  .bottom-nav {
+    display: flex !important;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 100 !important;
+    background: #FFFFFF !important;
+    border-top: 1px solid #F1ECE1 !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05) !important;
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom)) !important;
+    justify-content: space-around !important;
+    align-items: center !important;
+    box-sizing: border-box;
+  }
+
+  .bottom-nav button {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    min-height: 52px;
+    color: #64748B;
+    transition: all 0.2s ease;
+  }
+
+  .bottom-nav button small {
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Nunito', sans-serif;
+    color: #64748B;
+  }
+
+  .bottom-nav button.active small {
+    color: #064E3B;
+    font-weight: 800;
+  }
+
+  .bottom-nav button .nav-circle-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #059669;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
+    transition: transform 0.2s ease;
+  }
+
+  .bottom-nav button.active .nav-circle-icon {
+    transform: scale(1.05);
+  }
+
+  .bottom-nav button .nav-icon {
+    color: #64748B;
+    transition: color 0.2s ease;
+  }
+
+  .bottom-nav button.active .nav-icon {
+    color: #059669;
+  }
+
+  /* Outras seções no smartphone */
+  .info-column {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    margin: 16px 0 !important;
+  }
+
+  .info-card {
+    border-radius: 18px !important;
+    padding: 14px !important;
+    background: #FFFFFF !important;
+    border: 1px solid #ECE7D8 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+  }
+
+  .info-card h2 {
+    font-size: 16px !important;
+    color: #064E3B !important;
+    margin: 0 0 8px !important;
+  }
+
+  .info-card p {
+    font-size: 13px !important;
+    color: #374151 !important;
+    line-height: 1.35 !important;
+    margin: 0 !important;
+  }
+
+  .mini-countries {
+    margin: 20px 0 !important;
+    overflow: visible !important;
+  }
+
+  .mini-countries-head h2 {
+    font-size: 18px !important;
+    color: #064E3B !important;
+  }
+
+  #mini-list {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    min-width: 0 !important;
+  }
+
+  .mini {
+    padding: 12px !important;
+    border-radius: 16px !important;
+    box-sizing: border-box;
+  }
+
+  .ai-assistant {
+    border-radius: 20px !important;
+    padding: 16px !important;
+    margin: 20px 0 !important;
+  }
+
+  .app-footer {
+    padding: 20px 10px !important;
+  }
+}
+
+/* Ajustes específicos para telas ultra-estreitas (≤ 360px e ≤ 320px) */
+@media (max-width: 360px) {
+  main {
+    padding: 0 10px calc(92px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .amount-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .amount-wrapper {
+    align-items: stretch;
+  }
+
+  .amount-box {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  #amount {
     flex: 1;
   }
 
-  body.theme-mexico .result > div:last-child::before {
-    content: "Valor convertido";
-    display: block;
-    margin-bottom: 2px;
-    color: var(--mx-green-dark);
-    font: 900 clamp(20px, 5vw, 27px) "Baloo 2", cursive;
+  .amount-in-words {
+    text-align: center;
+    max-width: 100%;
   }
 
-  body.theme-mexico .result strong {
-    display: block;
-    font-size: clamp(42px, 10.5vw, 60px);
-    line-height: 0.96;
-    white-space: nowrap;
+  .currency-row {
+    gap: 6px !important;
   }
 
-  body.theme-mexico .result small {
-    font-size: clamp(22px, 5.4vw, 31px);
+  .swap {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
   }
 
-  body.theme-mexico .dest-currency-badge {
-    display: table;
-    margin: 9px 0 0;
-    padding: 6px 14px;
-    border-radius: 999px;
-    background: #c7f5d8;
-    color: var(--mx-green-dark);
-    font-size: clamp(15px, 3.9vw, 21px);
+  .swap svg {
+    width: 28px;
+    height: 28px;
   }
 
-  body.theme-mexico .result p {
-    grid-column: 1 / -1;
-    margin-top: 12px;
-    color: var(--mx-green-dark);
-    font-size: clamp(15px, 3.8vw, 20px);
-    line-height: 1.3;
+  .flag-select-btn {
+    padding: 7px 8px;
   }
 
-  body.theme-mexico .daily-rate {
-    grid-column: 1 / -1;
-    margin: 10px 0 0;
-    padding: 12px 14px;
-    border-radius: 16px;
-    background: #e5f2ff;
-    color: #215694;
-    font-size: clamp(13px, 3.5vw, 17px);
-    line-height: 1.3;
+  .flag-select-btn-flag {
+    width: 24px;
+    height: 16px;
   }
 
-  body.theme-mexico .bottom-nav {
-    left: 18px;
-    right: 18px;
-    bottom: calc(14px + env(safe-area-inset-bottom));
-    border: 0;
-    border-radius: 28px;
-    background: rgba(255, 253, 249, 0.96);
-    padding: 9px 7px;
-    box-shadow: 0 8px 25px rgba(85, 65, 30, 0.15);
+  .flag-select-code {
+    font-size: 13.5px;
   }
 
-  body.theme-mexico .bottom-nav button {
-    min-height: 70px;
-    color: #727b8b;
-    font-size: 13px;
+  .result-coin-img {
+    width: 52px;
   }
 
-  body.theme-mexico .bottom-nav button span {
-    font-size: 29px;
+  .info-column {
+    grid-template-columns: 1fr !important;
   }
 
-  body.theme-mexico .bottom-nav button.active {
-    width: 64px;
-    flex: 0 0 64px;
-    border-radius: 50%;
-    color: #fff;
-    font-weight: 900;
+  #mini-list {
+    grid-template-columns: 1fr !important;
   }
 }
 
-@media (max-width: 380px) {
-  body.theme-mexico #home-page > header {
-    min-height: 232px;
-    padding: 24px 20px 18px;
-  }
-
-  body.theme-mexico .converter-card {
-    margin: 0 10px;
-    padding: 18px 14px;
-  }
-
-  body.theme-mexico .currency-row {
-    grid-template-columns: minmax(0, 1fr) 58px minmax(0, 1fr);
-  }
-
-  body.theme-mexico .swap {
-    width: 54px;
-    height: 54px;
-    font-size: 33px;
-  }
-
-  body.theme-mexico .flag-select-btn {
-    padding: 8px;
-  }
-
-  body.theme-mexico .flag-select-btn-flag {
-    width: 35px;
-    height: 25px;
-  }
-}
-
-@media (max-width: 380px) {
-  #countries-page .country-card {
-    grid-template-columns: 59px minmax(0, 1fr) 98px;
-  }
-
-  #countries-page .country-card h2 {
-    font-size: 18px;
-  }
-
-  #countries-page .country-card button {
-    font-size: 12px;
-  }
-}

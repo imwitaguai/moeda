@@ -195,11 +195,25 @@ function updateSelectFlag(select) {
   const currency = currencies[select.value];
   const box = select.closest(".currency-box");
   const trigger = box.querySelector(".flag-select-btn");
-  trigger.querySelector(".flag-select-btn-flag").src = currency.image;
-  trigger.querySelector(".flag-select-btn-flag").alt =
-    `Bandeira do ${currency.country}`;
-  trigger.querySelector(".flag-select-btn-label").textContent =
-    `${currency.country} · ${select.value}`;
+  const flagImg = trigger.querySelector(".flag-select-btn-flag");
+  if (flagImg) {
+    flagImg.src = currency.image;
+    flagImg.alt = `Bandeira do ${currency.country}`;
+  }
+  const countryEl = trigger.querySelector(".flag-select-country");
+  const codeEl = trigger.querySelector(".flag-select-code");
+  if (countryEl && codeEl) {
+    countryEl.textContent = currency.country;
+    codeEl.textContent = select.value;
+  } else {
+    const label = trigger.querySelector(".flag-select-btn-label");
+    if (label) label.textContent = `${currency.country} · ${select.value}`;
+  }
+  const roleLabel = box.querySelector("label")?.textContent || "Moeda";
+  trigger.setAttribute(
+    "aria-label",
+    `${roleLabel}: ${currency.country} (${select.value}) - ${currency.name}`,
+  );
   box.querySelectorAll(".flag-select-list li[data-code]").forEach((item) => {
     item.setAttribute(
       "aria-selected",
@@ -388,16 +402,24 @@ function updateQuote(
     card.id = "quote-card";
     card.className = "quote-card";
     card.innerHTML =
-      '<span class="quote-icon">⇆</span><div class="quote-copy"><small>Cotação utilizada</small><strong id="quote-primary"></strong><p id="quote-secondary"></p><small id="quote-updated"></small></div><div class="quote-actions"><b id="quote-badge"></b><button id="rate-retry" type="button" hidden>Tentar novamente</button></div><img class="quote-sombrero" src="images/mx3.png" alt="">';
-    document.querySelector(".convert-button").before(card);
+      '<div class="quote-header"><div class="quote-title-group"><span class="quote-icon" aria-hidden="true"><svg viewBox="0 0 20 20" width="18" height="18" fill="none"><rect x="2" y="9" width="3.5" height="9" rx="1.75" fill="#059669"/><rect x="8" y="4" width="3.5" height="14" rx="1.75" fill="#059669"/><rect x="14" y="7" width="3.5" height="11" rx="1.75" fill="#10B981"/></svg></span><strong class="quote-title">Cotação utilizada</strong></div><div class="quote-actions"><b id="quote-badge" class="quote-badge">Cotação real</b><button id="rate-retry" type="button" class="rate-retry-btn" hidden>Tentar novamente</button></div></div><div class="quote-rates"><div class="quote-line-primary" id="quote-primary"></div><div class="quote-line-secondary" id="quote-secondary"></div></div><div class="quote-footer"><small id="quote-updated"></small></div>';
+    const converterCard = document.querySelector(".converter-card");
+    if (converterCard) converterCard.before(card);
+    else document.querySelector(".content-grid")?.prepend(card);
     document
       .querySelector("#rate-retry")
-      .addEventListener("click", loadLiveRates);
+      ?.addEventListener("click", loadLiveRates);
   }
-  document.querySelector("#quote-primary").innerHTML =
-    `${destination.symbol} 1,00 <span class="quote-curr-name">${destination.name}</span> = ${origin.symbol} ${fmt(1 / unitRate)} <span class="quote-curr-name">${origin.name}</span>`;
-  document.querySelector("#quote-secondary").innerHTML =
-    `${origin.symbol} 1,00 <span class="quote-curr-name">${origin.name}</span> = ${destination.symbol} ${fmt(unitRate)} <span class="quote-curr-name">${destination.name}</span>`;
+  const quotePrimary = document.querySelector("#quote-primary");
+  if (quotePrimary) {
+    quotePrimary.innerHTML =
+      `<b>${destination.symbol} 1,00</b> <span class="quote-curr-name">${destination.name}</span> = <b>${origin.symbol} ${fmt(1 / unitRate)}</b> <span class="quote-curr-name">${origin.name}</span>`;
+  }
+  const quoteSecondary = document.querySelector("#quote-secondary");
+  if (quoteSecondary) {
+    quoteSecondary.innerHTML =
+      `<span>${origin.symbol} 1,00</span> <span class="quote-curr-name">${origin.name}</span> = <span>${destination.symbol} ${fmt(unitRate)}</span> <span class="quote-curr-name">${destination.name}</span>`;
+  }
   const pairState = getPairRateState(originCode, destinationCode);
   const copy = updateRateSurfaces(pairState);
   card.setAttribute(
@@ -487,25 +509,46 @@ function convert() {
   updateSelectFlag(from);
   updateSelectFlag(to);
   const copy = updateQuote(origin, destination, from.value, to.value, unitRate);
-  document.querySelector("#input-symbol").textContent = origin.symbol;
+  const inputSymbol = document.querySelector("#input-symbol");
+  if (inputSymbol) inputSymbol.textContent = origin.symbol;
+
   const amountInWords = document.querySelector("#amount-in-words");
   const writtenAmount = formatAmountInWords(input, from.value);
   if (amountInWords) {
     amountInWords.textContent = writtenAmount;
     amountInWords.title = writtenAmount;
   }
-  document.querySelector("#converted").innerHTML =
-    `${fmt(value)} <small>${to.value}</small> <span class="dest-currency-badge">${destination.name}</span>`;
-  document.querySelector("#equation").innerHTML =
-    `<b>${fmt(input)} ${origin.name} (${from.value})</b> = <b>${fmt(value)} ${destination.name} (${to.value})</b>`;
-  let dailyRate = document.querySelector("#daily-rate");
-  if (!dailyRate) {
-    dailyRate = document.createElement("p");
-    dailyRate.id = "daily-rate";
-    dailyRate.className = "daily-rate";
-    document.querySelector("#equation").after(dailyRate);
+
+  const convertedVal = document.querySelector("#converted-val");
+  const convertedCode = document.querySelector("#converted-code");
+  const destBadge = document.querySelector("#dest-currency-badge");
+  if (convertedVal) convertedVal.textContent = fmt(value);
+  if (convertedCode) convertedCode.textContent = to.value;
+  if (destBadge) destBadge.textContent = destination.name;
+
+  const converted = document.querySelector("#converted");
+  if (converted) {
+    converted.innerHTML =
+      `${fmt(value)} <small>${to.value}</small> <span class="dest-currency-badge">${destination.name}</span>`;
   }
-  dailyRate.textContent = copy.daily;
+
+  const equation = document.querySelector("#equation");
+  if (equation) {
+    equation.innerHTML =
+      `<b>${fmt(input)} ${origin.name} (${from.value})</b> = <b>${fmt(value)} ${destination.name} (${to.value})</b>`;
+  }
+
+  const convertedInWords = document.querySelector("#converted-in-words");
+  if (convertedInWords) {
+    const writtenConverted = formatAmountInWords(value, to.value);
+    convertedInWords.textContent = writtenConverted;
+    convertedInWords.title = writtenConverted;
+  }
+
+  let dailyRate = document.querySelector("#daily-rate");
+  if (dailyRate) {
+    dailyRate.textContent = copy.daily;
+  }
   miniCards();
 }
 
@@ -859,7 +902,7 @@ amount.addEventListener("keydown", (e) => {
     }
   }
 });
-document.querySelector(".convert-button").addEventListener("click", convert);
+document.querySelector(".convert-button")?.addEventListener("click", convert);
 document.querySelector(".swap").addEventListener("click", swapCurrencies);
 document
   .querySelector(".swap")
