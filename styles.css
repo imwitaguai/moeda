@@ -3468,12 +3468,29 @@ body.theme-mexico a:focus-visible {
     margin-top: 0;
   }
   .amount-input,
-  .flag-select-btn,
-  .convert-button {
+  .flag-select-btn {
     min-height: 56px;
   }
 
   .amount-in-words {
+    display: block;
+    flex-basis: 100%;
+    max-width: none;
+    max-height: none;
+    margin: -2px 0 2px;
+    overflow: visible;
+    color: #758196;
+    font-family: Nunito, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-align: center;
+    text-overflow: clip;
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+  }
+
+  .convert-button {
     display: none;
   }
 }
