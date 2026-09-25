@@ -274,13 +274,23 @@ body.theme-mexico .amount-input {
 
 .amount-in-words {
   flex: 0 1 auto;
-  max-width: 62%;
-  overflow: visible;
+  max-width: 58%;
   color: #075940;
-  font: 800 clamp(24px, 3vw, 34px) "Baloo 2";
-  line-height: 1;
+  font-family: "Baloo 2", cursive, sans-serif;
+  font-weight: 700;
+  font-size: clamp(14px, 1.4vw, 18px);
+  line-height: 1.15;
   text-align: right;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-height: 44px;
 }
 .currency-row {
   display: grid;

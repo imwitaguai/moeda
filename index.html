@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@500;600;700;800;900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=20260924-16" />
+    <link rel="stylesheet" href="styles.css?v=20260924-17" />
     <style>
       .country-flag-image {
         display: block;
@@ -190,10 +190,11 @@
                 <b id="input-symbol">R$</b
                 ><input
                   id="amount"
-                  type="number"
-                  value="100"
-                  min="0"
-                  step="1"
+                  type="text"
+                  inputmode="decimal"
+                  value="100,00"
+                  placeholder="0,00"
+                  autocomplete="off"
                 /><span
                   id="amount-in-words"
                   class="amount-in-words"
@@ -1002,6 +1003,6 @@
         </button>
       </nav>
     </div>
-    <script src="script.js?v=20260924-17"></script>
+    <script src="script.js?v=20260925-01"></script>
   </body>
 </html>

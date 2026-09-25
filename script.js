@@ -175,9 +175,6 @@ const currencyWords = {
   GBP: ["libra esterlina", "libras esterlinas"],
 };
 
-function numberToWords(value) {
-  return String(value);
-}
 const isValidRate = (value) =>
   typeof value === "number" &&
   Number.isFinite(value) &&
@@ -410,10 +407,81 @@ function updateQuote(
   return copy;
 }
 
+function getAmountValue() {
+  const raw = String(amount.value || "").trim();
+  if (!raw) return 0;
+  const normalized = raw.replace(/\./g, "").replace(",", ".");
+  const num = parseFloat(normalized);
+  return Number.isFinite(num) && num >= 0 ? num : 0;
+}
+
+function formatLiveInput(rawValue) {
+  if (!rawValue) return { display: "", number: 0 };
+  let val = String(rawValue).trim().replace(/\./g, "");
+
+  const parts = val.split(",");
+  let intPart = parts[0].replace(/\D/g, "");
+  let decPart = null;
+
+  if (parts.length > 1) {
+    decPart = parts.slice(1).join("").replace(/\D/g, "").slice(0, 2);
+  }
+
+  if (intPart.length > 1) {
+    intPart = intPart.replace(/^0+(?=\d)/, "");
+  }
+
+  const formattedInt = intPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  let display = formattedInt;
+  if (decPart !== null) {
+    display += "," + decPart;
+  }
+
+  const numVal = parseFloat((intPart || "0") + "." + (decPart || "0")) || 0;
+  return { display, number: numVal };
+}
+
+function onAmountInput() {
+  const prevValue = amount.value;
+  const cursorPosition = amount.selectionStart || 0;
+  const digitsBeforeCursor = prevValue
+    .slice(0, cursorPosition)
+    .replace(/\D/g, "").length;
+
+  const { display } = formatLiveInput(prevValue);
+  amount.value = display;
+
+  if (digitsBeforeCursor === 0) {
+    amount.setSelectionRange(0, 0);
+  } else {
+    let newCursor = 0;
+    let digitCount = 0;
+    for (let i = 0; i < display.length; i++) {
+      if (/\d/.test(display[i])) digitCount++;
+      if (digitCount === digitsBeforeCursor) {
+        newCursor = i + 1;
+        break;
+      }
+    }
+    amount.setSelectionRange(newCursor, newCursor);
+  }
+
+  convert();
+}
+
+function onAmountBlur() {
+  const num = getAmountValue();
+  amount.value = num.toLocaleString("pt-BR", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  convert();
+}
+
 function convert() {
   const origin = currencies[from.value];
   const destination = currencies[to.value];
-  const input = Math.max(0, Number(amount.value) || 0);
+  const input = getAmountValue();
   const value = (input / origin.perBRL) * destination.perBRL;
   const unitRate = destination.perBRL / origin.perBRL;
   updateSelectFlag(from);
@@ -421,13 +489,10 @@ function convert() {
   const copy = updateQuote(origin, destination, from.value, to.value, unitRate);
   document.querySelector("#input-symbol").textContent = origin.symbol;
   const amountInWords = document.querySelector("#amount-in-words");
-  const [singular, plural] = currencyWords[from.value] || [
-    origin.name,
-    origin.name,
-  ];
-  const writtenAmount = toWords(input);
+  const writtenAmount = formatAmountInWords(input, from.value);
   if (amountInWords) {
-    amountInWords.textContent = `${writtenAmount.charAt(0).toUpperCase()}${writtenAmount.slice(1)} ${input === 1 ? singular : plural}`;
+    amountInWords.textContent = writtenAmount;
+    amountInWords.title = writtenAmount;
   }
   document.querySelector("#converted").innerHTML =
     `${fmt(value)} <small>${to.value}</small> <span class="dest-currency-badge">${destination.name}</span>`;
@@ -476,7 +541,7 @@ function countryGrid() {
 function miniCards() {
   const origin = currencies[from.value] || currencies.BRL;
   const destinationCode = to.value;
-  const input = Math.max(0, Number(amount.value) || 0);
+  const input = getAmountValue();
   document.querySelector("#mini-title").innerHTML =
     `${origin.country} &times; outros pa&iacute;ses`;
   document.querySelector("#mini-desc").textContent =
@@ -774,9 +839,25 @@ miniToggle?.addEventListener("click", () => {
   miniToggle.textContent = isCollapsed ? "Ver todos →" : "Ver menos ←";
 });
 
-[amount, from, to].forEach((element) => {
+[from, to].forEach((element) => {
   element.addEventListener("input", convert);
   element.addEventListener("change", convert);
+});
+amount.addEventListener("input", onAmountInput);
+amount.addEventListener("blur", onAmountBlur);
+amount.addEventListener("focus", () => amount.select());
+amount.addEventListener("keydown", (e) => {
+  if (e.key === ".") {
+    e.preventDefault();
+    if (!amount.value.includes(",")) {
+      const start = amount.selectionStart;
+      const end = amount.selectionEnd;
+      amount.value =
+        amount.value.slice(0, start) + "," + amount.value.slice(end);
+      amount.setSelectionRange(start + 1, start + 1);
+      onAmountInput();
+    }
+  }
 });
 document.querySelector(".convert-button").addEventListener("click", convert);
 document.querySelector(".swap").addEventListener("click", swapCurrencies);
@@ -892,6 +973,7 @@ function toWords(value) {
     "oitocentos",
     "novecentos",
   ];
+
   const underOneThousand = (number) => {
     if (number < 10) return units[number];
     if (number < 20) return teens[number - 10];
@@ -908,12 +990,90 @@ function toWords(value) {
     );
   };
 
-  const n = Math.max(0, Math.min(999999, Math.round(Number(value) || 0)));
-  if (n < 1000) return underOneThousand(n);
+  const num = Math.floor(Math.abs(Number(value) || 0));
+  if (num === 0) return "zero";
 
-  const thousands = Math.floor(n / 1000);
-  const remainder = n % 1000;
-  const prefix = thousands === 1 ? "mil" : `${underOneThousand(thousands)} mil`;
-  if (!remainder) return prefix;
-  return `${prefix}${remainder < 100 ? " e " : " "}${underOneThousand(remainder)}`;
+  const scales = [
+    { value: 1e12, singular: "trilhão", plural: "trilhões" },
+    { value: 1e9, singular: "bilhão", plural: "bilhões" },
+    { value: 1e6, singular: "milhão", plural: "milhões" },
+    { value: 1e3, singular: "mil", plural: "mil" },
+    { value: 1, singular: "", plural: "" },
+  ];
+
+  let remaining = num;
+  const parts = [];
+
+  for (const scale of scales) {
+    const count = Math.floor(remaining / scale.value);
+    if (count > 0) {
+      remaining %= scale.value;
+      let text = "";
+      if (scale.value === 1e3) {
+        text = count === 1 ? "mil" : `${underOneThousand(count)} mil`;
+      } else if (scale.value >= 1e6) {
+        text = `${underOneThousand(count)} ${count === 1 ? scale.singular : scale.plural}`;
+      } else {
+        text = underOneThousand(count);
+      }
+      parts.push({ count, scale: scale.value, text });
+    }
+  }
+
+  if (parts.length === 1) return parts[0].text;
+
+  let result = parts[0].text;
+  for (let i = 1; i < parts.length; i++) {
+    const prev = parts[i - 1];
+    const curr = parts[i];
+    const isLast = i === parts.length - 1;
+    const isRoundHundredOrUnder100 =
+      curr.count < 100 || (curr.count % 100 === 0 && curr.count < 1000);
+
+    if (prev.scale === 1e3 && curr.scale === 1 && !isRoundHundredOrUnder100) {
+      result += " " + curr.text;
+    } else if (isLast && (isRoundHundredOrUnder100 || parts.length === 2)) {
+      result += " e " + curr.text;
+    } else {
+      result += ", " + curr.text;
+    }
+  }
+  return result;
+}
+
+function formatAmountInWords(value, currencyCode) {
+  const [singular, plural] = currencyWords[currencyCode] || [
+    currencies[currencyCode]?.name || "unidade",
+    currencies[currencyCode]?.name || "unidades",
+  ];
+  const num = Math.max(0, Number(value) || 0);
+  const integerPart = Math.floor(num);
+  const cents = Math.round((num - integerPart) * 100);
+
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+  if (integerPart === 0 && cents > 0) {
+    const centsText = toWords(cents) + (cents === 1 ? " centavo" : " centavos");
+    return cap(`${centsText} de ${singular}`);
+  }
+
+  let text = toWords(integerPart);
+  let currencySuffix = "";
+  if (integerPart === 1) {
+    currencySuffix = " " + singular;
+  } else if (integerPart >= 1e6 && integerPart % 1e6 === 0) {
+    currencySuffix = " de " + plural;
+  } else {
+    currencySuffix = " " + plural;
+  }
+
+  let result = cap(text + currencySuffix);
+  if (cents > 0) {
+    result += ` e ${toWords(cents)} ${cents === 1 ? "centavo" : "centavos"}`;
+  }
+  return result;
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { toWords, formatAmountInWords };
 }
