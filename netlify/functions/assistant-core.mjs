@@ -18,8 +18,28 @@ export function validateAssistantInput(input) {
     context = { amount, from: source.from, to: source.to };
   }
 
-  return { message, ...(context ? { context } : {}) };
+  let history;
+  if (input.history !== undefined) {
+    if (!Array.isArray(input.history)) return null;
+    history = [];
+    for (const turn of input.history.slice(-MAX_HISTORY_TURNS)) {
+      if (!turn || typeof turn !== 'object') return null;
+      if (turn.role !== 'user' && turn.role !== 'assistant') return null;
+      if (typeof turn.text !== 'string') return null;
+      const text = turn.text.trim().slice(0, MAX_HISTORY_CHARS);
+      if (text) history.push({ role: turn.role, text });
+    }
+  }
+
+  return {
+    message,
+    ...(context ? { context } : {}),
+    ...(history?.length ? { history } : {})
+  };
 }
+
+export const MAX_HISTORY_TURNS = 6;
+const MAX_HISTORY_CHARS = 1500;
 
 export function extractAssistantReply(payload) {
   const reply = payload?.choices?.[0]?.message?.content;
@@ -49,5 +69,5 @@ export function fallbackAssistantReply(input) {
   if (/(país|pais|capital|continente|bandeira)/.test(question)) {
     return `Na página Países, você pode explorar a bandeira, a capital, o continente e a moeda de cada local. Depois, toque em Converter para testar aquela moeda.`;
   }
-  return `Posso ajudar com moedas, países, capitais, taxas de câmbio e o uso do conversor. Tente perguntar, por exemplo: “Como funciona o câmbio?” ou “Qual é a moeda do México?”.${contextLine}`;
+  return `Agora estou sem conexão com a inteligência que responde perguntas de todas as matérias, então consigo ajudar só com moedas, países, câmbio e o conversor. Tente de novo daqui a pouco!${contextLine}`;
 }

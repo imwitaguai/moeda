@@ -795,6 +795,30 @@ function applaudStudent(id, button) {
   }
 }
 
+// Formatação simples das respostas do tutor, sem usar innerHTML:
+// **negrito** vira <strong> e marcadores "* " / "- " viram "• ".
+function renderTutorText(container, text) {
+  const lines = String(text)
+    .replace(/\r\n?/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim()
+    .split("\n")
+    .map((line) => line.replace(/^\s*[*-]\s+/, "• ").replace(/^#{1,6}\s+/, ""));
+  lines.forEach((line, index) => {
+    line.split(/(\*\*[^*]+\*\*)/g).forEach((part) => {
+      if (!part) return;
+      if (/^\*\*[^*]+\*\*$/.test(part)) {
+        const strong = document.createElement("strong");
+        strong.textContent = part.slice(2, -2);
+        container.append(strong);
+      } else {
+        container.append(document.createTextNode(part));
+      }
+    });
+    if (index < lines.length - 1) container.append(document.createTextNode("\n"));
+  });
+}
+
 function appendAssistantMessage(role, text) {
   const message = document.createElement("div");
   message.className = `assistant-message assistant-message-${role}`;
@@ -802,7 +826,8 @@ function appendAssistantMessage(role, text) {
   icon.setAttribute("aria-hidden", "true");
   icon.textContent = role === "bot" ? "🪙" : "🎓";
   const content = document.createElement("p");
-  content.textContent = text;
+  if (role === "bot") renderTutorText(content, text);
+  else content.textContent = text;
   message.append(icon, content);
   document.querySelector("#assistant-messages").appendChild(message);
   message.scrollIntoView({ behavior: "smooth", block: "nearest" });
@@ -814,8 +839,17 @@ function setupAssistant() {
   const count = document.querySelector("#assistant-count");
   const status = document.querySelector("#assistant-status");
   const submit = form.querySelector('button[type="submit"]');
+  // Últimas trocas enviadas junto, para o tutor entender perguntas de continuação
+  const history = [];
+  const MAX_HISTORY = 6;
   input.addEventListener("input", () => {
     count.textContent = input.value.length;
+  });
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
+      event.preventDefault();
+      form.requestSubmit();
+    }
   });
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -835,10 +869,11 @@ function setupAssistant() {
         body: JSON.stringify({
           message,
           context: {
-            amount: Math.max(0, Number(amount.value) || 0),
+            amount: getAmountValue(),
             from: from.value,
             to: to.value,
           },
+          history: history.slice(-MAX_HISTORY),
         }),
       });
       const payload = await response.json().catch(() => null);
@@ -850,6 +885,10 @@ function setupAssistant() {
         );
       }
       appendAssistantMessage("bot", payload.reply);
+      history.push(
+        { role: "user", text: message },
+        { role: "assistant", text: payload.reply },
+      );
       status.textContent = "";
     } catch (error) {
       status.textContent =

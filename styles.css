@@ -3255,10 +3255,6 @@ body.theme-mexico .app-footer::before {
   border-radius: 2px;
 }
 
-/* A referência não exibe o tutor de IA nesta tela — oculta sem remover funcionalidade */
-body.theme-mexico .ai-assistant {
-  display: none;
-}
 
 /* Título principal e seta de "Como funciona?" em verde, como na referência */
 body.theme-mexico #home-page > header h1 {
