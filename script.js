@@ -553,7 +553,6 @@ function convert() {
 }
 
 function go(page) {
-  document.body.classList.toggle("theme-mexico", page === "home");
   document
     .querySelectorAll(".page")
     .forEach((item) => item.classList.remove("active"));
@@ -941,37 +940,57 @@ document.querySelectorAll(".filters button").forEach((button) =>
   }),
 );
 
+const THEME_KEY = "clube-moedas-tema";
+
+function readThemePreference() {
+  try {
+    return localStorage.getItem(THEME_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function saveThemePreference(theme) {
+  try {
+    localStorage.setItem(THEME_KEY, theme);
+  } catch {
+    /* sem armazenamento disponível: vale só para esta visita */
+  }
+}
+
 function initThemeToggle() {
-  document.body.classList.add("theme-mexico");
   const toggles = document.querySelectorAll(".theme-toggle");
+  const switches = document.querySelectorAll(".theme-switch");
   const label = document.querySelector(".theme-toggle-label");
 
-  const updateToggleCopy = () => {
-    const isMexico = document.body.classList.contains("theme-mexico");
+  const applyTheme = (isMexico) => {
+    document.body.classList.toggle("theme-mexico", isMexico);
     toggles.forEach((toggle) =>
       toggle.setAttribute(
         "aria-label",
-        isMexico
-          ? "Alternar para o tema padrão"
-          : "Alternar para o Tema México",
+        isMexico ? "Alternar para o modo comum" : "Alternar para o modo México",
       ),
     );
-    if (label) label.textContent = isMexico ? "Tema México" : "Tema padrão";
+    switches.forEach((control) => {
+      control.setAttribute("aria-checked", String(isMexico));
+      const text = control.querySelector(".theme-switch-text");
+      if (text) text.textContent = isMexico ? "México" : "Comum";
+    });
+    if (label) label.textContent = isMexico ? "Modo México" : "Modo comum";
   };
 
-  toggles.forEach((toggle) =>
-    toggle.addEventListener("click", () => {
-      document.body.classList.toggle("theme-mexico");
-      updateToggleCopy();
-    }),
-  );
-  updateToggleCopy();
-}
+  const toggleTheme = () => {
+    const isMexico = !document.body.classList.contains("theme-mexico");
+    applyTheme(isMexico);
+    saveThemePreference(isMexico ? "mexico" : "comum");
+  };
 
-window.go = go;
-window.testCurrency = testCurrency;
-window.applaudStudent = applaudStudent;
-window.selectDestinationCurrency = selectDestinationCurrency;
+  toggles.forEach((toggle) => toggle.addEventListener("click", toggleTheme));
+  switches.forEach((control) =>
+    control.addEventListener("click", toggleTheme),
+  );
+  applyTheme(readThemePreference() !== "comum");
+}
 
 initThemeToggle();
 

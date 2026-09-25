@@ -6339,3 +6339,877 @@ body.settings-open {
     animation: none;
   }
 }
+
+/* ==========================================================
+   DESKTOP — TELA CONVERSOR ORGANIZADA (≥ 769px)
+   Coluna principal: cotação + conversor; coluna lateral: dicas.
+   ========================================================== */
+@media (min-width: 769px) {
+  html body #home-page .home-hero {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 24px !important;
+    min-height: 0 !important;
+    margin: 0 0 18px !important;
+    padding: 6px 4px 0 !important;
+  }
+
+  html body #home-page .hero-content {
+    flex: 1 1 auto !important;
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  html body #home-page .hero-title {
+    display: block !important;
+    font-size: clamp(34px, 3.4vw, 46px) !important;
+    line-height: 1.05 !important;
+    margin: 0 !important;
+  }
+
+  html body #home-page .hero-title-line {
+    display: inline !important;
+  }
+
+  html body #home-page .hero-subtitle {
+    font-size: 18px !important;
+    margin: 6px 0 0 !important;
+  }
+
+  html body #home-page .mx-header-art {
+    position: static !important;
+    display: block !important;
+    width: auto !important;
+    height: 118px !important;
+    max-width: 44% !important;
+    object-fit: contain !important;
+    object-position: right bottom !important;
+    margin: 0 !important;
+    opacity: 1 !important;
+  }
+
+  /* ---- GRADE ---- */
+  html body #home-page .content-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas: "quote" "conv" "info" !important;
+    gap: 18px !important;
+    align-items: start !important;
+    margin: 0 0 22px !important;
+  }
+
+  html body #home-page .quote-card {
+    grid-area: quote !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 16px 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 6px !important;
+    text-align: left !important;
+    background: #FFFFFF !important;
+    border: 1px solid #EDE6D6 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 14px rgba(80, 60, 20, 0.05) !important;
+  }
+
+  html body #home-page .quote-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+  }
+
+  html body #home-page .quote-title-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  html body #home-page .quote-icon {
+    width: auto !important;
+    height: auto !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  html body #home-page .quote-title {
+    font-size: 16px !important;
+    font-weight: 800 !important;
+  }
+
+  html body #home-page .quote-rates {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+
+  html body #home-page .quote-line-primary,
+  html body #home-page .quote-line-secondary {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+  }
+
+  html body #home-page .quote-line-primary {
+    font-size: 17px !important;
+  }
+
+  html body #home-page .quote-line-primary b {
+    font-size: 22px !important;
+  }
+
+  html body #home-page .quote-line-secondary {
+    font-size: 15px !important;
+    color: #6B7280 !important;
+  }
+
+  html body #home-page .quote-curr-name {
+    display: inline-block !important;
+    background: #E7F4EA !important;
+    color: #14532D !important;
+    border-radius: 10px !important;
+    padding: 2px 9px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+  }
+
+  html body #home-page .quote-footer {
+    text-align: left !important;
+    justify-content: flex-start !important;
+  }
+
+  /* ---- CONVERSOR ---- */
+  html body #home-page .converter-card {
+    grid-area: conv !important;
+    width: auto !important;
+    max-width: none !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 22px 24px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 18px !important;
+    background: #FFFDF9 !important;
+    border: 1px solid #EDE6D6 !important;
+    border-radius: 24px !important;
+    box-shadow: 0 4px 16px rgba(80, 60, 20, 0.06) !important;
+  }
+
+  html body #home-page .amount-group {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 0 !important;
+  }
+
+  html body #home-page .amount-label {
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    color: #1F2937 !important;
+  }
+
+  html body #home-page .amount-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 6px !important;
+  }
+
+  html body #home-page .amount-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    min-height: 58px !important;
+    padding: 0 18px !important;
+    box-sizing: border-box !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E5E7EB !important;
+    border-radius: 14px !important;
+    box-shadow: none !important;
+  }
+
+  html body #home-page .amount-symbol {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #6B7280 !important;
+  }
+
+  html body #home-page #amount {
+    font-family: 'Nunito', sans-serif !important;
+    font-size: 30px !important;
+    font-weight: 800 !important;
+    text-align: left !important;
+    width: 100% !important;
+    color: #0F172A !important;
+  }
+
+  html body #home-page .amount-in-words {
+    font-size: 13px !important;
+    color: #6B7280 !important;
+    text-align: left !important;
+  }
+
+  html body #home-page .currency-row {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) 60px minmax(0, 1fr) !important;
+    align-items: end !important;
+    gap: 14px !important;
+    margin: 0 !important;
+  }
+
+  html body #home-page .currency-box {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+    position: relative !important;
+  }
+
+  html body #home-page .currency-box label {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    color: #1F2937 !important;
+  }
+
+  html body #home-page .flag-select-btn {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    height: 54px !important;
+    min-height: 54px !important;
+    padding: 0 14px !important;
+    box-sizing: border-box !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E5E7EB !important;
+    border-radius: 14px !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+    font-size: 16px !important;
+  }
+
+  html body #home-page .currency-box:last-of-type .flag-select-btn {
+    border-color: #E11D48 !important;
+  }
+
+  html body #home-page .flag-select-btn-flag {
+    flex: 0 0 34px !important;
+    width: 34px !important;
+    height: 23px !important;
+    border-radius: 4px !important;
+  }
+
+  html body #home-page .flag-select-btn-label {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 16px !important;
+    font-weight: 800 !important;
+  }
+
+  html body #home-page .flag-select-caret {
+    position: static !important;
+    margin: 0 !important;
+    flex: 0 0 18px !important;
+  }
+
+  html body #home-page .swap {
+    width: 60px !important;
+    height: 54px !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    border-radius: 14px !important;
+    transform: none !important;
+    align-self: end !important;
+  }
+
+  html body #home-page .result {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 20px 24px !important;
+    margin: 0 !important;
+    border-radius: 18px !important;
+  }
+
+  html body #home-page .result-top {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+  }
+
+  html body #home-page .result-illustration {
+    display: flex !important;
+    align-items: center !important;
+    padding-right: 20px !important;
+    margin-right: 20px !important;
+    border-right: 1px solid #BFE0CB !important;
+  }
+
+  html body #home-page .result-coin-img {
+    width: 96px !important;
+    height: auto !important;
+  }
+
+  html body #home-page .result-content {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+  }
+
+  html body #home-page #converted-val {
+    font-size: 46px !important;
+    line-height: 1 !important;
+  }
+
+  html body #home-page .result-code {
+    font-size: 26px !important;
+  }
+
+  html body #home-page .result-equation {
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+  }
+
+  html body #home-page .result-in-words {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+    color: #475569 !important;
+  }
+
+  html body #home-page .result-footer {
+    border-top: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  html body #home-page .daily-rate-card {
+    margin: 0 !important;
+  }
+
+  /* ---- COLUNA DE DICAS ---- */
+  html body #home-page .info-column {
+    grid-area: info !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 18px !important;
+    margin: 0 !important;
+    width: auto !important;
+  }
+
+  html body #home-page .info-card {
+    margin: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  html body #home-page .mini-countries {
+    margin: 0 0 22px !important;
+  }
+}
+
+/* Telas largas: dicas em coluna lateral, como no modelo */
+@media (min-width: 1100px) {
+  html body #home-page .content-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 300px) !important;
+    grid-template-areas:
+      "quote info"
+      "conv info" !important;
+  }
+
+  html body #home-page .info-column {
+    grid-template-columns: 1fr !important;
+    align-content: start !important;
+  }
+}
+
+/* ==========================================================
+   SELETOR "MODO MÉXICO / MODO COMUM" (barra superior mobile)
+   ========================================================== */
+.mobile-topbar-actions {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  html body .app-shell .mobile-topbar {
+    gap: 8px !important;
+  }
+
+  html body .app-shell .mobile-topbar-brand {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  html body .app-shell .mobile-topbar-logo {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  html body .app-shell .mobile-topbar-title {
+    font-size: 16.5px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  html body .app-shell .mobile-topbar-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex: 0 0 auto !important;
+  }
+
+  html body .app-shell .theme-switch {
+    position: relative !important;
+    width: 98px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 999px !important;
+    cursor: pointer !important;
+    overflow: hidden !important;
+    -webkit-tap-highlight-color: transparent !important;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.08) 100%),
+      linear-gradient(90deg, #0B7A45 0 34%, #F7F2E6 34% 67%, #D2142C 67% 100%) !important;
+    box-shadow:
+      inset 0 1px 2px rgba(0, 0, 0, 0.18),
+      0 2px 8px rgba(0, 0, 0, 0.10) !important;
+    transition: background 0.3s ease, box-shadow 0.3s ease !important;
+  }
+
+  html body .app-shell .theme-switch-text {
+    position: absolute !important;
+    top: 50% !important;
+    right: 9px !important;
+    left: auto !important;
+    transform: translateY(-50%) !important;
+    font-family: 'Baloo 2', 'Nunito', sans-serif !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.3px !important;
+    text-transform: uppercase !important;
+    line-height: 1 !important;
+    color: #0B3B2E !important;
+    text-shadow:
+      0 0 4px rgba(255, 255, 255, 0.95),
+      0 0 2px rgba(255, 255, 255, 0.95) !important;
+    pointer-events: none !important;
+  }
+
+  html body .app-shell .theme-switch-knob {
+    position: absolute !important;
+    top: 3px !important;
+    left: 3px !important;
+    width: 28px !important;
+    height: 28px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 50% !important;
+    background: radial-gradient(circle at 40% 35%, #FFFFFF 0%, #FBF3E2 100%) !important;
+    border: 2px solid #0B7A45 !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22) !important;
+    transition: left 0.32s cubic-bezier(0.34, 1.4, 0.64, 1), border-color 0.3s ease !important;
+  }
+
+  html body .app-shell .theme-switch-icon {
+    position: absolute !important;
+    width: 19px !important;
+    height: 19px !important;
+    object-fit: contain !important;
+    transition: opacity 0.2s ease, transform 0.3s ease !important;
+  }
+
+  html body .app-shell .theme-switch-icon.is-comum {
+    opacity: 0 !important;
+    transform: scale(0.6) rotate(-40deg) !important;
+  }
+
+  /* Estado: modo comum */
+  html body .app-shell .theme-switch[aria-checked="false"] {
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.10) 100%),
+      linear-gradient(90deg, #8B5CF6 0%, #6D28D9 100%) !important;
+  }
+
+  html body .app-shell .theme-switch[aria-checked="false"] .theme-switch-text {
+    right: auto !important;
+    left: 10px !important;
+    color: #FFFFFF !important;
+    text-shadow: 0 1px 2px rgba(46, 16, 101, 0.45) !important;
+  }
+
+  html body .app-shell .theme-switch[aria-checked="false"] .theme-switch-knob {
+    left: calc(100% - 31px) !important;
+    border-color: #6D28D9 !important;
+  }
+
+  html body .app-shell .theme-switch[aria-checked="false"] .theme-switch-icon.is-mexico {
+    opacity: 0 !important;
+    transform: scale(0.6) rotate(40deg) !important;
+  }
+
+  html body .app-shell .theme-switch[aria-checked="false"] .theme-switch-icon.is-comum {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  html body .app-shell .theme-switch:active .theme-switch-knob {
+    width: 32px !important;
+  }
+
+  html body .app-shell .theme-switch:focus-visible {
+    outline: 2px solid #0F8A4C !important;
+    outline-offset: 2px !important;
+  }
+
+  /* ==========================================================
+     MODO COMUM NO SMARTPHONE — paleta neutra lilás/violeta
+     ========================================================== */
+  html body:not(.theme-mexico),
+  html body:not(.theme-mexico) .app-shell,
+  html body:not(.theme-mexico) .app-shell .mobile-topbar {
+    background: #F8F6FC !important;
+  }
+
+  html body:not(.theme-mexico) .app-shell .mobile-topbar-title {
+    color: #2E1065 !important;
+  }
+
+  /* Cabeçalho do conversor: moedas no lugar da arte do México */
+  html body:not(.theme-mexico) #home-page .home-hero {
+    background: url("images/mx11.png") right 6px bottom 6px / 104px auto no-repeat, transparent !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .hero-title {
+    color: #2E1065 !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .quote-card,
+  html body:not(.theme-mexico) #home-page .converter-card {
+    background: #FFFFFF !important;
+    border-color: #ECE6F7 !important;
+    box-shadow: 0 2px 12px rgba(76, 29, 149, 0.06) !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .quote-icon svg rect {
+    fill: #7C3AED !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .quote-curr-name {
+    background: #F1EAFD !important;
+    color: #4C1D95 !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .result {
+    background: #F4EFFE !important;
+    border-color: #E3D6FB !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .result-illustration {
+    border-right-color: #D9C8F7 !important;
+  }
+
+  html body:not(.theme-mexico) #home-page #converted-val,
+  html body:not(.theme-mexico) #home-page .result-code {
+    color: #2E1065 !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .result-equation,
+  html body:not(.theme-mexico) #home-page .result-equation b {
+    color: #1E1B4B !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .dest-currency-badge {
+    background: #E4D7FB !important;
+    color: #4C1D95 !important;
+    border-color: transparent !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .swap-icon-mobile path:nth-child(-n + 2) {
+    stroke: #7C3AED !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .swap-icon-mobile path:nth-child(2) {
+    fill: #7C3AED !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .swap {
+    background: radial-gradient(circle at 50% 40%, #FFFFFF 0%, #F1EAFD 100%) !important;
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.14), 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  }
+
+  /* Tela Início */
+  html body:not(.theme-mexico) #start-page .start-eyebrow,
+  html body:not(.theme-mexico) #start-page .start-see-all {
+    color: #6D28D9 !important;
+  }
+
+  /* Menu inferior */
+  html body:not(.theme-mexico) .app-shell .bottom-nav {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-color: rgba(221, 212, 240, 0.8) !important;
+  }
+
+  html body:not(.theme-mexico) .app-shell .bottom-nav .nav-bubble::before {
+    background: linear-gradient(160deg, #A78BFA 0%, #7C3AED 55%, #5B21B6 100%) !important;
+    border-color: #F8F6FC !important;
+  }
+
+  html body:not(.theme-mexico) .app-shell .bottom-nav .nav-bubble::after {
+    border-color: rgba(124, 58, 237, 0.28) !important;
+  }
+
+  html body:not(.theme-mexico) .app-shell .bottom-nav button.active .nav-bubble {
+    box-shadow:
+      0 10px 20px rgba(109, 40, 217, 0.35),
+      0 3px 6px rgba(109, 40, 217, 0.2) !important;
+  }
+
+  html body:not(.theme-mexico) .app-shell .bottom-nav button.active small {
+    color: #2E1065 !important;
+  }
+
+  html body:not(.theme-mexico) .app-shell .bottom-nav button:focus-visible,
+  html body:not(.theme-mexico) .app-shell .theme-switch:focus-visible {
+    outline-color: #7C3AED !important;
+  }
+}
+
+@media (max-width: 360px) {
+  html body .app-shell .mobile-topbar-title {
+    font-size: 14.5px !important;
+  }
+
+  html body .app-shell .mobile-topbar-logo {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  html body .app-shell .theme-switch,
+  html body .app-shell .theme-switch-knob,
+  html body .app-shell .theme-switch-icon {
+    transition: none !important;
+  }
+}
+
+/* ==========================================================
+   MENU INFERIOR — ESTILO MÉXICO (borda bandeira + ornamentos)
+   ========================================================== */
+.bottom-nav .nav-flag {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  html body .app-shell .bottom-nav {
+    left: 10px !important;
+    right: 10px !important;
+    height: 68px !important;
+    border: 3px solid transparent !important;
+    border-radius: 28px !important;
+    background:
+      linear-gradient(#FFFDF7, #FFFDF7) padding-box,
+      linear-gradient(90deg,
+        #0B7A45 0%,
+        #0B7A45 34%,
+        #F4EFE3 50%,
+        #D2142C 66%,
+        #D2142C 100%) border-box !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    box-shadow:
+      0 10px 26px rgba(60, 45, 15, 0.16),
+      0 2px 6px rgba(60, 45, 15, 0.08) !important;
+  }
+
+  /* Faixa de ornamentos no rodapé da barra */
+  html body .app-shell .bottom-nav::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 18px !important;
+    right: 18px !important;
+    bottom: 3px !important;
+    height: 11px !important;
+    pointer-events: none !important;
+    opacity: 0.55 !important;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='11' viewBox='0 0 22 11'%3E%3Cpath d='M11 1l4.5 4.5L11 10 6.5 5.5z' fill='none' stroke='%23C9B48A' stroke-width='1.2'/%3E%3Cpath d='M11 3.6l1.9 1.9L11 7.4 9.1 5.5z' fill='%23D9A9A0'/%3E%3Cpath d='M0 5.5h4M18 5.5h4' stroke='%23C9B48A' stroke-width='1.2'/%3E%3C/svg%3E") left center / 22px 11px repeat-x !important;
+    -webkit-mask: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent) !important;
+    mask: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent) !important;
+  }
+
+  html body .app-shell .bottom-nav button {
+    padding: 0 0 13px !important;
+  }
+
+  html body .app-shell .bottom-nav button small {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+  }
+
+  html body .app-shell .bottom-nav button.active small {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    color: #0B3B2E !important;
+  }
+
+  html body .app-shell .bottom-nav .nav-bubble {
+    color: #1E3A34 !important;
+  }
+
+  html body .app-shell .bottom-nav .nav-icon {
+    width: 23px !important;
+    height: 23px !important;
+    stroke-width: 2.1 !important;
+  }
+
+  /* Círculo ativo: verde-escuro com anel verde/branco/vermelho */
+  html body .app-shell .bottom-nav .nav-bubble::before {
+    background: radial-gradient(circle at 38% 30%, #1FA463 0%, #0F7A45 55%, #0A5C34 100%) !important;
+    border: 3px solid #FFFDF7 !important;
+  }
+
+  html body .app-shell .bottom-nav .nav-bubble::after {
+    inset: -8px !important;
+    border: none !important;
+    background: conic-gradient(from 200deg, #0B7A45 0deg, #0B7A45 120deg, #F4EFE3 150deg, #F4EFE3 190deg, #D2142C 220deg, #D2142C 330deg, #0B7A45 360deg) !important;
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3.5px)) !important;
+    mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #000 calc(100% - 3.5px)) !important;
+  }
+
+  html body .app-shell .bottom-nav button.active .nav-bubble {
+    box-shadow:
+      0 10px 20px rgba(11, 92, 52, 0.38),
+      0 3px 6px rgba(11, 92, 52, 0.22) !important;
+  }
+
+  /* Selo com a bandeira do México no item ativo */
+  html body .app-shell .bottom-nav .nav-flag {
+    display: block !important;
+    position: absolute !important;
+    top: -9px !important;
+    right: -11px !important;
+    width: 22px !important;
+    height: 22px !important;
+    border-radius: 50% !important;
+    background: #FFFFFF url("images/icon-bandeira-mx.png") center / cover no-repeat !important;
+    border: 2px solid #FFFFFF !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) !important;
+    opacity: 0 !important;
+    transform: scale(0.4) !important;
+    transition: opacity 0.2s ease 0.12s, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) 0.12s !important;
+    z-index: 2 !important;
+  }
+
+  html body .app-shell .bottom-nav button.active .nav-flag {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+  }
+
+  /* ---- Modo comum: mesma estrutura em tons de violeta ---- */
+  html body:not(.theme-mexico) .app-shell .bottom-nav {
+    background:
+      linear-gradient(#FFFFFF, #FFFFFF) padding-box,
+      linear-gradient(90deg, #7C3AED 0%, #C4B5FD 50%, #7C3AED 100%) border-box !important;
+  }
+
+  html body:not(.theme-mexico) .app-shell .bottom-nav::after {
+    opacity: 0.35 !important;
+    filter: hue-rotate(210deg) saturate(1.4) !important;
+  }
+
+  html body:not(.theme-mexico) .app-shell .bottom-nav .nav-bubble::before {
+    background: radial-gradient(circle at 38% 30%, #A78BFA 0%, #7C3AED 55%, #5B21B6 100%) !important;
+    border-color: #FFFFFF !important;
+  }
+
+  html body:not(.theme-mexico) .app-shell .bottom-nav .nav-bubble::after {
+    background: conic-gradient(from 200deg, #7C3AED, #C4B5FD, #7C3AED) !important;
+  }
+
+  html body:not(.theme-mexico) .app-shell .bottom-nav .nav-flag {
+    display: none !important;
+  }
+
+  html body:not(.theme-mexico) .app-shell .bottom-nav button.active small {
+    color: #2E1065 !important;
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  html body .app-shell .bottom-nav .nav-flag {
+    transition: none !important;
+  }
+}
+
+/* Desktop — modo comum: sem arte do México e com a paleta violeta */
+@media (min-width: 769px) {
+  html body:not(.theme-mexico) #home-page .mx-header-art {
+    display: none !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .home-hero {
+    min-height: 118px !important;
+    background: url("images/mx11.png") right 10px center / auto 112px no-repeat !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .hero-title {
+    color: #2E1065 !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .quote-card,
+  html body:not(.theme-mexico) #home-page .converter-card {
+    background: #FFFFFF !important;
+    border-color: #ECE6F7 !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .quote-icon svg rect {
+    fill: #7C3AED !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .quote-curr-name,
+  html body:not(.theme-mexico) #home-page .dest-currency-badge {
+    background: #F1EAFD !important;
+    color: #4C1D95 !important;
+    border-color: transparent !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .result {
+    background: #F4EFFE !important;
+    border-color: #E3D6FB !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .result-illustration {
+    border-right-color: #D9C8F7 !important;
+  }
+
+  html body:not(.theme-mexico) #home-page #converted-val,
+  html body:not(.theme-mexico) #home-page .result-code,
+  html body:not(.theme-mexico) #home-page .result-equation,
+  html body:not(.theme-mexico) #home-page .result-equation b {
+    color: #2E1065 !important;
+  }
+
+  html body:not(.theme-mexico) #home-page .currency-box:last-of-type .flag-select-btn {
+    border-color: #A78BFA !important;
+  }
+}
