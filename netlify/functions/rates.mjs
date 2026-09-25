@@ -19,13 +19,14 @@ export function createRatesHandler(fetchImpl = fetch, timeoutMs = 5000) {
     if (base !== 'BRL') return error('INVALID_BASE', 'A moeda base deve ser BRL.', 400);
 
     const key = process.env.AWESOMEAPI_KEY;
-    if (!key) return error('NOT_CONFIGURED', 'Serviço de cotação ainda não configurado.', 503);
+    const headers = { Accept: 'application/json' };
+    if (key) headers['x-api-key'] = key;
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
     try {
       const response = await fetchImpl(PROVIDER_URL, {
-        headers: { Accept: 'application/json', 'x-api-key': key },
+        headers,
         signal: controller.signal
       });
       if (!response.ok) return error('PROVIDER_ERROR', 'Não foi possível consultar a cotação.', 502);

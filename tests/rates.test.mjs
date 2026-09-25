@@ -50,6 +50,24 @@ test('handler de cotações retorna contrato parcial seguro', async () => {
   }
 });
 
+test('handler funciona sem AWESOMEAPI_KEY configurada (API pública não exige chave)', async () => {
+  const previous = process.env.AWESOMEAPI_KEY;
+  delete process.env.AWESOMEAPI_KEY;
+  let receivedHeaders;
+  try {
+    const handler = createRatesHandler(async (_url, options) => {
+      receivedHeaders = options.headers;
+      return Response.json({ USDBRL: quote('USD', '5') });
+    });
+    const response = await handler(new Request('https://example.test/.netlify/functions/rates?base=BRL'));
+    assert.equal(response.status, 200);
+    assert.equal('x-api-key' in receivedHeaders, false);
+  } finally {
+    if (previous === undefined) delete process.env.AWESOMEAPI_KEY;
+    else process.env.AWESOMEAPI_KEY = previous;
+  }
+});
+
 test('handler rejeita método e base inválidos', async () => {
   const handler = createRatesHandler(async () => { throw new Error('não deve chamar'); });
   assert.equal((await handler(new Request('https://example.test/', { method: 'POST' }))).status, 405);

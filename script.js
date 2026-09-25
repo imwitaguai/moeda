@@ -35,15 +35,73 @@ function options(select, chosen) {
 
 function updateSelectFlag(select) {
   const currency = currencies[select.value];
-  const box = select.parentElement;
-  let flag = box.querySelector('.selected-currency-flag');
-  if (!flag) {
-    flag = document.createElement('img');
-    flag.className = 'selected-currency-flag';
-    box.insertBefore(flag, select);
-  }
-  flag.src = currency.image;
-  flag.alt = `Bandeira do ${currency.country}`;
+  const box = select.closest('.currency-box');
+  const trigger = box.querySelector('.flag-select-btn');
+  trigger.querySelector('.flag-select-btn-flag').src = currency.image;
+  trigger.querySelector('.flag-select-btn-flag').alt = `Bandeira do ${currency.country}`;
+  trigger.querySelector('.flag-select-btn-label').textContent = `${currency.country} · ${select.value}`;
+  box.querySelectorAll('.flag-select-list li[data-code]').forEach(item => {
+    item.setAttribute('aria-selected', String(item.dataset.code === select.value));
+  });
+}
+
+function closeFlagSelect(box) {
+  const list = box.querySelector('.flag-select-list');
+  const trigger = box.querySelector('.flag-select-btn');
+  list.hidden = true;
+  trigger.setAttribute('aria-expanded', 'false');
+}
+
+function openFlagSelect(box) {
+  document.querySelectorAll('.currency-box').forEach(other => { if (other !== box) closeFlagSelect(other); });
+  const list = box.querySelector('.flag-select-list');
+  const trigger = box.querySelector('.flag-select-btn');
+  list.hidden = false;
+  trigger.setAttribute('aria-expanded', 'true');
+  list.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest' });
+}
+
+function initFlagSelect(select) {
+  const box = select.closest('.currency-box');
+  const trigger = box.querySelector('.flag-select-btn');
+  const list = box.querySelector('.flag-select-list');
+
+  list.innerHTML = Object.entries(currencies)
+    .filter(([, currency]) => currency.convertible !== false)
+    .map(([code, currency]) => `<li role="option" tabindex="0" data-code="${code}" aria-selected="${code === select.value}"><img src="${currency.image}" alt="Bandeira do ${currency.country}"><span>${currency.country} &middot; ${code}</span></li>`)
+    .join('');
+
+  trigger.addEventListener('click', () => {
+    if (list.hidden) openFlagSelect(box); else closeFlagSelect(box);
+  });
+
+  trigger.addEventListener('keydown', event => {
+    if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openFlagSelect(box);
+      (list.querySelector('[aria-selected="true"]') || list.firstElementChild)?.focus();
+    } else if (event.key === 'Escape') {
+      closeFlagSelect(box);
+    }
+  });
+
+  list.addEventListener('click', event => {
+    const item = event.target.closest('li[data-code]');
+    if (!item) return;
+    select.value = item.dataset.code;
+    select.dispatchEvent(new Event('change'));
+    closeFlagSelect(box);
+    trigger.focus();
+  });
+
+  list.addEventListener('keydown', event => {
+    const items = [...list.querySelectorAll('li[data-code]')];
+    const index = items.indexOf(document.activeElement);
+    if (event.key === 'ArrowDown') { event.preventDefault(); (items[index + 1] || items[0]).focus(); }
+    else if (event.key === 'ArrowUp') { event.preventDefault(); (items[index - 1] || items[items.length - 1]).focus(); }
+    else if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); document.activeElement.click(); }
+    else if (event.key === 'Escape') { closeFlagSelect(box); trigger.focus(); }
+  });
 }
 
 function getPairRateState(originCode, destinationCode) {
@@ -113,7 +171,7 @@ function updateQuote(origin, destination, originCode, destinationCode, unitRate)
     card = document.createElement('section');
     card.id = 'quote-card';
     card.className = 'quote-card';
-    card.innerHTML = '<span class="quote-icon">⇆</span><div class="quote-copy"><small>Cotação utilizada</small><strong id="quote-primary"></strong><p id="quote-secondary"></p><small id="quote-updated"></small></div><div class="quote-actions"><b id="quote-badge"></b><button id="rate-retry" type="button" hidden>Tentar novamente</button></div><svg class="quote-sombrero" viewBox="0 0 90 55" aria-hidden="true"><ellipse cx="45" cy="40" rx="42" ry="12" fill="#e0b979" stroke="#c9973f" stroke-width="2"/><path d="M20 40 Q22 14 45 12 Q68 14 70 40 Z" fill="#e6c68a"/><rect x="20" y="30" width="50" height="7" rx="3" fill="#ce1126"/><circle cx="45" cy="14" r="3" fill="#a3111f"/></svg>';
+    card.innerHTML = '<span class="quote-icon">⇆</span><div class="quote-copy"><small>Cotação utilizada</small><strong id="quote-primary"></strong><p id="quote-secondary"></p><small id="quote-updated"></small></div><div class="quote-actions"><b id="quote-badge"></b><button id="rate-retry" type="button" hidden>Tentar novamente</button></div><img class="quote-sombrero" src="images/mx3.png" alt="">';
     document.querySelector('.convert-button').before(card);
     document.querySelector('#rate-retry').addEventListener('click', loadLiveRates);
   }
@@ -151,7 +209,7 @@ function convert() {
 function go(page) {
   document.querySelectorAll('.page').forEach(item => item.classList.remove('active'));
   document.querySelector(`#${page}-page`).classList.add('active');
-  document.querySelectorAll('.menu button').forEach(button => button.classList.toggle('active', button.dataset.page === page));
+  document.querySelectorAll('.menu button, .bottom-nav button').forEach(button => button.classList.toggle('active', button.dataset.page === page));
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -354,10 +412,25 @@ function setupAssistant() {
 
 options(from, 'BRL');
 options(to, 'MXN');
+initFlagSelect(from);
+initFlagSelect(to);
 countryGrid();
 convert();
 bindCountryButtons();
 setupAssistant();
+
+document.addEventListener('click', event => {
+  document.querySelectorAll('.currency-box').forEach(box => {
+    if (!box.contains(event.target)) closeFlagSelect(box);
+  });
+});
+
+const miniToggle = document.querySelector('#mini-toggle');
+miniToggle?.addEventListener('click', () => {
+  const list = document.querySelector('#mini-list');
+  const isCollapsed = list.classList.toggle('is-collapsed');
+  miniToggle.textContent = isCollapsed ? 'Ver todos →' : 'Ver menos ←';
+});
 
 [amount, from, to].forEach(element => {
   element.addEventListener('input', convert);
@@ -366,7 +439,7 @@ setupAssistant();
 document.querySelector('.convert-button').addEventListener('click', convert);
 document.querySelector('.swap').addEventListener('click', swapCurrencies);
 document.querySelector('.swap').addEventListener('animationend', event => event.currentTarget.classList.remove('is-swapping'));
-document.querySelectorAll('.menu button').forEach(button => button.addEventListener('click', () => go(button.dataset.page)));
+document.querySelectorAll('.menu button, .bottom-nav button').forEach(button => button.addEventListener('click', () => go(button.dataset.page)));
 document.querySelector('[data-go-converter]').addEventListener('click', () => go('home'));
 document.querySelectorAll('.filters button').forEach(button => button.addEventListener('click', () => {
   document.querySelectorAll('.filters button').forEach(item => item.classList.remove('selected'));
