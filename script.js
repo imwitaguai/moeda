@@ -560,9 +560,12 @@ function go(page) {
   document.querySelector(`#${page}-page`).classList.add("active");
   document
     .querySelectorAll(".menu button, .bottom-nav button")
-    .forEach((button) =>
-      button.classList.toggle("active", button.dataset.page === page),
-    );
+    .forEach((button) => {
+      const isActive = button.dataset.page === page;
+      button.classList.toggle("active", isActive);
+      if (isActive) button.setAttribute("aria-current", "page");
+      else button.removeAttribute("aria-current");
+    });
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -890,6 +893,13 @@ amount.addEventListener("input", onAmountInput);
 amount.addEventListener("blur", onAmountBlur);
 amount.addEventListener("focus", () => amount.select());
 amount.addEventListener("keydown", (e) => {
+  // "Ir"/"Concluído" do teclado virtual: converte e recolhe o teclado
+  if (e.key === "Enter" || e.keyCode === 13) {
+    e.preventDefault();
+    convert();
+    amount.blur();
+    return;
+  }
   if (e.key === ".") {
     e.preventDefault();
     if (!amount.value.includes(",")) {
