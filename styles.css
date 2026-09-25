@@ -2946,6 +2946,17 @@ body.theme-mexico .icon-mexico {
   align-items: center;
   gap: 10px;
 }
+
+.mini-countries > .mini-countries-head {
+  display: flex;
+  grid-template-columns: none;
+}
+
+.mini-countries-head #mini-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+}
 .mini-toggle-btn {
   display: none;
 }
@@ -3354,6 +3365,10 @@ body.theme-mexico a:focus-visible {
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+  }
+
+  .mini-countries-head #mini-title {
+    white-space: normal;
   }
   .mini-toggle-btn {
     display: inline-flex;
