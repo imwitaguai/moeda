@@ -913,9 +913,9 @@ body.theme-mexico .content-grid{grid-template-columns:minmax(580px,1fr) 360px;ga
 body.theme-mexico .converter-card{padding:30px 36px;border-radius:22px}
 body.theme-mexico .card-title{flex-wrap:nowrap;gap:14px}
 body.theme-mexico .card-title h2{font-size:34px;color:var(--mx-green-dark);white-space:nowrap}
-body.theme-mexico .card-title h2::before,body.theme-mexico .card-title h2::after{content:url('images/mx12.png');width:22px;height:26px;display:inline-block;vertical-align:middle;opacity:.9}
-body.theme-mexico .card-title h2::before{margin-right:8px}
-body.theme-mexico .card-title h2::after{margin-left:8px;transform:scaleX(-1)}
+.mx-title-flor{display:none}
+body.theme-mexico .mx-title-flor{display:inline-block;vertical-align:middle;opacity:.9;margin:0 8px}
+body.theme-mexico .mx-title-flor.mx-flor-flip{transform:scaleX(-1)}
 body.theme-mexico .card-title span,body.theme-mexico .practice-title span{padding:8px 14px;border-radius:14px;font-weight:800;font-size:13px;white-space:nowrap}
 body.theme-mexico .amount-input{height:72px;border-radius:14px}
 body.theme-mexico .amount-input b{color:#5b6b7a}
@@ -924,9 +924,9 @@ body.theme-mexico .currency-row{grid-template-columns:1fr 76px 1fr}
 body.theme-mexico .flag-select-btn{height:68px;border-radius:14px;font-size:17px}
 body.theme-mexico .swap{height:64px;width:64px;border-radius:15px;margin:0 auto;font-size:34px;display:flex;align-items:center;justify-content:center}
 body.theme-mexico .convert-button{height:58px;border-radius:14px}
-body.theme-mexico .convert-button::before,body.theme-mexico .convert-button::after{content:url('images/mx12.png');width:26px;height:31px;display:inline-block;vertical-align:middle;opacity:.9}
-body.theme-mexico .convert-button::before{margin-right:12px}
-body.theme-mexico .convert-button::after{margin-left:12px;transform:scaleX(-1)}
+.mx-btn-flor{display:none}
+body.theme-mexico .mx-btn-flor{display:inline-block;vertical-align:middle;opacity:.9;margin:0 12px}
+body.theme-mexico .mx-btn-flor.mx-flor-flip{transform:scaleX(-1)}
 
 /* Marca d'água decorativa muito discreta nos cards laterais */
 body.theme-mexico .how,body.theme-mexico .fact{position:relative;overflow:hidden}
