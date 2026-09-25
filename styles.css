@@ -1060,7 +1060,12 @@ body.theme-mexico #home-page > header p {
   font-weight: 900;
 }
 
+.header-flower {
+  display: none;
+}
+
 body.theme-mexico .header-flower {
+  display: block;
   width: 34px;
   height: 34px;
   object-fit: contain;
