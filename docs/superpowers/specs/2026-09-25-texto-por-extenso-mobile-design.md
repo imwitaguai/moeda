@@ -8,6 +8,7 @@ Manter o valor monetário por extenso visível na experiência de smartphone do 
 
 - Reutilizar o elemento existente `#amount-in-words` e a atualização dinâmica já provida pelo JavaScript.
 - Em viewport de smartphone, apresentar apenas o conteúdo textual por extenso logo abaixo do campo de valor.
+- Ocultar o botão `Converter` no smartphone, conforme a referência; o resultado continua sendo recalculado automaticamente ao editar o valor ou alterar moedas.
 - Preservar o visual e o comportamento existentes em desktop.
 
 ## Layout mobile
@@ -19,6 +20,7 @@ No formulário de conversão, o valor por extenso será exibido centralizado ime
 - Espaçamento: curto entre o campo e o texto, antes dos seletores de moeda.
 - No mobile, o ícone e o rótulo `Por extenso (em português)` deixam de aparecer; somente a frase é exibida.
 - O conteúdo continua refletindo, em tempo real, o valor e a moeda de origem selecionados.
+- O botão `Converter` não será exibido no smartphone, evitando um controle redundante entre a cotação e o resultado. Ele permanece disponível em desktop.
 
 ## Comportamento e estados
 
@@ -29,4 +31,5 @@ O formato por extenso continuará sendo calculado pela função existente. Valor
 1. Em smartphone, confirmar que `R$ 100,00` mostra `Cem reais` abaixo do campo, sem caixa, ícone ou rótulo adicional.
 2. Alterar valor e moeda de origem para verificar a atualização do texto.
 3. Conferir desktop para garantir que a apresentação anterior permanece inalterada.
-4. Executar `npm test`.
+4. Em smartphone, confirmar que o botão `Converter` não aparece e que a conversão continua atualizando automaticamente.
+5. Executar `npm test`.
