@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --ink: #17142f;
   --purple: #8956df;
   --shadow: 0 4px 11px #6d53632b;
@@ -4346,16 +4346,19 @@ body.theme-mexico .home-hero {
     display: block !important;
   }
 
+  /* ---- TOPBAR ---- */
   .mobile-topbar {
     display: flex !important;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 14px 6px;
-    background: transparent;
+    padding: 10px 16px 8px;
+    background: #FAF6EC;
     border: none;
     box-shadow: none;
-    min-height: 48px;
+    min-height: 56px;
     box-sizing: border-box;
+    max-width: 520px;
+    margin: 0 auto;
   }
 
   .mobile-topbar-brand {
@@ -4365,18 +4368,22 @@ body.theme-mexico .home-hero {
   }
 
   .mobile-topbar-logo {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(234, 179, 8, 0.3));
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.14);
+    flex-shrink: 0;
   }
 
   .mobile-topbar-title {
     font-family: 'Baloo 2', 'Nunito', sans-serif;
-    font-size: 19px;
+    font-size: 18px;
     font-weight: 800;
     color: #064E3B;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.2px;
   }
 
   .settings-btn {
@@ -4384,106 +4391,444 @@ body.theme-mexico .home-hero {
     height: 38px;
     border-radius: 50%;
     background: #FFFFFF;
-    border: 1px solid #ECE7D8;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border: 1px solid #E5DFD0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #0F172A;
+    color: #374151;
     cursor: pointer;
     padding: 0;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
   }
 
   .settings-btn:active {
-    transform: scale(0.94);
+    transform: scale(0.92);
   }
 
+  /* ---- HERO ---- */
   .home-hero {
     position: relative;
-    padding: 14px 6px 14px;
-    min-height: 148px;
+    padding: 10px 6px 8px;
+    min-height: 162px;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     box-sizing: border-box;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
+    overflow: hidden;
   }
 
   .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 62%;
-    padding-bottom: 4px;
+    max-width: 56%;
+    padding-bottom: 10px;
   }
 
   .hero-title {
-    font-size: clamp(30px, 8.5vw, 38px);
-    line-height: 1.02;
+    font-size: clamp(28px, 8.5vw, 36px) !important;
+    line-height: 1.0 !important;
+    color: #064E3B !important;
+    margin: 0 0 6px !important;
+    font-family: 'Baloo 2', sans-serif !important;
+    font-weight: 800 !important;
   }
 
   .hero-subtitle {
-    margin: 8px 0 0;
-    font-size: 13.5px;
+    margin: 6px 0 0 !important;
+    font-size: 13px !important;
+    color: #374151 !important;
+    font-weight: 600 !important;
   }
 
   .mx-header-art {
     position: absolute;
-    right: -10px;
-    bottom: -2px;
-    height: 140px;
+    right: -6px;
+    bottom: 0;
+    height: 158px;
     width: auto;
-    max-width: 62%;
-    object-fit: cover;
+    max-width: 56%;
+    object-fit: contain;
     object-position: right bottom;
     z-index: 1;
     pointer-events: none;
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.05));
   }
 
   .content-grid {
     display: block !important;
   }
 
+  /* ---- COTACAO CARD ---- */
   .quote-card {
     background: #FFFFFF !important;
+    border-radius: 20px !important;
+    padding: 14px 16px !important;
+    margin: 0 0 14px !important;
+    border: 1px solid #EDE8DA !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+  }
+
+  .quote-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  .quote-title-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  .quote-title {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+  }
+
+  /* Badge rosa como na imagem */
+  .quote-badge {
+    background: #FFD6DC !important;
+    color: #C11627 !important;
+    border: none !important;
+    border-radius: 20px !important;
+    padding: 3px 11px !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    box-shadow: none !important;
+  }
+
+  .quote-rates {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+  }
+
+  .quote-line-primary {
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+  }
+
+  .quote-line-secondary {
+    font-size: 13px !important;
+    color: #374151 !important;
+    font-weight: 600 !important;
+  }
+
+  #quote-updated {
+    font-size: 11.5px !important;
+    color: #6B7280 !important;
+    font-weight: 600 !important;
+  }
+
+  /* ---- CONVERTER CARD ---- */
+  .converter-card {
+    background: #FFFFFF !important;
     border-radius: 22px !important;
-    padding: 16px 18px !important;
+    padding: 18px 16px 20px !important;
     margin: 0 0 16px !important;
-    border: 1px solid #ECE7D8;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+    border: 1px solid #EDE8DA !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+
+  .amount-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+  }
+
+  .amount-label {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .amount-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 3px !important;
+    flex: 1;
+  }
+
+  .amount-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    background: #F9F7F2 !important;
+    border: 1.5px solid #EDE8DA !important;
+    border-radius: 14px !important;
+    padding: 10px 14px !important;
+    min-width: 130px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .amount-symbol {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #374151 !important;
+    flex-shrink: 0;
+  }
+
+  #amount {
+    font-size: 22px !important;
+    font-weight: 900 !important;
+    color: #0F172A !important;
+    border: none !important;
+    background: transparent !important;
+    outline: none !important;
+    text-align: right !important;
+    width: 100% !important;
+    font-family: 'Baloo 2', sans-serif !important;
+    padding: 0 !important;
+    min-width: 60px !important;
+  }
+
+  .amount-in-words {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #6B7280 !important;
+    text-align: right !important;
+    display: block !important;
+    margin: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    -webkit-line-clamp: unset !important;
+    line-clamp: unset !important;
+    text-overflow: clip !important;
+  }
+
+  .currency-row {
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+  }
+
+  .currency-box {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+
+  .currency-box label {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    color: #374151 !important;
+  }
+
+  .flag-select-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: #F9F7F2 !important;
+    border: 1.5px solid #EDE8DA !important;
+    border-radius: 14px !important;
+    padding: 8px 10px !important;
+    min-height: 46px !important;
+    cursor: pointer !important;
+    width: 100% !important;
+    font-family: 'Nunito', sans-serif !important;
+    box-sizing: border-box !important;
+  }
+
+  .flag-select-btn-flag {
+    width: 28px !important;
+    height: 20px !important;
+    border-radius: 4px !important;
+    object-fit: cover !important;
+    flex-shrink: 0 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12) !important;
+  }
+
+  .flag-select-country,
+  .flag-select-sep {
+    display: none !important;
+  }
+
+  .flag-select-code {
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+    flex: 1 !important;
+  }
+
+  .flag-select-caret {
+    width: 16px !important;
+    height: 16px !important;
+    color: #6B7280 !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Swap - circulo verde claro */
+  .swap {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    border-radius: 50% !important;
+    background: #D1FAE5 !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.18) !important;
+    transition: transform 0.2s ease !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+    align-self: flex-end !important;
+    margin-bottom: 0 !important;
+  }
+
+  .swap:active {
+    transform: rotate(180deg) scale(0.92) !important;
+  }
+
+  /* ---- RESULT CARD (fundo verde suave) ---- */
+  .result {
+    background: #ECFDF5 !important;
+    border-radius: 20px !important;
+    padding: 16px !important;
+    border: 1px solid #A7F3D0 !important;
+    box-shadow: none !important;
     display: flex !important;
     flex-direction: column !important;
     gap: 8px !important;
   }
 
-  .converter-card {
-    background: #FFFFFF !important;
-    border-radius: 24px !important;
-    padding: 20px 18px 22px !important;
-    margin: 0 0 20px !important;
-    border: 1px solid #ECE7D8;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+  .result-top {
     display: flex !important;
-    flex-direction: column !important;
-    gap: 16px !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
   }
 
-  .flag-select-country,
-  .flag-select-sep {
-    display: none;
-  }
-
-  .flag-select-btn {
-    padding: 8px 10px;
-    min-height: 48px;
+  .result-illustration {
+    flex-shrink: 0 !important;
   }
 
   .result-coin-img {
-    width: clamp(62px, 18vw, 82px);
+    width: clamp(58px, 16vw, 76px) !important;
+    height: auto !important;
   }
 
-  /* Barra inferior fixa (4 itens) */
+  .result-content {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+
+  .result-label {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #065F46 !important;
+    display: block !important;
+  }
+
+  .result-amount-line {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 5px !important;
+    flex-wrap: wrap !important;
+  }
+
+  #converted-val {
+    font-size: clamp(26px, 7.5vw, 34px) !important;
+    font-weight: 900 !important;
+    color: #064E3B !important;
+    font-family: 'Baloo 2', sans-serif !important;
+    line-height: 1.0 !important;
+  }
+
+  .result-code {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #065F46 !important;
+  }
+
+  .dest-currency-badge {
+    display: inline-block !important;
+    background: #059669 !important;
+    color: #FFFFFF !important;
+    border-radius: 20px !important;
+    padding: 3px 12px !important;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    margin-top: 5px !important;
+    align-self: flex-start !important;
+  }
+
+  .result-body-equation {
+    padding: 0 !important;
+  }
+
+  .result-equation {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #064E3B !important;
+    margin: 0 !important;
+    line-height: 1.4 !important;
+  }
+
+  .result-footer {
+    border-top: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .result-in-words {
+    font-size: 12.5px !important;
+    color: #374151 !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    line-height: 1.35 !important;
+  }
+
+  /* ---- DAILY RATE (painel azul info) ---- */
+  .daily-rate-card {
+    background: #EFF6FF !important;
+    border: 1px solid #BFDBFE !important;
+    border-radius: 16px !important;
+    padding: 12px 14px !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    margin-top: 0 !important;
+  }
+
+  .daily-rate-icon {
+    flex-shrink: 0 !important;
+    margin-top: 1px !important;
+  }
+
+  .daily-rate-text {
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: #1E40AF !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+  }
+
+  /* ---- BARRA INFERIOR (4 itens) ---- */
   .bottom-nav {
     display: flex !important;
     position: fixed !important;
@@ -4492,9 +4837,9 @@ body.theme-mexico .home-hero {
     bottom: 0 !important;
     z-index: 100 !important;
     background: #FFFFFF !important;
-    border-top: 1px solid #F1ECE1 !important;
-    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05) !important;
-    padding: 8px 12px calc(8px + env(safe-area-inset-bottom)) !important;
+    border-top: 1px solid #F0EBE0 !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06) !important;
+    padding: 5px 8px calc(5px + env(safe-area-inset-bottom)) !important;
     justify-content: space-around !important;
     align-items: center !important;
     box-sizing: border-box;
@@ -4506,13 +4851,13 @@ body.theme-mexico .home-hero {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3px;
+    gap: 2px;
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 4px;
-    min-height: 52px;
-    color: #64748B;
+    padding: 4px 2px;
+    min-height: 58px;
+    color: #9CA3AF;
     transition: all 0.2s ease;
   }
 
@@ -4520,7 +4865,8 @@ body.theme-mexico .home-hero {
     font-size: 11px;
     font-weight: 700;
     font-family: 'Nunito', sans-serif;
-    color: #64748B;
+    color: #9CA3AF;
+    margin-top: 1px;
   }
 
   .bottom-nav button.active small {
@@ -4529,23 +4875,23 @@ body.theme-mexico .home-hero {
   }
 
   .bottom-nav button .nav-circle-icon {
-    width: 44px;
-    height: 44px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
     background: #059669;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
+    box-shadow: 0 4px 16px rgba(5, 150, 105, 0.4);
     transition: transform 0.2s ease;
   }
 
   .bottom-nav button.active .nav-circle-icon {
-    transform: scale(1.05);
+    transform: scale(1.06);
   }
 
   .bottom-nav button .nav-icon {
-    color: #64748B;
+    color: #9CA3AF;
     transition: color 0.2s ease;
   }
 
@@ -4553,7 +4899,7 @@ body.theme-mexico .home-hero {
     color: #059669;
   }
 
-  /* Outras seções no smartphone */
+  /* Outras secoes no smartphone */
   .info-column {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
@@ -4565,7 +4911,7 @@ body.theme-mexico .home-hero {
     border-radius: 18px !important;
     padding: 14px !important;
     background: #FFFFFF !important;
-    border: 1px solid #ECE7D8 !important;
+    border: 1px solid #EDE8DA !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
   }
 
@@ -4615,6 +4961,7 @@ body.theme-mexico .home-hero {
     padding: 20px 10px !important;
   }
 }
+
 
 /* Ajustes específicos para telas ultra-estreitas (≤ 360px e ≤ 320px) */
 @media (max-width: 360px) {
