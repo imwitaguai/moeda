@@ -6109,3 +6109,233 @@ body.theme-mexico .home-hero {
     display: none !important;
   }
 }
+
+/* ==========================================================
+   PAINEL DE CONFIGURAÇÕES (engrenagem da barra superior mobile)
+   ========================================================== */
+.settings-sheet[hidden] {
+  display: none !important;
+}
+
+.settings-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.settings-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.38);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.settings-panel {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  box-sizing: border-box;
+  padding: 8px 16px calc(20px + env(safe-area-inset-bottom));
+  background: #FFFDF9;
+  border-radius: 26px 26px 0 0;
+  box-shadow: 0 -12px 32px rgba(60, 45, 15, 0.16);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  font-family: 'Nunito', sans-serif;
+}
+
+.settings-sheet.is-open .settings-backdrop {
+  opacity: 1;
+}
+
+.settings-sheet.is-open .settings-panel {
+  transform: translateY(0);
+}
+
+.settings-grip {
+  display: block;
+  width: 40px;
+  height: 5px;
+  margin: 2px auto 10px;
+  border-radius: 999px;
+  background: #E2D9C8;
+}
+
+.settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 2px 12px;
+}
+
+.settings-header h2 {
+  margin: 0;
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #0B3B2E;
+}
+
+.settings-close {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #F3EEE4;
+  color: #374151;
+  cursor: pointer;
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 60px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  text-align: left;
+  background: #FFFFFF;
+  border: 1px solid #F1EBDD;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(80, 60, 20, 0.04);
+  color: #0F172A;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, background-color 0.2s ease;
+}
+
+.settings-item:active {
+  transform: scale(0.98);
+  background: #FBF7EE;
+}
+
+.settings-item:disabled {
+  cursor: progress;
+}
+
+.settings-item:focus-visible,
+.settings-close:focus-visible {
+  outline: 2px solid #0F8A4C;
+  outline-offset: 2px;
+}
+
+.settings-item-icon {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.settings-item-icon.is-green {
+  background: #DCF1E3;
+  color: #0F7A45;
+}
+
+.settings-item-icon.is-purple {
+  background: #EFE6FD;
+  color: #6D28D9;
+}
+
+.settings-item-icon.is-blue {
+  background: #E3EEFB;
+  color: #1D4ED8;
+}
+
+.settings-item.is-loading .settings-item-icon svg {
+  animation: settings-spin 0.9s linear infinite;
+}
+
+@keyframes settings-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.settings-item-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.settings-item-text b {
+  font-size: 15px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.settings-item-text small {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748B;
+}
+
+.settings-chevron {
+  flex: 0 0 18px;
+  color: #94A3B8;
+  transition: transform 0.2s ease;
+}
+
+.settings-chevron.is-down {
+  transform: rotate(90deg);
+}
+
+.settings-item[aria-expanded="true"] .settings-chevron.is-down {
+  transform: rotate(-90deg);
+}
+
+.settings-about {
+  margin: -2px 2px 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #EEF4FC;
+  color: #1E3A8A;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.settings-about p {
+  margin: 0;
+}
+
+.settings-about p + p {
+  margin-top: 8px;
+}
+
+body.settings-open {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .settings-backdrop,
+  .settings-panel,
+  .settings-item,
+  .settings-chevron {
+    transition: none;
+  }
+
+  .settings-item.is-loading .settings-item-icon svg {
+    animation: none;
+  }
+}

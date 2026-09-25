@@ -974,6 +974,99 @@ window.applaudStudent = applaudStudent;
 window.selectDestinationCurrency = selectDestinationCurrency;
 
 initThemeToggle();
+
+function initSettingsSheet() {
+  const trigger = document.querySelector("#mobile-settings-btn");
+  const sheet = document.querySelector("#settings-sheet");
+  if (!trigger || !sheet) return;
+
+  const panel = sheet.querySelector(".settings-panel");
+  const refreshButton = sheet.querySelector("#settings-refresh");
+  const refreshStatus = sheet.querySelector("#settings-refresh-status");
+  const aboutButton = sheet.querySelector("#settings-about-btn");
+  const about = sheet.querySelector("#settings-about");
+  let closeTimer;
+
+  const focusables = () =>
+    [...panel.querySelectorAll("button:not([disabled])")].filter(
+      (element) => element.offsetParent !== null,
+    );
+
+  const open = () => {
+    clearTimeout(closeTimer);
+    sheet.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+    document.body.classList.add("settings-open");
+    void sheet.offsetHeight; // força o reflow para a transição de entrada
+    sheet.classList.add("is-open");
+    refreshButton.focus();
+  };
+
+  const close = () => {
+    if (sheet.hidden) return;
+    sheet.classList.remove("is-open");
+    trigger.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("settings-open");
+    closeTimer = setTimeout(() => {
+      sheet.hidden = true;
+    }, 260);
+    trigger.focus();
+  };
+
+  trigger.addEventListener("click", open);
+  sheet
+    .querySelectorAll("[data-close-settings]")
+    .forEach((element) => element.addEventListener("click", close));
+
+  sheet.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      close();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const items = focusables();
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  refreshButton.addEventListener("click", async () => {
+    refreshButton.disabled = true;
+    refreshButton.classList.add("is-loading");
+    refreshStatus.textContent = "Atualizando…";
+    await loadLiveRates();
+    refreshButton.disabled = false;
+    refreshButton.classList.remove("is-loading");
+    const time = new Date().toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    refreshStatus.textContent =
+      rateState.status === "ready"
+        ? `Cotação atualizada às ${time}`
+        : "Sem conexão — usando valores educativos";
+  });
+
+  sheet.querySelector("#settings-team").addEventListener("click", () => {
+    close();
+    go("team");
+  });
+
+  aboutButton.addEventListener("click", () => {
+    const expanded = aboutButton.getAttribute("aria-expanded") === "true";
+    aboutButton.setAttribute("aria-expanded", String(!expanded));
+    about.hidden = expanded;
+  });
+}
+
+initSettingsSheet();
 go("home");
 loadLiveRates();
 
