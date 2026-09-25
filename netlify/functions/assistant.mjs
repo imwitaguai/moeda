@@ -11,6 +11,13 @@ function error(code, message, status) {
   return json({ error: { code, message } }, status);
 }
 
+function extractGeminiReply(payload) {
+  const parts = payload?.candidates?.[0]?.content?.parts;
+  if (!Array.isArray(parts)) return null;
+  const reply = parts.map(part => part?.text).filter(Boolean).join('\n').trim();
+  return reply ? reply.slice(0, 4000) : null;
+}
+
 export function createAssistantHandler(fetchImpl = fetch, timeoutMs = 15000) {
   return async request => {
     if (request.method !== 'POST') return error('METHOD_NOT_ALLOWED', 'Método não permitido.', 405);
@@ -38,8 +45,9 @@ export function createAssistantHandler(fetchImpl = fetch, timeoutMs = 15000) {
     const input = validateAssistantInput(parsed);
     if (!input) return error('INVALID_INPUT', 'Revise a mensagem e tente novamente.', 400);
 
-    const key = process.env.OPENROUTER_API_KEY;
-    if (!key) return json({ reply: fallbackAssistantReply(input), source: 'fallback' });
+    const geminiKey = process.env.GEMINI_API_KEY;
+    const openRouterKey = process.env.OPENROUTER_API_KEY;
+    if (!geminiKey && !openRouterKey) return json({ reply: fallbackAssistantReply(input), source: 'fallback' });
 
     const contextText = input.context
       ? `Contexto atual do conversor: valor ${input.context.amount}, de ${input.context.from} para ${input.context.to}.`
@@ -48,25 +56,41 @@ export function createAssistantHandler(fetchImpl = fetch, timeoutMs = 15000) {
     const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
-      const response = await fetchImpl('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${key}`,
-          'Content-Type': 'application/json',
-          ...(process.env.SITE_URL ? { 'HTTP-Referer': process.env.SITE_URL } : {}),
-          ...(process.env.SITE_NAME ? { 'X-Title': process.env.SITE_NAME } : {})
-        },
-        body: JSON.stringify({
-          model: process.env.OPENROUTER_MODEL || 'openai/gpt-4o-mini',
-          temperature: 0.3,
-          max_tokens: 300,
-          messages: [
-            { role: 'system', content: SYSTEM_PROMPT },
-            { role: 'user', content: `${contextText}\n\nPergunta do estudante: ${input.message}` }
-          ]
-        }),
-        signal: controller.signal
-      });
+      const prompt = `${contextText}\n\nPergunta do estudante: ${input.message}`;
+      const isGemini = Boolean(geminiKey);
+      const response = isGemini
+        ? await fetchImpl(
+            `https://generativelanguage.googleapis.com/v1beta/models/${process.env.GEMINI_MODEL || 'gemini-2.5-flash'}:generateContent`,
+            {
+              method: 'POST',
+              headers: { 'x-goog-api-key': geminiKey, 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
+                contents: [{ role: 'user', parts: [{ text: prompt }] }],
+                generationConfig: { temperature: 0.3, maxOutputTokens: 300 }
+              }),
+              signal: controller.signal
+            }
+          )
+        : await fetchImpl('https://openrouter.ai/api/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${openRouterKey}`,
+              'Content-Type': 'application/json',
+              ...(process.env.SITE_URL ? { 'HTTP-Referer': process.env.SITE_URL } : {}),
+              ...(process.env.SITE_NAME ? { 'X-Title': process.env.SITE_NAME } : {})
+            },
+            body: JSON.stringify({
+              model: process.env.OPENROUTER_MODEL || 'openai/gpt-4o-mini',
+              temperature: 0.3,
+              max_tokens: 300,
+              messages: [
+                { role: 'system', content: SYSTEM_PROMPT },
+                { role: 'user', content: prompt }
+              ]
+            }),
+            signal: controller.signal
+          });
 
       if (response.status === 429) return json({ reply: fallbackAssistantReply(input), source: 'fallback' });
       if (!response.ok) return json({ reply: fallbackAssistantReply(input), source: 'fallback' });
@@ -78,7 +102,7 @@ export function createAssistantHandler(fetchImpl = fetch, timeoutMs = 15000) {
         return json({ reply: fallbackAssistantReply(input), source: 'fallback' });
       }
 
-      const reply = extractAssistantReply(payload);
+      const reply = isGemini ? extractGeminiReply(payload) : extractAssistantReply(payload);
       if (!reply) return json({ reply: fallbackAssistantReply(input), source: 'fallback' });
       return json({ reply });
     } catch (cause) {

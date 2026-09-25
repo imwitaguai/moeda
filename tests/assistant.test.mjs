@@ -57,6 +57,30 @@ test('handler chama provedor e devolve somente reply', async () => {
   }
 });
 
+test('handler usa Gemini quando GEMINI_API_KEY está configurada', async () => {
+  const previous = process.env.GEMINI_API_KEY;
+  process.env.GEMINI_API_KEY = 'test-gemini-key';
+  try {
+    const handler = createAssistantHandler(async (url, options) => {
+      assert.match(url, /gemini-2\.5-flash:generateContent$/);
+      assert.equal(options.headers['x-goog-api-key'], 'test-gemini-key');
+      const payload = JSON.parse(options.body);
+      assert.equal(payload.generationConfig.maxOutputTokens, 300);
+      return Response.json({ candidates: [{ content: { parts: [{ text: 'Use o botão Converter.' }] } }] });
+    });
+    const response = await handler(new Request('https://example.test/.netlify/functions/assistant', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Como usar?' })
+    }));
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { reply: 'Use o botão Converter.' });
+  } finally {
+    if (previous === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = previous;
+  }
+});
+
 test('handler rejeita mídia, JSON e entrada inválidos', async () => {
   const handler = createAssistantHandler(async () => { throw new Error('não deve chamar'); });
   const wrongMedia = await handler(new Request('https://example.test/', { method: 'POST', body: '{}' }));
