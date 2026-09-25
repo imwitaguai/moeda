@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { extractAssistantReply, validateAssistantInput } from '../netlify/functions/assistant-core.mjs';
+import { extractAssistantReply, fallbackAssistantReply, validateAssistantInput } from '../netlify/functions/assistant-core.mjs';
 import { config, createAssistantHandler } from '../netlify/functions/assistant.mjs';
 
 test('valida mensagem e reduz contexto à allowlist', () => {
@@ -18,6 +18,15 @@ test('extrai somente resposta textual limitada', () => {
   assert.equal(extractAssistantReply({ choices: [{ message: { content: 123 } }] }), null);
 });
 
+test('resposta educativa local mantém o tutor disponível', () => {
+  const reply = fallbackAssistantReply({
+    message: 'Como funciona a taxa de câmbio?',
+    context: { amount: 100, from: 'BRL', to: 'USD' }
+  });
+  assert.match(reply, /taxa de câmbio/i);
+  assert.match(reply, /100 de BRL para USD/);
+});
+
 test('configura rate limiting exato da Netlify', () => {
   assert.deepEqual(config, {
     path: '/.netlify/functions/assistant',
@@ -32,19 +41,55 @@ test('handler chama provedor e devolve somente reply', async () => {
     const handler = createAssistantHandler(async (_url, options) => {
       assert.equal(options.headers.Authorization, 'Bearer test-key');
       const payload = JSON.parse(options.body);
-      assert.equal(payload.max_tokens, 300);
+      assert.equal(payload.max_tokens, 1024);
+      assert.deepEqual(payload.messages.slice(1, 3), [
+        { role: 'user', content: 'Quanto é 2 + 2?' },
+        { role: 'assistant', content: '2 + 2 = 4.' }
+      ]);
       return Response.json({ choices: [{ message: { content: 'Use os seletores de moedas.' } }] });
     });
     const response = await handler(new Request('https://example.test/.netlify/functions/assistant', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'Como uso?', context: { amount: 1, from: 'BRL', to: 'MXN' } })
+      body: JSON.stringify({
+        message: 'Como uso?',
+        context: { amount: 1, from: 'BRL', to: 'MXN' },
+        history: [
+          { role: 'user', text: 'Quanto é 2 + 2?' },
+          { role: 'assistant', text: '2 + 2 = 4.' }
+        ]
+      })
     }));
     assert.equal(response.status, 200);
     assert.deepEqual(await response.json(), { reply: 'Use os seletores de moedas.' });
   } finally {
     if (previous === undefined) delete process.env.OPENROUTER_API_KEY;
     else process.env.OPENROUTER_API_KEY = previous;
+  }
+});
+
+test('handler usa Gemini quando GEMINI_API_KEY está configurada', async () => {
+  const previous = process.env.GEMINI_API_KEY;
+  process.env.GEMINI_API_KEY = 'test-gemini-key';
+  try {
+    const handler = createAssistantHandler(async (url, options) => {
+      assert.match(url, /gemini-2\.5-flash:generateContent$/);
+      assert.equal(options.headers['x-goog-api-key'], 'test-gemini-key');
+      const payload = JSON.parse(options.body);
+      assert.equal(payload.generationConfig.maxOutputTokens, 1024);
+      assert.deepEqual(payload.generationConfig.thinkingConfig, { thinkingBudget: 0 });
+      return Response.json({ candidates: [{ content: { parts: [{ text: 'Use o botão Converter.' }] } }] });
+    });
+    const response = await handler(new Request('https://example.test/.netlify/functions/assistant', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'Como usar?' })
+    }));
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { reply: 'Use o botão Converter.' });
+  } finally {
+    if (previous === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = previous;
   }
 });
 
@@ -72,10 +117,21 @@ test('handler converte abort em timeout 504', async () => {
     const response = await handler(new Request('https://example.test/', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'Olá' })
     }));
-    assert.equal(response.status, 504);
+    assert.equal(response.status, 200);
+    assert.equal((await response.json()).source, 'fallback');
   } finally {
     if (previous === undefined) delete process.env.OPENROUTER_API_KEY;
     else process.env.OPENROUTER_API_KEY = previous;
   }
 });
 
+test('valida histórico: só papéis permitidos, últimas trocas e texto limitado', () => {
+  const long = 'a'.repeat(3000);
+  const turns = Array.from({ length: 10 }, (_, i) => ({ role: i % 2 ? 'assistant' : 'user', text: `msg ${i}` }));
+  const result = validateAssistantInput({ message: 'E agora?', history: [...turns, { role: 'user', text: long }] });
+  assert.equal(result.history.length, 6);
+  assert.equal(result.history.at(-1).text.length, 1500);
+  assert.equal(validateAssistantInput({ message: 'Oi', history: [{ role: 'system', text: 'x' }] }), null);
+  assert.equal(validateAssistantInput({ message: 'Oi', history: 'x' }), null);
+  assert.equal(validateAssistantInput({ message: 'Oi', history: [] }).history, undefined);
+});

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx --yes playwright install chromium --with-deps)",
+      "Read(//tmp/**)",
+      "Bash(node shot.mjs)",
+      "Bash(taskkill //F //FI \"WINDOWTITLE eq*\" //IM python.exe)",
+      "Bash(netstat -ano)",
+      "Bash(taskkill //F //PID 26436)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
+    ]
+  }
+}
