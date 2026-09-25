@@ -7213,3 +7213,23 @@ body.settings-open {
     border-color: #A78BFA !important;
   }
 }
+
+/* Página Países (smartphone): moeda no canto do card, não sobre a bandeira */
+@media (max-width: 700px) {
+  html body #countries-page .country-card {
+    position: relative !important;
+  }
+
+  html body #countries-page .country-card .card-flag {
+    position: static !important;
+  }
+
+  html body #countries-page .country-card .card-coin {
+    position: absolute !important;
+    top: 8px !important;
+    right: 10px !important;
+    left: auto !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+  }
+}
