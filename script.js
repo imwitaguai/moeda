@@ -783,6 +783,29 @@ document.querySelectorAll(".filters button").forEach((button) =>
 
 function initThemeToggle() {
   document.body.classList.add("theme-mexico");
+  const toggles = document.querySelectorAll(".theme-toggle");
+  const label = document.querySelector(".theme-toggle-label");
+
+  const updateToggleCopy = () => {
+    const isMexico = document.body.classList.contains("theme-mexico");
+    toggles.forEach((toggle) =>
+      toggle.setAttribute(
+        "aria-label",
+        isMexico
+          ? "Alternar para o tema padrão"
+          : "Alternar para o Tema México",
+      ),
+    );
+    if (label) label.textContent = isMexico ? "Tema México" : "Tema padrão";
+  };
+
+  toggles.forEach((toggle) =>
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("theme-mexico");
+      updateToggleCopy();
+    }),
+  );
+  updateToggleCopy();
 }
 
 window.go = go;

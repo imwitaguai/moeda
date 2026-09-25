@@ -1035,11 +1035,6 @@ body.theme-mexico .theme-toggle:hover {
 }
 
 /* Tela principal México: composição de referência em desktop. */
-body.theme-mexico .theme-toggle,
-body.theme-mexico .theme-toggle-label {
-  display: none;
-}
-
 body.theme-mexico #home-page > header {
   min-height: 84px;
   margin: 0 12px 16px;
@@ -3506,5 +3501,90 @@ body.theme-mexico a:focus-visible {
   }
   main {
     padding-top: 14px;
+  }
+}
+
+/* Toggle México: trilho neutro com mistura sutil das cores da bandeira. */
+.theme-toggle {
+  width: 92px;
+  height: 42px;
+  margin: 8px auto 5px;
+  overflow: visible;
+  border: 1px solid #d8eadf;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #f9fffb 0%, #e3f7eb 48%, #fff1f1 100%);
+  box-shadow:
+    0 6px 14px rgba(6, 78, 59, 0.16),
+    inset 0 1px 2px #fff;
+}
+
+.theme-toggle::before,
+.theme-toggle::after {
+  display: none;
+}
+
+.theme-toggle span {
+  top: 3px;
+  right: 4px;
+  left: auto;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #087b57, #034c3a);
+  box-shadow:
+    0 3px 8px rgba(0, 84, 61, 0.34),
+    inset 0 1px 1px #ffffff70;
+  opacity: 1;
+  transition:
+    left 0.28s ease,
+    right 0.28s ease,
+    transform 0.2s ease;
+}
+
+.theme-toggle .mx-flag-icon {
+  width: 18px;
+  height: 12px;
+  border-radius: 3px;
+  box-shadow: 0 1px 2px #002b2080;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(100deg, #f7fffa 0%, #d9f6e4 48%, #ffe7e9 100%);
+  box-shadow:
+    0 8px 16px rgba(6, 78, 59, 0.22),
+    inset 0 1px 2px #fff;
+}
+
+.theme-toggle:active span {
+  transform: scale(0.92);
+}
+
+body:not(.theme-mexico) .theme-toggle span {
+  right: auto;
+  left: 4px;
+  background: linear-gradient(145deg, #9a75e8, #6945ca);
+}
+
+.theme-toggle-label {
+  margin-top: 5px;
+  color: #315242;
+  font-size: 10px;
+}
+
+@media (max-width: 700px) {
+  .mobile-topbar .theme-toggle {
+    display: inline-block;
+    width: 74px;
+    height: 34px;
+    margin: 0;
+  }
+
+  .mobile-topbar .theme-toggle span {
+    top: 3px;
+    width: 28px;
+    height: 28px;
   }
 }
