@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { extractAssistantReply, validateAssistantInput } from '../netlify/functions/assistant-core.mjs';
+import { extractAssistantReply, fallbackAssistantReply, validateAssistantInput } from '../netlify/functions/assistant-core.mjs';
 import { config, createAssistantHandler } from '../netlify/functions/assistant.mjs';
 
 test('valida mensagem e reduz contexto à allowlist', () => {
@@ -16,6 +16,15 @@ test('extrai somente resposta textual limitada', () => {
   assert.equal(extractAssistantReply({ choices: [{ message: { content: ' Olá! ' } }] }), 'Olá!');
   assert.equal(extractAssistantReply({ choices: [] }), null);
   assert.equal(extractAssistantReply({ choices: [{ message: { content: 123 } }] }), null);
+});
+
+test('resposta educativa local mantém o tutor disponível', () => {
+  const reply = fallbackAssistantReply({
+    message: 'Como funciona a taxa de câmbio?',
+    context: { amount: 100, from: 'BRL', to: 'USD' }
+  });
+  assert.match(reply, /taxa de câmbio/i);
+  assert.match(reply, /100 de BRL para USD/);
 });
 
 test('configura rate limiting exato da Netlify', () => {
@@ -72,10 +81,10 @@ test('handler converte abort em timeout 504', async () => {
     const response = await handler(new Request('https://example.test/', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: 'Olá' })
     }));
-    assert.equal(response.status, 504);
+    assert.equal(response.status, 200);
+    assert.equal((await response.json()).source, 'fallback');
   } finally {
     if (previous === undefined) delete process.env.OPENROUTER_API_KEY;
     else process.env.OPENROUTER_API_KEY = previous;
   }
 });
-
