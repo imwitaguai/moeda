@@ -7229,3 +7229,228 @@ body.settings-open {
     pointer-events: none !important;
   }
 }
+
+/* ==========================================================
+   COMPARTILHAR POR QR CODE (botão da barra superior mobile)
+   ========================================================== */
+.share-sheet[hidden] {
+  display: none !important;
+}
+
+.share-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 310;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.share-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 78, 59, 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.share-panel {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  box-sizing: border-box;
+  padding: 22px 20px 18px;
+  background: #FFFFFF;
+  border-radius: 28px;
+  box-shadow: 0 24px 60px rgba(6, 40, 30, 0.35);
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  color: #13234B;
+  opacity: 0;
+  transform: translateY(16px) scale(0.94);
+  transition:
+    opacity 0.22s ease,
+    transform 0.32s cubic-bezier(0.22, 1.2, 0.36, 1);
+}
+
+.share-sheet.is-open .share-backdrop {
+  opacity: 1;
+}
+
+.share-sheet.is-open .share-panel {
+  opacity: 1;
+  transform: none;
+}
+
+.share-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #94A3B8;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.share-close:active {
+  background: #F1F5F9;
+  color: #475569;
+}
+
+.share-panel h2 {
+  margin: 4px 0 6px;
+  font-family: 'Baloo 2', sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #13234B;
+}
+
+.share-hint {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #0F172A;
+}
+
+.share-qr {
+  position: relative;
+  width: min(248px, 100%);
+  margin: 0 auto;
+  padding: 12px;
+  box-sizing: border-box;
+  aspect-ratio: 1;
+  background: #FFFFFF;
+  border: 1px solid #EEF0F3;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(19, 35, 75, 0.08);
+}
+
+.share-qr-code {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.share-qr-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FFFFFF;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #FFFFFF, 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.share-qr-logo img {
+  width: 92%;
+  height: 92%;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.share-country {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 4px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #13234B;
+}
+
+.share-flag {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.share-url {
+  display: block;
+  margin: 0 0 16px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #0F172A;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.share-url:active {
+  color: #0B7A45;
+}
+
+.share-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.share-action {
+  flex: 1 1 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.15s ease, background-color 0.2s ease;
+}
+
+.share-action:active {
+  transform: scale(0.97);
+}
+
+.share-action.is-copy {
+  background: #DCF1E3;
+  color: #0B5C38;
+}
+
+.share-action.is-copy.is-done {
+  background: #0B7A45;
+  color: #FFFFFF;
+}
+
+.share-toast {
+  min-height: 18px;
+  margin: 10px 0 0;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #64748B;
+}
+
+.share-close:focus-visible,
+.share-action:focus-visible,
+.share-url:focus-visible {
+  outline: 2px solid #0F8A4C;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .share-panel,
+  .share-backdrop {
+    transition: none;
+  }
+}

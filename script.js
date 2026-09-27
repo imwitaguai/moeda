@@ -1125,6 +1125,106 @@ function initSettingsSheet() {
 }
 
 initSettingsSheet();
+
+function initShareSheet() {
+  const trigger = document.querySelector("#mobile-share-btn");
+  const sheet = document.querySelector("#share-sheet");
+  if (!trigger || !sheet) return;
+
+  const panel = sheet.querySelector(".share-panel");
+  const copyButton = sheet.querySelector("#share-copy");
+  const copyLabel = sheet.querySelector("#share-copy-label");
+  const toast = sheet.querySelector("#share-toast");
+  const url = "https://esjmexico.netlify.app/";
+  let closeTimer;
+  let copyTimer;
+
+  const focusables = () =>
+    [...panel.querySelectorAll("button, a[href]")].filter(
+      (element) => element.offsetParent !== null,
+    );
+
+  const open = () => {
+    clearTimeout(closeTimer);
+    sheet.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+    document.body.classList.add("settings-open");
+    void sheet.offsetHeight; // força o reflow para a transição de entrada
+    sheet.classList.add("is-open");
+    copyButton.focus();
+  };
+
+  const close = () => {
+    if (sheet.hidden) return;
+    sheet.classList.remove("is-open");
+    trigger.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("settings-open");
+    closeTimer = setTimeout(() => {
+      sheet.hidden = true;
+      toast.textContent = "";
+    }, 260);
+    trigger.focus();
+  };
+
+  trigger.addEventListener("click", open);
+  sheet
+    .querySelectorAll("[data-close-share]")
+    .forEach((element) => element.addEventListener("click", close));
+
+  sheet.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      close();
+      return;
+    }
+    if (event.key !== "Tab") return;
+    const items = focusables();
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+
+  const copyFallback = () => {
+    const field = document.createElement("textarea");
+    field.value = url;
+    field.setAttribute("readonly", "");
+    field.style.position = "fixed";
+    field.style.opacity = "0";
+    document.body.append(field);
+    field.select();
+    const ok = document.execCommand("copy");
+    field.remove();
+    return ok;
+  };
+
+  copyButton.addEventListener("click", async () => {
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(url);
+      ok = true;
+    } catch {
+      ok = copyFallback();
+    }
+    clearTimeout(copyTimer);
+    copyButton.classList.toggle("is-done", ok);
+    copyLabel.textContent = ok ? "Link copiado!" : "Copiar link";
+    toast.textContent = ok
+      ? "Cole o link onde quiser compartilhar."
+      : "Não foi possível copiar. Toque no link para abrir.";
+    copyTimer = setTimeout(() => {
+      copyButton.classList.remove("is-done");
+      copyLabel.textContent = "Copiar link";
+    }, 2200);
+  });
+}
+
+initShareSheet();
 go("home");
 loadLiveRates();
 
